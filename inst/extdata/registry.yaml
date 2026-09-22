@@ -1,0 +1,145 @@
+# lexsync corpus registry
+# ---------------------------------------------------------------------------
+# Each entry documents an accessible, reusable and citable lexical corpus.
+#   status: validated -> bundled example slice + demonstrated end to end
+#   status: supported -> fetched on demand into the user cache (not redistributed)
+#   status: manual    -> citation, licence and landing page verified live, but the
+#                        publisher offers no delimited file, so a human retrieves it
+#   status: listed    -> citation/licence/URL pending live verification
+# A corpus is promoted to 'supported'/'validated' only after its citation has
+# been verified against Crossref or the official record, and its licence checked.
+#
+# The two URL keys are not interchangeable:
+#   url         -> the corpus's human-facing landing page (citation/provenance only)
+#   openlexicon -> a directly downloadable delimited file; fetch_corpus() requires this
+#
+# 'connector' selects the ingestion path:
+#   openlexicon -> a SUBTLEX-family/openlexicon delimited file (Connector A)
+#   wordfreq    -> the wordfreq Python package, ~40 languages (Connector B)
+# The 'columns' map names source columns onto the lexsync schema; 'freq_zipf'
+# is computed from 'freq_permillion' when the source lacks a Zipf column
+# (Zipf = log10(freq_per_million) + 3).
+
+defaults:
+  licence: 'CC BY-SA 4.0'
+  connector: openlexicon
+  attribution_note: >-
+    SUBTLEX resources are made freely available by their authors for any
+    purpose subject to attribution (terms equivalent to CC BY-SA); openlexicon
+    redistributes them under CC BY-SA 4.0.
+
+corpora:
+
+  subtlex_uk:
+    language: { name: 'English (British)', iso: en-GB }
+    connector: openlexicon
+    status: manual
+    url: 'https://psychology.nottingham.ac.uk/subtlex-uk/'
+    licence: 'CC BY-SA 4.0 (Brysbaert terms)'
+    citation_key: vanheuven2014subtlexuk
+    citation: 'van Heuven, Mandera, Keuleers & Brysbaert (2014). SUBTLEX-UK. Quarterly Journal of Experimental Psychology, 67(6), 1176-1190. doi:10.1080/17470218.2013.850521'
+    columns: { word: 'Spelling', freq_zipf: 'LogFreq(Zipf)', pos: 'DomPoS' }
+    notes: >-
+      Published only as zipped xlsx/txt archives, which the delimited-file
+      connector cannot ingest, so no 'openlexicon' key: download
+      SUBTLEX-UK.txt.zip from the landing page, unzip it, and pass the file to
+      load_lexicon(). The 'columns' map above names its columns.
+
+  subtlex_esp:
+    language: { name: 'Spanish', iso: es }
+    connector: openlexicon
+    status: listed
+    url: 'https://osf.io/xp6sz/'
+    licence: 'CC BY-SA 4.0 (Brysbaert terms)'
+    citation_key: cuetos2011subtlexesp
+    citation: 'Cuetos, González-Nosti, Barbón & Brysbaert (2011). SUBTLEX-ESP. Psicológica, 32(2), 133-143.'
+    columns: { word: 'Word', freq_permillion: 'FreqPerMillion', pos: 'pos' }
+
+  subtlex_us:
+    language: { name: 'English (American)', iso: en-US }
+    connector: openlexicon
+    status: listed
+    url: 'https://www.ugent.be/pp/experimentele-psychologie/en/research/documents/subtlexus'
+    licence: 'CC BY-SA 4.0 (Brysbaert terms)'
+    citation_key: brysbaert2009subtlexus
+    citation: 'Brysbaert & New (2009). Behavior Research Methods, 41(4), 977-990. doi:10.3758/BRM.41.4.977'
+    columns: { word: 'Word', freq_zipf: 'Lg10WF', pos: 'Dom_PoS_SUBTLEX' }
+
+  subtlex_nl:
+    language: { name: 'Dutch', iso: nl }
+    connector: openlexicon
+    status: listed
+    licence: 'CC BY-SA 4.0 (Brysbaert terms)'
+    citation_key: keuleers2010subtlexnl
+    citation: 'Keuleers, Brysbaert & New (2010). SUBTLEX-NL. Behavior Research Methods, 42(3), 643-650. doi:10.3758/BRM.42.3.643'
+    columns: { word: 'Word', freq_zipf: 'Zipf' }
+
+  subtlex_de:
+    language: { name: 'German', iso: de }
+    connector: openlexicon
+    status: listed
+    licence: 'CC BY-SA 4.0 (Brysbaert terms)'
+    citation_key: brysbaert2011subtlexde
+    citation: 'Brysbaert et al. (2011). SUBTLEX-DE. Experimental Psychology, 58(5), 412-424. doi:10.1027/1618-3169/a000123'
+    columns: { word: 'Word', freq_zipf: 'lgSUBTLEX' }
+
+  lexique_fr:
+    language: { name: 'French', iso: fr }
+    connector: openlexicon
+    status: listed
+    licence: 'CC BY-SA 4.0'
+    citation_key: new2004lexique
+    citation: 'New, Pallier, Brysbaert & Ferrand (2004). Lexique 2. Behavior Research Methods, Instruments, & Computers, 36(3), 516-524. doi:10.3758/BF03195598'
+    columns: { word: 'ortho', freq_permillion: 'freqfilms2' }
+
+  subtlex_it:
+    language: { name: 'Italian', iso: it }
+    connector: openlexicon
+    status: listed
+    licence: 'CC BY-SA 4.0 (Brysbaert terms)'
+    citation_key: crepaldi2015subtlexit
+    citation: 'Crepaldi, Amenta, Mandera, Keuleers & Brysbaert (2015). SUBTLEX-IT. (verify on ingestion).'
+    columns: { word: 'spelling', freq_zipf: 'zipf' }
+
+  subtlex_ch:
+    language: { name: 'Chinese (Mandarin)', iso: zh }
+    connector: openlexicon
+    status: listed
+    licence: 'CC BY-SA 4.0 (Brysbaert terms)'
+    citation_key: cai2010subtlexch
+    citation: 'Cai & Brysbaert (2010). SUBTLEX-CH. PLoS ONE, 5(6), e10729. doi:10.1371/journal.pone.0010729'
+    columns: { word: 'Word', freq_zipf: 'WCpmw' }
+    notes: 'Character-based; length/N/OLD20 semantics differ for logographic scripts.'
+
+  subtlex_pl:
+    language: { name: 'Polish', iso: pl }
+    connector: openlexicon
+    status: listed
+    licence: 'CC BY-SA 4.0 (Brysbaert terms)'
+    citation_key: mandera2015subtlexpl
+    citation: 'Mandera, Keuleers, Wodniecka & Brysbaert (2015). SUBTLEX-PL. Behavior Research Methods, 47(2), 471-483. doi:10.3758/s13428-014-0489-4'
+    columns: { word: 'spelling', freq_zipf: 'zipf' }
+
+  subtlex_pt:
+    language: { name: 'Portuguese (European)', iso: pt }
+    connector: openlexicon
+    status: listed
+    licence: 'CC BY-SA 4.0 (Brysbaert terms)'
+    citation_key: soares2015subtlexpt
+    citation: 'Soares, Machado, Costa, Iriarte, Simoes, de Almeida, Comesana & Perea (2015). On the advantages of word frequency and contextual diversity measures extracted from subtitles: The case of Portuguese. Quarterly Journal of Experimental Psychology, 68(4), 680-696. doi:10.1080/17470218.2014.964271'
+    columns: { word: 'word', freq_zipf: 'zipf' }
+
+# Connector B: one dependency, many languages.
+wordfreq_connector:
+  connector: wordfreq
+  status: supported
+  description: 'Programmatic word frequencies for ~40 languages via the wordfreq package; lexsync derives length, N and OLD20 itself.'
+  # Two different licences, and the data one is what matters for redistribution:
+  # wordfreq's code is Apache-2.0 (it was MIT up to 3.0.2 and relicensed at
+  # 3.0.3, which the >=3.0,<4 pin spans), while its data files are
+  # redistributable under CC BY-SA 4.0. See LICENSE-DATA, which also records the
+  # SUBTLEX credit that wordfreq's terms require of anything derived from it.
+  licence: 'Apache-2.0 (package code); CC BY-SA 4.0 (data files)'
+  citation_key: speer2022wordfreq
+  citation: 'Speer (2022). rspeer/wordfreq v3.0. Zenodo. doi:10.5281/zenodo.7199437'
+  languages: [en, es, fr, de, nl, it, pt, pl, el, ru, uk, ar, fa, he, hi, bn, zh, ja, ko, id, ms, tr, sv, nb, da, fi, cs, ro, hu, ca]

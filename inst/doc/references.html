@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>References</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">References</h1>
+
+
+
+<p>The guides and the function reference pages cite published work
+throughout, and this page carries the full entries so that every
+citation on the site resolves. Each guide also lists the works it cites
+at its own foot, and this page gathers those lists together with the
+works cited only in the function documentation and in the design
+configurations that ship with the package. Every entry carries a DOI
+wherever the work has one, and any work cited on both sites reads the
+same here as on the <a href="https://pablobernabeu.github.io/lexsync/python/references/">Python
+twin’s reference page</a>. The lexical corpora that lexsync reads are
+attributed separately, in <a href="https://github.com/pablobernabeu/lexsync/blob/main/corpora/ATTRIBUTION.md"><code>corpora/ATTRIBUTION.md</code></a>
+and in the corpus registry, since their licences travel with the derived
+data rather than with the software.</p>
+<div class="references">
+<p>Andrews, S. (1989). Frequency and neighborhood effects on lexical
+access: Activation or search? <em>Journal of Experimental Psychology:
+Learning, Memory, and Cognition</em>, <em>15</em>(5), 802–814. <a href="https://doi.org/10.1037/0278-7393.15.5.802" class="uri">https://doi.org/10.1037/0278-7393.15.5.802</a></p>
+<p>Armstrong, B. C., Watson, C. E., &amp; Plaut, D. C. (2012). SOS! An
+algorithm and software for the stochastic optimization of stimuli.
+<em>Behavior Research Methods</em>, <em>44</em>(3), 675–705. <a href="https://doi.org/10.3758/s13428-011-0182-9" class="uri">https://doi.org/10.3758/s13428-011-0182-9</a></p>
+<p>Austin, P. C. (2009). Balance diagnostics for comparing the
+distribution of baseline covariates between treatment groups in
+propensity-score matched samples. <em>Statistics in Medicine</em>,
+<em>28</em>(25), 3083–3107. <a href="https://doi.org/10.1002/sim.3697" class="uri">https://doi.org/10.1002/sim.3697</a></p>
+<p>Baayen, R. H., Davidson, D. J., &amp; Bates, D. M. (2008).
+Mixed-effects modeling with crossed random effects for subjects and
+items. <em>Journal of Memory and Language</em>, <em>59</em>(4), 390–412.
+<a href="https://doi.org/10.1016/j.jml.2007.12.005" class="uri">https://doi.org/10.1016/j.jml.2007.12.005</a></p>
+<p>Barr, D. J., Levy, R., Scheepers, C., &amp; Tily, H. J. (2013).
+Random effects structure for confirmatory hypothesis testing: Keep it
+maximal. <em>Journal of Memory and Language</em>, <em>68</em>(3),
+255–278. <a href="https://doi.org/10.1016/j.jml.2012.11.001" class="uri">https://doi.org/10.1016/j.jml.2012.11.001</a></p>
+<p>Bochynska, A., Keeble, L., Halfacre, C., Casillas, J. V., Champagne,
+I.-A., Chen, K., Röthlisberger, M., Buchanan, E. M., &amp; Roettger, T.
+B. (2023). Reproducible research practices and transparency across
+linguistics. <em>Glossa Psycholinguistics</em>, <em>2</em>(1). <a href="https://doi.org/10.5070/G6011239" class="uri">https://doi.org/10.5070/G6011239</a></p>
+<p>Clark, H. H. (1973). The language-as-fixed-effect fallacy: A critique
+of language statistics in psychological research. <em>Journal of Verbal
+Learning and Verbal Behavior</em>, <em>12</em>(4), 335–359. <a href="https://doi.org/10.1016/S0022-5371(73)80014-3" class="uri">https://doi.org/10.1016/S0022-5371(73)80014-3</a></p>
+<p>Coltheart, M., Davelaar, E., Jonasson, J. T., &amp; Besner, D.
+(1977). Access to the internal lexicon. In S. Dornic (Ed.),
+<em>Attention and Performance VI</em> (pp. 535–555). Erlbaum.</p>
+<p>Forster, K. I. (2000). The potential for experimenter bias effects in
+word recognition experiments. <em>Memory &amp; Cognition</em>,
+<em>28</em>(7), 1109–1115. <a href="https://doi.org/10.3758/BF03211812" class="uri">https://doi.org/10.3758/BF03211812</a></p>
+<p>González Alonso, J., Bernabeu, P., Silva, G., DeLuca, V., Poch, C.,
+Ivanova, I., &amp; Rothman, J. (2025). Starting from the very beginning:
+Unraveling third language (L3) development with longitudinal data from
+artificial language learning and EEG. <em>International Journal of
+Multilingualism</em>, <em>22</em>(1), 119–142. <a href="https://doi.org/10.1080/14790718.2024.2415993" class="uri">https://doi.org/10.1080/14790718.2024.2415993</a></p>
+<p>Gu, X. S., &amp; Rosenbaum, P. R. (1993). Comparison of multivariate
+matching methods: Structures, distances, and algorithms. <em>Journal of
+Computational and Graphical Statistics</em>, <em>2</em>(4), 405–420. <a href="https://doi.org/10.1080/10618600.1993.10474623" class="uri">https://doi.org/10.1080/10618600.1993.10474623</a></p>
+<p>Hansen, B. B., &amp; Klopfer, S. O. (2006). Optimal full matching and
+related designs via network flows. <em>Journal of Computational and
+Graphical Statistics</em>, <em>15</em>(3), 609–627. <a href="https://doi.org/10.1198/106186006X137047" class="uri">https://doi.org/10.1198/106186006X137047</a></p>
+<p>Keuleers, E., &amp; Brysbaert, M. (2010). Wuggy: A multilingual
+pseudoword generator. <em>Behavior Research Methods</em>,
+<em>42</em>(3), 627–633. <a href="https://doi.org/10.3758/BRM.42.3.627" class="uri">https://doi.org/10.3758/BRM.42.3.627</a></p>
+<p>Kuperman, V. (2015). Virtual experiments in megastudies: A case study
+of language and emotion. <em>Quarterly Journal of Experimental
+Psychology</em>, <em>68</em>(8), 1693–1710. <a href="https://doi.org/10.1080/17470218.2014.989865" class="uri">https://doi.org/10.1080/17470218.2014.989865</a></p>
+<p>Lakens, D. (2017). Equivalence tests: A practical primer for
+<em>t</em> tests, correlations, and meta-analyses. <em>Social
+Psychological and Personality Science</em>, <em>8</em>(4), 355–362. <a href="https://doi.org/10.1177/1948550617697177" class="uri">https://doi.org/10.1177/1948550617697177</a></p>
+<p>Liben-Nowell, D., Strand, J., Sharp, A., Wexler, T., &amp; Woods, K.
+(2019). The danger of testing by selecting controlled subsets, with
+applications to spoken-word recognition. <em>Journal of Cognition</em>,
+<em>2</em>(1), Article 2. <a href="https://doi.org/10.5334/joc.51" class="uri">https://doi.org/10.5334/joc.51</a></p>
+<p>Mathôt, S., Schreij, D., &amp; Theeuwes, J. (2012). OpenSesame: An
+open-source, graphical experiment builder for the social sciences.
+<em>Behavior Research Methods</em>, <em>44</em>(2), 314–324. <a href="https://doi.org/10.3758/s13428-011-0168-7" class="uri">https://doi.org/10.3758/s13428-011-0168-7</a></p>
+<p>Matuschek, H., Kliegl, R., Vasishth, S., Baayen, H., &amp; Bates, D.
+(2017). Balancing Type I error and power in linear mixed models.
+<em>Journal of Memory and Language</em>, <em>94</em>, 305–315. <a href="https://doi.org/10.1016/j.jml.2017.01.001" class="uri">https://doi.org/10.1016/j.jml.2017.01.001</a></p>
+<p>Peirce, J., Gray, J. R., Simpson, S., MacAskill, M., Höchenberger,
+R., Sogo, H., Kastman, E., &amp; Lindeløv, J. K. (2019). PsychoPy2:
+Experiments in behavior made easy. <em>Behavior Research Methods</em>,
+<em>51</em>(1), 195–203. <a href="https://doi.org/10.3758/s13428-018-01193-y" class="uri">https://doi.org/10.3758/s13428-018-01193-y</a></p>
+<p>Roettger, T. B. (2019). Researcher degrees of freedom in phonetic
+research. <em>Laboratory Phonology</em>, <em>10</em>(1), Article 1. <a href="https://doi.org/10.5334/labphon.147" class="uri">https://doi.org/10.5334/labphon.147</a></p>
+<p>Rubin, D. B. (1980). Bias reduction using Mahalanobis-metric
+matching. <em>Biometrics</em>, <em>36</em>(2), 293–298. <a href="https://doi.org/10.2307/2529981" class="uri">https://doi.org/10.2307/2529981</a></p>
+<p>Sassenhagen, J., &amp; Alday, P. M. (2016). A common misapplication
+of statistical inference: Nuisance control with null-hypothesis
+significance tests. <em>Brain and Language</em>, <em>162</em>, 42–45. <a href="https://doi.org/10.1016/j.bandl.2016.08.001" class="uri">https://doi.org/10.1016/j.bandl.2016.08.001</a></p>
+<p>Simmons, J. P., Nelson, L. D., &amp; Simonsohn, U. (2011).
+False-positive psychology: Undisclosed flexibility in data collection
+and analysis allows presenting anything as significant.
+<em>Psychological Science</em>, <em>22</em>(11), 1359–1366. <a href="https://doi.org/10.1177/0956797611417632" class="uri">https://doi.org/10.1177/0956797611417632</a></p>
+<p>Stuart, E. A. (2010). Matching methods for causal inference: A review
+and a look forward. <em>Statistical Science</em>, <em>25</em>(1), 1–21.
+<a href="https://doi.org/10.1214/09-STS313" class="uri">https://doi.org/10.1214/09-STS313</a></p>
+<p>van Heuven, W. J. B., Mandera, P., Keuleers, E., &amp; Brysbaert, M.
+(2014). SUBTLEX-UK: A new and improved word frequency database for
+British English. <em>Quarterly Journal of Experimental Psychology</em>,
+<em>67</em>(6), 1176–1190. <a href="https://doi.org/10.1080/17470218.2013.850521" class="uri">https://doi.org/10.1080/17470218.2013.850521</a></p>
+<p>Wilkinson, M. D., Dumontier, M., Aalbersberg, IJ. J., Appleton, G.,
+Axton, M., Baak, A., Blomberg, N., Boiten, J.-W., da Silva Santos, L.
+B., Bourne, P. E., Bouwman, J., Brookes, A. J., Clark, T., Crosas, M.,
+Dillo, I., Dumon, O., Edmunds, S., Evelo, C. T., Finkers, R., … Mons, B.
+(2016). The FAIR Guiding Principles for scientific data management and
+stewardship. <em>Scientific Data</em>, <em>3</em>, Article 160018. <a href="https://doi.org/10.1038/sdata.2016.18" class="uri">https://doi.org/10.1038/sdata.2016.18</a></p>
+<p>Yarkoni, T. (2022). The generalizability crisis. <em>Behavioral and
+Brain Sciences</em>, <em>45</em>, Article e1. <a href="https://doi.org/10.1017/S0140525X20001685" class="uri">https://doi.org/10.1017/S0140525X20001685</a></p>
+<p>Yarkoni, T., Balota, D., &amp; Yap, M. (2008). Moving beyond
+Coltheart’s N: A new measure of orthographic similarity. <em>Psychonomic
+Bulletin &amp; Review</em>, <em>15</em>(5), 971–979. <a href="https://doi.org/10.3758/PBR.15.5.971" class="uri">https://doi.org/10.3758/PBR.15.5.971</a></p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

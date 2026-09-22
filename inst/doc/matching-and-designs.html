@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Matching, dimensions and designs</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Matching, dimensions and designs</h1>
+
+
+
+<p>Choosing stimuli is a constrained selection problem. One lexical
+property is manipulated, several others must not vary with it, and the
+words that satisfy every constraint at once are a small and awkward
+subset of the language. This vignette covers how <code>lexsync</code>
+states those constraints and how it resolves them: the dimensions it
+computes, the filters that narrow a lexicon to a candidate pool, the
+four matching methods and the situations each one suits, the tolerance
+windows that bound an acceptable match, the continuous alternative to a
+matched dichotomy, and the report that tells you what control the
+selection actually achieved.</p>
+<p>Everything below runs on the English example lexicon bundled with the
+package, a 3000-word slice that needs no download.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(lexsync)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>schema <span class="ot">&lt;-</span> yaml<span class="sc">::</span><span class="fu">read_yaml</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;schema.yaml&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lexsync&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>lex <span class="ot">&lt;-</span> <span class="fu">load_lexicon</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;en_example.csv&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lexsync&quot;</span>),</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  schema, <span class="at">language =</span> <span class="st">&quot;english&quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>)</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="fu">head</span>(</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>  lex[, <span class="fu">c</span>(<span class="st">&quot;word&quot;</span>, <span class="st">&quot;frequency&quot;</span>, <span class="st">&quot;length&quot;</span>, <span class="st">&quot;n_syllables&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span>)],</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  <span class="dv">4</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>   word frequency length n_syllables n_density old20
+1   aaa      3.77      3           1        19   1.0
+2   aac      3.00      3           1        22   1.0
+3   aap      3.47      3           1        21   1.0
+4 aaron      4.23      5           2         3   1.8</code></pre>
+<div id="the-lexical-dimensions" class="section level2">
+<h2>The lexical dimensions</h2>
+<p>A dimension is any numeric column the matcher can equate.
+<code>lexsync</code> distinguishes those read straight from the lexicon
+file from those computed from the orthographic form at load time, and
+the schema records the distinction along with each dimension’s unit.
+Units matter when reading a report: a raw difference of 1 means one
+letter on <code>length</code> but a factor of ten in corpus occurrence
+on <code>frequency</code>, which is why the comparisons are
+standardised.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>dims <span class="ot">&lt;-</span> schema<span class="sc">$</span>dimensions</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">data.frame</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">dimension =</span> <span class="fu">names</span>(dims),</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">vapply</span>(dims, <span class="cf">function</span>(d) d<span class="sc">$</span>type, <span class="fu">character</span>(<span class="dv">1</span>)),</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="at">unit =</span> <span class="fu">vapply</span>(dims, <span class="cf">function</span>(d) d<span class="sc">$</span>unit, <span class="fu">character</span>(<span class="dv">1</span>)),</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">NULL</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>), <span class="at">caption =</span> <span class="st">&quot;The dimensions declared in schema.yaml&quot;</span>)</span></code></pre></div>
+<table>
+<caption>The dimensions declared in schema.yaml</caption>
+<colgroup>
+<col width="16%" />
+<col width="10%" />
+<col width="72%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">dimension</th>
+<th align="left">type</th>
+<th align="left">unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">length</td>
+<td align="left">derived</td>
+<td align="left">characters</td>
+</tr>
+<tr class="even">
+<td align="left">frequency</td>
+<td align="left">column</td>
+<td align="left">Zipf</td>
+</tr>
+<tr class="odd">
+<td align="left">n_density</td>
+<td align="left">derived</td>
+<td align="left">neighbours</td>
+</tr>
+<tr class="even">
+<td align="left">old20</td>
+<td align="left">derived</td>
+<td align="left">mean Levenshtein distance</td>
+</tr>
+<tr class="odd">
+<td align="left">n_syllables</td>
+<td align="left">derived</td>
+<td align="left">syllables (orthographic estimate)</td>
+</tr>
+<tr class="even">
+<td align="left">bigram_freq</td>
+<td align="left">derived</td>
+<td align="left">mean bigram probability (type-based,
+non-positional)</td>
+</tr>
+</tbody>
+</table>
+<p><code>length</code> is the character count of the orthographic form.
+<code>frequency</code> is the Zipf value read from the lexicon’s
+<code>freq_zipf</code> column, a log-scaled measure on which roughly 1
+is a word occurring once per hundred million tokens and 7 a word
+occurring ten thousand times per million. The value is the base-10
+logarithm of the frequency per billion words (van Heuven et al., 2014).
+It is preferred to raw counts because it is linear in the log space in
+which frequency effects are approximately linear, and because it is
+comparable across corpora of different sizes. <code>n_density</code> is
+Coltheart’s N, the count of same-length words differing by one letter
+substitution (Coltheart et al., 1977). <code>old20</code> is the mean
+Levenshtein distance to the twenty nearest words in the reference set,
+which unlike Coltheart’s N is defined for long words, where substitution
+neighbours run out (Yarkoni et al., 2008). A larger OLD20 means a more
+isolated word, so it runs in the opposite direction to
+<code>n_density</code>.</p>
+<p><code>n_syllables</code> also arrives at load time, counting maximal
+runs of vowels, an orthographic estimate with no pronunciation model
+behind it. Only <code>bigram_freq</code> is computed on request, by
+<code>add_bigram_frequency()</code>: it is the mean corpus probability
+of a word’s adjacent letter bigrams, standing proxy for phonotactic
+probability.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">count_syllables</span>(<span class="fu">c</span>(<span class="st">&quot;cat&quot;</span>, <span class="st">&quot;table&quot;</span>, <span class="st">&quot;rhythm&quot;</span>, <span class="st">&quot;being&quot;</span>, <span class="st">&quot;chocolate&quot;</span>))</span></code></pre></div>
+<pre><code>[1] 1 2 1 1 4</code></pre>
+<p>The estimate is worth its caveat, and the errors run in both
+directions. It handles <code>rhythm</code> because <code>y</code> is
+treated as a vowel letter. It undercounts <code>being</code>, whose
+<code>ei</code> is one run of vowel letters spanning two nuclei, and it
+overcounts <code>chocolate</code>, whose silent final <code>e</code>
+forms a run of its own. The measure is adequate for equating two
+conditions on gross syllabic complexity and it is not a substitute for a
+pronunciation dictionary.</p>
+<div id="computing-dimensions-on-a-pool" class="section level3">
+<h3>Computing dimensions on a pool</h3>
+<p>The bundled lexicon arrives with <code>n_density</code> and
+<code>old20</code> already present, but neighbourhood measures depend on
+the reference set they are computed against, so a lexicon derived
+elsewhere may need them recomputed. <code>add_neighbourhood()</code>
+does that. Both measures are quadratic in the size of the reference set,
+which is why the pipeline computes them on the pool alone, and why the
+reference should still be the whole lexicon: a word’s neighbours are its
+neighbours in the language, not among the handful of words that survived
+your filters.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>sample_words <span class="ot">&lt;-</span> lex[lex<span class="sc">$</span>word <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;cat&quot;</span>, <span class="st">&quot;dog&quot;</span>, <span class="st">&quot;house&quot;</span>, <span class="st">&quot;rhythm&quot;</span>), ]</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">add_neighbourhood</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  sample_words, <span class="at">reference =</span> lex<span class="sc">$</span>word</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>)[, <span class="fu">c</span>(<span class="st">&quot;word&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span>)]</span></code></pre></div>
+<pre><code>      word n_density old20
+1287 house         0  2.55</code></pre>
+<p><code>add_bigram_frequency()</code> works the same way, and
+<code>merge_norms()</code> joins any word-keyed norm table, which is how
+dimensions the corpus does not carry (concreteness, age of acquisition,
+behavioural measures from a megastudy) become matchable. Once a column
+is present, the matcher treats it like any other.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>aoa <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">word =</span> <span class="fu">c</span>(<span class="st">&quot;cat&quot;</span>, <span class="st">&quot;dog&quot;</span>, <span class="st">&quot;house&quot;</span>), <span class="at">aoa =</span> <span class="fu">c</span>(<span class="fl">3.1</span>, <span class="fl">3.0</span>, <span class="fl">3.4</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>merged <span class="ot">&lt;-</span> <span class="fu">merge_norms</span>(lex, aoa)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>merged[merged<span class="sc">$</span>word <span class="sc">%in%</span> aoa<span class="sc">$</span>word, <span class="fu">c</span>(<span class="st">&quot;word&quot;</span>, <span class="st">&quot;frequency&quot;</span>, <span class="st">&quot;aoa&quot;</span>)]</span></code></pre></div>
+<pre><code>      word frequency aoa
+1287 house      5.71 3.4</code></pre>
+<p>The join is case- and whitespace-insensitive on both sides, keeps the
+lexicon’s own row and column order, and refuses a norm column whose name
+already exists on the lexicon. A silent rename would be the worst
+available outcome: it leaves the dimension the design matches on under a
+name nothing looks for.</p>
+<p>In a design you do not call this yourself. Name the tables in a
+<code>norms:</code> block and the pipeline joins them before the pool is
+built, so a norm column can be filtered on, matched on or spanned like
+any other dimension.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">norms</span><span class="kw">:</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">path</span><span class="kw">:</span><span class="at"> norms/en_concreteness.csv</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="at">    </span><span class="fu">on</span><span class="kw">:</span><span class="at"> word</span><span class="co">                  # optional join key, default &#39;word&#39;</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="at">    </span><span class="fu">columns</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">concreteness</span><span class="kw">]</span><span class="co">   # optional; default every column but the key</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="fu">pool_filters</span><span class="kw">:</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="at">  </span><span class="fu">concreteness</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="fl">2.0</span><span class="kw">,</span><span class="at"> </span><span class="fl">5.0</span><span class="kw">]</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="fu">match_on</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">length</span><span class="kw">,</span><span class="at"> concreteness</span><span class="kw">]</span></span></code></pre></div>
+<p>lexsync ships no norm data: licences vary, and the citation is yours
+to honour. What it does do is record what you joined. Every table
+appears in the materials datasheet with its checksum and its per-column
+coverage, because a norm table can supply the very variable a design
+manipulates, and a selection over columns of unstated origin is not
+reproducible from the record that exists to make it so. Coverage is
+recorded for a related reason: a word the table does not cover gets a
+missing value, and the tolerance windows then drop it from the pool.</p>
+</div>
+</div>
+<div id="pool-filters" class="section level2">
+<h2>Pool filters</h2>
+<p>A pool filter narrows the lexicon before any matching happens. It
+states what counts as an eligible word at all, independently of
+condition, and it is the right place for constraints you would apply to
+every item in the study.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>pool_filters <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">length =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">7</span>), <span class="at">frequency =</span> <span class="fu">c</span>(<span class="fl">3.8</span>, <span class="fl">7.0</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>pool <span class="ot">&lt;-</span> <span class="fu">build_pool</span>(lex, pool_filters)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="fu">c</span>(<span class="at">lexicon =</span> <span class="fu">nrow</span>(lex), <span class="at">pool =</span> <span class="fu">nrow</span>(pool))</span></code></pre></div>
+<pre><code>lexicon    pool 
+   3000     782 </code></pre>
+<p>A numeric pair is read as an inclusive range. Any other vector is
+read as a set of permitted values, so
+<code>list(pos = c(&quot;noun&quot;, &quot;verb&quot;))</code> would keep nouns and verbs if
+the lexicon carried a <code>pos</code> column. A filter naming a column
+the lexicon does not have is skipped silently, which keeps one schema
+usable across corpora that differ in their optional columns, and which
+is worth knowing about when a filter appears not to bite. Rows missing a
+value on a filtered column are always dropped.</p>
+<p>Filtering is a separate step from matching.
+<code>match_stimuli()</code> reads a design’s <code>conditions</code>
+and <code>match_on</code> fields but never its
+<code>pool_filters</code>, so passing a raw lexicon where a pool was
+intended silently widens the selection, with no error to warn you. The
+pipeline calls <code>build_pool()</code> first and the examples here do
+the same.</p>
+</div>
+<div id="supplied-item-pools" class="section level2">
+<h2>Supplied item pools</h2>
+<p>Narrowing a whole lexicon is the right way round when any word of the
+language will do. It is the wrong way round when the candidate set is
+itself a research decision: a list from a previous study, from a norming
+session, or one restricted to a semantic category that no lexical filter
+can express. Such a list used to have to masquerade as a lexicon, which
+meant inventing a <code>freq_zipf</code> column for it, or else skip
+matching entirely by going in as <code>items.source: table</code>.</p>
+<p><code>items.source: pool</code> takes the list as it is.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">items</span><span class="kw">:</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="at">  </span><span class="fu">source</span><span class="kw">:</span><span class="at"> pool</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="at">  </span><span class="fu">path</span><span class="kw">:</span><span class="at"> items/pool_en_concrete_nouns.csv</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="at">  </span><span class="fu">lexicon</span><span class="kw">:</span><span class="at"> corpora/derived/en.csv</span></span></code></pre></div>
+<p>The list needs only a <code>word</code> column. Length and the
+syllable estimate are derived from the form, and
+<code>items.lexicon</code> supplies the rest, frequency above all, by
+lookup. A word the lexicon does not have raises a hard error, because
+the tolerance windows drop rows with missing values silently and the
+pool would then be smaller than it appears to be.</p>
+<p>One subtlety would quietly invalidate the controls if it went the
+other way. <code>n_density</code> and <code>old20</code> are properties
+of a word in its <em>language</em>, not among the 131 words of a
+supplied list, so they are computed against the lexicon’s words. A
+supplied pool with no lexicon falls back to itself, which is why one is
+given above. <code>load_pool()</code> returns both parts of that, the
+pool and the reference word list, if you call it directly outside a
+design.</p>
+<p>Everything downstream is unchanged: the same conditions, the same
+<code>match_on</code>, the same report, the same datasheet. What differs
+is only where the candidates came from, and the datasheet records the
+list’s checksum so that stays answerable later.
+<code>design_en_supplied_pool.yaml</code> is a worked example.</p>
+</div>
+<div id="relational-designs-where-the-item-is-a-pair" class="section level2">
+<h2>Relational designs, where the item is a pair</h2>
+<p>A priming study’s theoretical variable is a property of the
+<em>pair</em>, such as distributional similarity or associative
+strength, while its nuisance variables are properties of each
+<em>member</em>: frequency, length, neighbourhood. A design could
+previously have matching, or its own item table, but not both, so a
+relational design had to be assembled by hand.</p>
+<p><code>items.members</code> promotes an ordinary item table to a
+pair-keyed one.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">items</span><span class="kw">:</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="at">  </span><span class="fu">source</span><span class="kw">:</span><span class="at"> table</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="at">  </span><span class="fu">path</span><span class="kw">:</span><span class="at"> items/priming_pairs_en.csv</span></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="at">  </span><span class="fu">members</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">prime</span><span class="kw">,</span><span class="at"> target</span><span class="kw">]</span><span class="co">          # the two word fields</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="at">  </span><span class="fu">lexicon</span><span class="kw">:</span><span class="at"> corpora/derived/en.csv</span><span class="co">   # where each member&#39;s norms are looked up</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="at">  </span><span class="fu">anchor_condition</span><span class="kw">:</span><span class="at"> related</span><span class="co">         # whose row represents the pair during selection</span></span></code></pre></div>
+<p>Each member’s word-level norms are joined from the lexicon and
+prefixed, giving <code>prime.frequency</code>,
+<code>target.length</code> and so on. The member name leads and the
+dimension follows, for a reason specific to R:
+<code>prime.frequency</code> is safe because <code>df$prime</code> still
+exact-matches the bare <code>prime</code> column, whereas
+<code>frequency.prime</code> would be a partial-matching hazard. Those
+prefixed names are usable wherever a dimension is: in
+<code>pool_filters</code>, in <code>match_on</code>, as a
+<code>continuous</code> predictor or as a control.</p>
+<p><code>pair.lev</code> is the Levenshtein distance between the two
+members and <code>pair.overlap</code> is
+<code>1 - pair.lev / length of the longer form</code>, a normalised
+orthographic similarity. It scores edit operations, so it is not a count
+of shared material: <code>abc</code> and <code>cba</code> share every
+letter but score 0.33. Orthographic overlap is the standard confound
+control in a priming design, since a related pair that also shares
+letters confounds semantic relatedness with orthographic similarity. The
+pipeline adds both automatically when the two members are named
+<code>prime</code> and <code>target</code>. Under any other member
+names, call <code>add_pair_overlap()</code> on the item table yourself.
+A predictor that cannot be computed from the forms alone, such as cosine
+similarity or forward associative strength, arrives as an extra column
+on the item table and is used like any other.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">n_per_condition</span><span class="kw">:</span><span class="at"> </span><span class="dv">8</span><span class="co">                  # counts PAIRS: 8 pairs, 16 rows, 8 per list</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="fu">pool_filters</span><span class="kw">:</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="at">  </span><span class="fu">target.length</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="dv">3</span><span class="kw">,</span><span class="at"> </span><span class="dv">7</span><span class="kw">]</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="at">  </span><span class="fu">target.frequency</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="fl">3.0</span><span class="kw">,</span><span class="at"> </span><span class="fl">6.0</span><span class="kw">]</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="fu">continuous</span><span class="kw">:</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="at">  </span><span class="fu">predictor</span><span class="kw">:</span><span class="at"> target.frequency</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="at">  </span><span class="fu">controls</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">target.length</span><span class="kw">,</span><span class="at"> pair.overlap</span><span class="kw">]</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="fu">match_on</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">target.length</span><span class="kw">,</span><span class="at"> pair.overlap</span><span class="kw">]</span></span></code></pre></div>
+<p>Two rules follow from the item being a pair. A filter applies to a
+pair only if <em>every</em> one of its rows passes, and selection runs
+over one row per pair, the <code>anchor_condition</code>, defaulting to
+the byte-first condition, with the result re-expanded afterwards so
+every condition row of every chosen pair survives. Neither is an
+optimisation. A filter on <code>prime.frequency</code> applied row by
+row would keep a pair’s related row and drop its unrelated one, leaving
+a set the Latin-square counterbalancer cannot complete. Only a dimension
+that varies within the pair can split it that way, which the prime-level
+and pair-level ones do and the target-level ones do not, since the
+target is the same word in both rows.</p>
+<p>A member name may not be one of <code>word</code>, <code>id</code>,
+<code>set</code>, <code>list</code>, <code>trial</code>,
+<code>condition</code>, <code>replicate</code> or <code>item</code>,
+which the engines read directly, and a design using one is refused. The
+datasheet gains a <code>relational</code> block recording the members,
+the pair count, the member lexicon and its checksum, and the
+member-level dimensions separately from the relational ones.
+<code>design_en_priming_continuous.yaml</code> is the worked example,
+and its own comments go further into why each rule is there.</p>
+</div>
+<div id="conditions-the-anchor-and-matched-sets" class="section level2">
+<h2>Conditions, the anchor and matched sets</h2>
+<p>A condition is a named region of the pool, given by
+<code>define_by</code>, which is read exactly as
+<code>pool_filters</code> is. The first condition listed is the anchor.
+Its items are chosen by an even spread across the sorted candidate
+subpool, so the anchor covers the whole of its region on the manipulated
+dimension and does not cluster at one end. Every later condition is then
+matched to the anchor item by item, and the <code>set</code> column
+records the pairing.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>design <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;vignette_matching&quot;</span>, <span class="at">language =</span> <span class="st">&quot;english&quot;</span>, <span class="at">n_per_condition =</span> <span class="dv">20</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>  <span class="at">pool_filters =</span> pool_filters,</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>  <span class="at">conditions =</span> <span class="fu">list</span>(</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">name =</span> <span class="st">&quot;high&quot;</span>, <span class="at">define_by =</span> <span class="fu">list</span>(<span class="at">frequency =</span> <span class="fu">c</span>(<span class="fl">5.2</span>, <span class="fl">7.0</span>))),</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">name =</span> <span class="st">&quot;low&quot;</span>,  <span class="at">define_by =</span> <span class="fu">list</span>(<span class="at">frequency =</span> <span class="fu">c</span>(<span class="fl">3.8</span>, <span class="fl">4.4</span>)))</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>  ),</span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>  <span class="at">match_on =</span> <span class="fu">list</span>(<span class="st">&quot;length&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>)</span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a>stim <span class="ot">&lt;-</span> <span class="fu">match_stimuli</span>(pool, design, schema)</span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="fu">head</span>(</span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a>  stim[</span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a>    stim<span class="sc">$</span>set <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,</span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a>    <span class="fu">c</span>(<span class="st">&quot;set&quot;</span>, <span class="st">&quot;condition&quot;</span>, <span class="st">&quot;word&quot;</span>, <span class="st">&quot;frequency&quot;</span>, <span class="st">&quot;length&quot;</span>, <span class="st">&quot;old20&quot;</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a>  ],</span>
+<span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a>  <span class="dv">6</span></span>
+<span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>   set condition    word frequency length old20
+1    1      high    knew      5.20      4  1.75
+2    2      high  energy      5.23      6  2.60
+3    3      high running      5.23      7  1.80
+21   1       low    myth      4.08      4  1.75
+22   2       low  arctic      4.03      6  2.40
+23   3       low blowing      4.20      7  1.80</code></pre>
+<p>Because the anchor is spread across its own subpool, the order of the
+conditions is a design decision with consequences. The anchor’s
+distribution on the manipulated dimension is inherited from the pool,
+and every other condition’s distribution is whatever matching to that
+anchor produces.</p>
+</div>
+<div id="the-four-matching-methods" class="section level2">
+<h2>The four matching methods</h2>
+<p>The method is set with <code>matching.method</code> in a design, or
+left to the schema default. All four minimise a distance in standardised
+space, computed by z-scoring each <code>match_on</code> dimension
+against the whole pool, so that a letter and a Zipf unit become
+comparable. They differ in what they minimise it over.</p>
+<p><code>standardised_euclidean</code>, the default, walks the anchor
+items in order and gives each one its nearest unused counterpart,
+greedily. Because the anchor is selected before any matching happens, it
+preserves the anchor’s even spread exactly. Being anchored, it
+generalises past two conditions, as <code>mahalanobis</code> does, while
+<code>joint</code> and <code>optimal</code> score cross-condition pairs
+and are refused with any number of conditions but two.</p>
+<p><code>joint</code> abandons the anchor. It scores every
+cross-condition pair, then takes the best-matched pairs in ascending
+order of distance until it has enough, so an item with no good
+counterpart is simply never selected. This equates the controls more
+tightly than per-anchor matching when the manipulation is confounded
+with a control, and the price is that the manipulated dimension’s
+realised distribution is no longer under your control. It requires
+exactly two conditions.</p>
+<p><code>mahalanobis</code> replaces the Euclidean metric with one
+weighted by the inverse of the pool’s correlation matrix, so that
+dimensions sharing variance are not counted twice. It suits the case
+where the matched dimensions are strongly intercorrelated, which is the
+normal case for orthographic measures.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cor</span>(pool[, <span class="fu">c</span>(<span class="st">&quot;length&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span>)]), <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>          length n_density old20
+length      1.00     -0.69  0.76
+n_density  -0.69      1.00 -0.73
+old20       0.76     -0.73  1.00</code></pre>
+<p>Length, neighbourhood density and OLD20 are far from independent
+here. Under a plain Euclidean metric, matching on all three counts the
+shared length-neighbourhood variance three times over and lets an
+independent dimension drift. Mahalanobis distance discounts that overlap
+(Rubin, 1980; Stuart, 2010).</p>
+<p><code>optimal</code> keeps the Euclidean metric but solves the
+pairing globally, minimising the summed distance over all pairings at
+once (Gu &amp; Rosenbaum, 1993; Hansen &amp; Klopfer, 2006). Greedy
+matching can spend the one good counterpart of a hard item on an easy
+item that had alternatives. Optimal matching cannot. It requires exactly
+two conditions and the <code>clue</code> package.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>methods <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;standardised_euclidean&quot;</span>, <span class="st">&quot;joint&quot;</span>, <span class="st">&quot;mahalanobis&quot;</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">requireNamespace</span>(<span class="st">&quot;clue&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) methods <span class="ot">&lt;-</span> <span class="fu">c</span>(methods, <span class="st">&quot;optimal&quot;</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>summarise_method <span class="ot">&lt;-</span> <span class="cf">function</span>(method) {</span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>  d <span class="ot">&lt;-</span> design</span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>  d<span class="sc">$</span>matching <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">method =</span> method)</span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">match_stimuli</span>(pool, d, schema)</span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a>  cmp <span class="ot">&lt;-</span> <span class="fu">match_report</span>(</span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>    s, <span class="fu">c</span>(<span class="st">&quot;frequency&quot;</span>, <span class="st">&quot;length&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span>), schema</span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a>  )<span class="sc">$</span>comparisons</span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a>  controls <span class="ot">&lt;-</span> cmp[cmp<span class="sc">$</span>dimension <span class="sc">!=</span> <span class="st">&quot;frequency&quot;</span>, ]</span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a>  high <span class="ot">&lt;-</span> s<span class="sc">$</span>frequency[s<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">&quot;high&quot;</span>]</span>
+<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a>  low  <span class="ot">&lt;-</span> s<span class="sc">$</span>frequency[s<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">&quot;low&quot;</span>]</span>
+<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb20-15"><a href="#cb20-15" tabindex="-1"></a>    <span class="at">method =</span> method,</span>
+<span id="cb20-16"><a href="#cb20-16" tabindex="-1"></a>    <span class="at">worst_control_d =</span> <span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(controls<span class="sc">$</span>cohens_d)), <span class="dv">3</span>),</span>
+<span id="cb20-17"><a href="#cb20-17" tabindex="-1"></a>    <span class="at">freq_d =</span> <span class="fu">round</span>(cmp<span class="sc">$</span>cohens_d[cmp<span class="sc">$</span>dimension <span class="sc">==</span> <span class="st">&quot;frequency&quot;</span>], <span class="dv">2</span>),</span>
+<span id="cb20-18"><a href="#cb20-18" tabindex="-1"></a>    <span class="at">freq_raw_diff =</span> <span class="fu">round</span>(<span class="fu">mean</span>(high) <span class="sc">-</span> <span class="fu">mean</span>(low), <span class="dv">2</span>),</span>
+<span id="cb20-19"><a href="#cb20-19" tabindex="-1"></a>    <span class="at">freq_sd_high =</span> <span class="fu">round</span>(<span class="fu">sd</span>(high), <span class="dv">2</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" tabindex="-1"></a>  )</span>
+<span id="cb20-21"><a href="#cb20-21" tabindex="-1"></a>}</span>
+<span id="cb20-22"><a href="#cb20-22" tabindex="-1"></a><span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(methods, summarise_method))</span></code></pre></div>
+<pre><code>                  method worst_control_d freq_d freq_raw_diff freq_sd_high
+1 standardised_euclidean           0.038   5.12          1.51         0.39
+2                  joint           0.000   6.94          1.40         0.23
+3            mahalanobis           0.052   5.07          1.49         0.39
+4                optimal           0.000   6.94          1.40         0.23</code></pre>
+<p>The comparison rewards a careful reading, and it is a good
+illustration of why a standardised difference should not be read as an
+effect size on its own. The two globally pairing methods drive the
+control differences to zero, because a free choice over all pairs can
+find counterparts that match exactly on all three dimensions. Their
+standardised frequency separation is also the larger of the four, yet
+their raw separation in Zipf units is the smaller. Both facts have one
+cause: those methods take whichever pairs match best, and those pairs
+turn out to cluster, which shrinks the SD of the high condition and so
+shrinks the pooled SD that <code>freq_d</code> divides by. A narrower
+manipulation can raise <code>d</code>.</p>
+<p>Whether that is a gain depends on the study. The anchor methods keep
+the high condition spread across its whole band by construction, which
+supports a claim about the band rather than about a cluster inside it,
+and it is variance you may want if the manipulation is later modelled as
+continuous. The globally pairing methods trade some of that spread for
+exact control of the nuisance dimensions. These numbers describe this
+pool and this design. The point is how to make the comparison, not which
+method wins.</p>
+<div id="the-parity-caveat-on-two-methods" class="section level3">
+<h3>The parity caveat on two methods</h3>
+<p>The R and Python engines select byte-identical stimuli under
+<code>standardised_euclidean</code> and <code>joint</code>. They do not
+guarantee it under <code>mahalanobis</code> or <code>optimal</code>.
+Both of the latter route the distance through an operation whose last
+bits are decided by the platform’s linear-algebra implementation, a
+covariance-matrix inverse in one case and an assignment solver in the
+other, and once two candidate distances differ in their final bits the
+tie-break that would otherwise make the engines agree never fires.
+<code>mahalanobis</code> usually still agrees exactly, and
+<code>optimal</code> often selects an equally-optimal but different set.
+Each run’s datasheet records which case applies, under
+<code>selection.cross_engine</code>. If cross-engine reproducibility is
+a requirement of your project, the two default methods are the ones that
+carry the guarantee. The reproducibility vignette sets out why the
+exception cannot simply be engineered away.</p>
+</div>
+</div>
+<div id="tolerance-windows" class="section level2">
+<h2>Tolerance windows</h2>
+<p>Matching by distance alone will always return the nearest available
+candidate, however far away it is. The tolerance window is the guard
+against that. Before the distance ranking, each later condition’s
+candidates are filtered to those lying within the anchor’s mean plus or
+minus <em>k</em> standard deviations on every matched dimension, with
+<em>k</em> set per dimension.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">str</span>(schema<span class="sc">$</span>matching<span class="sc">$</span>tolerance_k)</span></code></pre></div>
+<pre><code>List of 4
+ $ length   : num 2
+ $ frequency: num 1
+ $ n_density: num 2
+ $ old20    : num 2</code></pre>
+<p>Smaller <em>k</em> is stricter. The default of 2.0 on the
+orthographic dimensions is permissive, admitting most of a normal
+distribution, and it is meant as a backstop against a wild counterpart.
+The distance ranking within the window is what does the work of control.
+A design tightens the window per dimension, and only the named
+dimensions are overridden.</p>
+<p>The window belongs to the anchored path, so it is what
+<code>standardised_euclidean</code> and <code>mahalanobis</code> apply.
+<code>joint</code> and <code>optimal</code> score cross-condition pairs
+directly and never read <code>tolerance_k</code> at all, which is worth
+knowing before tightening a window and finding the selection
+unmoved.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>tight <span class="ot">&lt;-</span> design</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>tight<span class="sc">$</span>matching <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">tolerance_k =</span> <span class="fu">list</span>(<span class="at">old20 =</span> <span class="fl">0.25</span>))</span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>tight_stim <span class="ot">&lt;-</span> <span class="fu">match_stimuli</span>(pool, tight, schema, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">match_report</span>(tight_stim, <span class="st">&quot;old20&quot;</span>, schema)<span class="sc">$</span>comparisons<span class="sc">$</span>cohens_d, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>[1] -0.066</code></pre>
+<p>There is a behaviour here that will bite you if you do not know it.
+If a window leaves a condition with fewer candidates than there are
+anchor items, the matcher neither fails nor returns a short set. It
+relaxes that condition’s window and carries on. Tightening the window
+past what the pool can supply therefore looks exactly like a window that
+was never set, and under the default policy <code>verbose = TRUE</code>
+is the only thing that tells you which happened.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>too_tight <span class="ot">&lt;-</span> design</span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>too_tight<span class="sc">$</span>matching <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">tolerance_k =</span> <span class="fu">list</span>(<span class="at">old20 =</span> <span class="fl">0.05</span>))</span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>relaxed_stim <span class="ot">&lt;-</span> <span class="fu">match_stimuli</span>(pool, too_tight, schema, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>lexsync: condition &#39;low&#39; has 0 candidates within tolerance (&lt; 20 needed); relaxing the window.</code></pre>
+<p>Two details of the relaxation matter. It is per condition and it is
+all-or-nothing: the fallback drops that condition’s windows on
+<em>every</em> matched dimension at once, not merely the one that proved
+unsatisfiable, so an over-tightened <code>old20</code> also discards the
+<code>length</code> and <code>n_density</code> windows for that
+condition. And it does not degrade the match as much as you might fear,
+because the distance ranking still runs over the whole subpool and still
+prefers near counterparts. Only when the relaxed subpool is still too
+small does the matcher stop, with an error naming the condition and the
+counts.</p>
+<p>Both behaviours are policies, and the schema’s <code>matching</code>
+block names them. <code>on_insufficient_tolerance</code> governs the
+fallback just described. Its default of <code>relax</code> keeps the
+behaviour above, while <code>error</code> makes the matcher refuse and
+say so, which is the honest setting when the window is itself the
+criterion, as it is when reproducing a published study’s stated windows.
+<code>shortfall</code> governs what happens when fewer sets than
+<code>n_per_condition</code> can be selected at all, and it defaults to
+<code>error</code> deliberately: the datasheet and the generated methods
+paragraph state the requested n, so a set that silently shrank would
+leave the record misstating the materials. A design that can live with
+fewer sets says so with <code>shortfall: allow</code>, and either key
+may be overridden under the design’s own <code>matching:</code> block,
+exactly as <code>tolerance_k</code> was overridden above.</p>
+<p>Windows are the place to reproduce a published study’s stated
+criteria. The bundled <code>design_es_gender_repro.yaml</code> sets
+<code>frequency</code> to <code>0.111...</code>, which is the mean plus
+or minus SD/9 used by González Alonso et al. (2025), alongside
+<code>length</code> at the mean plus or minus 2 SD.</p>
+<p>One asymmetry is worth knowing. Tolerance windows are derived from
+the anchor, so they apply to the anchor-based methods,
+<code>standardised_euclidean</code> and <code>mahalanobis</code>, and to
+continuous designs. <code>joint</code> and <code>optimal</code> never
+build an anchor and never consult <code>tolerance_k</code>. Both instead
+cap each subpool to the 1200 candidates nearest the other condition’s
+centroid before pairing, which bounds the cost of scoring every
+pair.</p>
+</div>
+<div id="continuous-designs" class="section level2">
+<h2>Continuous designs</h2>
+<p>A matched dichotomy is not the only way to study a graded property,
+and for a property like frequency it is often not the best one.
+Splitting a continuum into a high and a low band discards the variation
+within each band, spends statistical power to do it, and leaves the
+estimate dependent on where the split was placed. The selection can also
+manufacture its own artefacts: Liben-Nowell et al. (2019) show that
+choosing a controlled subset from a large candidate set can produce an
+apparent effect from a set where none exists, because the selection is
+itself a search over the space of possible item sets. Kuperman (2015)
+makes the constructive case, that a megastudy’s variation can be used
+directly by sampling across a predictor’s range and modelling it.</p>
+<p>A <code>continuous</code> block does that. Rather than conditions, it
+names one predictor to span and the controls to hold still, and the two
+must agree with <code>match_on</code>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>cont_design <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;vignette_continuous&quot;</span>, <span class="at">language =</span> <span class="st">&quot;english&quot;</span>, <span class="at">n_per_condition =</span> <span class="dv">60</span>,</span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>  <span class="at">pool_filters =</span> pool_filters,</span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a>  <span class="at">continuous =</span> <span class="fu">list</span>(</span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a>    <span class="at">predictor =</span> <span class="st">&quot;frequency&quot;</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a>    <span class="at">controls =</span> <span class="fu">c</span>(<span class="st">&quot;length&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a>  ),</span>
+<span id="cb28-8"><a href="#cb28-8" tabindex="-1"></a>  <span class="at">match_on =</span> <span class="fu">list</span>(<span class="st">&quot;length&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span>),</span>
+<span id="cb28-9"><a href="#cb28-9" tabindex="-1"></a>  <span class="at">matching =</span> <span class="fu">list</span>(</span>
+<span id="cb28-10"><a href="#cb28-10" tabindex="-1"></a>    <span class="at">tolerance_k =</span> <span class="fu">list</span>(<span class="at">length =</span> <span class="fl">1.5</span>, <span class="at">n_density =</span> <span class="fl">1.5</span>, <span class="at">old20 =</span> <span class="fl">1.5</span>)</span>
+<span id="cb28-11"><a href="#cb28-11" tabindex="-1"></a>  )</span>
+<span id="cb28-12"><a href="#cb28-12" tabindex="-1"></a>)</span>
+<span id="cb28-13"><a href="#cb28-13" tabindex="-1"></a>cont <span class="ot">&lt;-</span> <span class="fu">select_continuous_stimuli</span>(pool, cont_design, schema)</span>
+<span id="cb28-14"><a href="#cb28-14" tabindex="-1"></a><span class="fu">nrow</span>(cont)</span></code></pre></div>
+<pre><code>[1] 60</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="fu">range</span>(cont<span class="sc">$</span>frequency)</span></code></pre></div>
+<pre><code>[1] 3.80 6.85</code></pre>
+<p>Selection runs in two passes. An even spread over the pool defines
+the control windows from its own distribution, the pool is filtered to
+those windows, and a second even spread over what survives is the
+selection. The result covers the predictor’s range while the controls
+stay near-constant, and therefore near-uncorrelated with the predictor,
+which is what the regression needs.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>cont_report <span class="ot">&lt;-</span> <span class="fu">match_report_continuous</span>(</span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>  cont, <span class="st">&quot;frequency&quot;</span>,</span>
+<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">&quot;length&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span>), schema</span>
+<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>)</span>
+<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>cont_report<span class="sc">$</span>comparisons</span></code></pre></div>
+<pre><code>  dimension      role pearson_r predictor_span
+1 frequency predictor        NA           3.05
+2    length   control    -0.191           3.05
+3 n_density   control     0.112           3.05
+4     old20   control    -0.228           3.05</code></pre>
+<p>The report is read differently from a matched one.
+<code>predictor_span</code> is the realised range of the predictor in
+the selected set and should be wide, since it is the variation the
+regression has to work with. Each control’s <code>pearson_r</code> is
+its correlation with the predictor and should be near zero, since a
+control that still correlates with the predictor is still a confound.
+Tightening <code>tolerance_k</code> pushes those correlations down at
+the cost of a smaller eligible pool, and that is the dial to turn when a
+control will not come loose.</p>
+<p>The datasheet for a continuous design reports the span, the
+correlations and a suggested regression model in which the controls
+enter as covariates.</p>
+</div>
+<div id="reading-the-validation-output" class="section level2">
+<h2>Reading the validation output</h2>
+<p><code>match_report()</code> returns two data frames. The descriptives
+give per-condition n, mean, SD, minimum, median and maximum for each
+dimension, which is the table that belongs in a paper’s materials
+section.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>report <span class="ot">&lt;-</span> <span class="fu">match_report</span>(</span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a>  stim, <span class="fu">c</span>(<span class="st">&quot;frequency&quot;</span>, <span class="st">&quot;length&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span>), schema</span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a>)</span>
+<span id="cb34-4"><a href="#cb34-4" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb34-5"><a href="#cb34-5" tabindex="-1"></a>  report<span class="sc">$</span>descriptives,</span>
+<span id="cb34-6"><a href="#cb34-6" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">&quot;Descriptive statistics per condition&quot;</span></span>
+<span id="cb34-7"><a href="#cb34-7" tabindex="-1"></a>)</span></code></pre></div>
+<table>
+<caption>Descriptive statistics per condition</caption>
+<thead>
+<tr class="header">
+<th align="left">group</th>
+<th align="left">dimension</th>
+<th align="right">n</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">min</th>
+<th align="right">median</th>
+<th align="right">max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">high</td>
+<td align="left">frequency</td>
+<td align="right">20</td>
+<td align="right">5.573</td>
+<td align="right">0.387</td>
+<td align="right">5.20</td>
+<td align="right">5.480</td>
+<td align="right">6.85</td>
+</tr>
+<tr class="even">
+<td align="left">high</td>
+<td align="left">length</td>
+<td align="right">20</td>
+<td align="right">5.400</td>
+<td align="right">0.995</td>
+<td align="right">4.00</td>
+<td align="right">5.000</td>
+<td align="right">7.00</td>
+</tr>
+<tr class="odd">
+<td align="left">high</td>
+<td align="left">n_density</td>
+<td align="right">20</td>
+<td align="right">2.950</td>
+<td align="right">2.911</td>
+<td align="right">0.00</td>
+<td align="right">2.500</td>
+<td align="right">12.00</td>
+</tr>
+<tr class="even">
+<td align="left">high</td>
+<td align="left">old20</td>
+<td align="right">20</td>
+<td align="right">1.780</td>
+<td align="right">0.318</td>
+<td align="right">1.15</td>
+<td align="right">1.750</td>
+<td align="right">2.60</td>
+</tr>
+<tr class="odd">
+<td align="left">low</td>
+<td align="left">frequency</td>
+<td align="right">20</td>
+<td align="right">4.059</td>
+<td align="right">0.159</td>
+<td align="right">3.85</td>
+<td align="right">4.035</td>
+<td align="right">4.32</td>
+</tr>
+<tr class="even">
+<td align="left">low</td>
+<td align="left">length</td>
+<td align="right">20</td>
+<td align="right">5.400</td>
+<td align="right">0.995</td>
+<td align="right">4.00</td>
+<td align="right">5.000</td>
+<td align="right">7.00</td>
+</tr>
+<tr class="odd">
+<td align="left">low</td>
+<td align="left">n_density</td>
+<td align="right">20</td>
+<td align="right">2.850</td>
+<td align="right">2.323</td>
+<td align="right">0.00</td>
+<td align="right">2.500</td>
+<td align="right">8.00</td>
+</tr>
+<tr class="even">
+<td align="left">low</td>
+<td align="left">old20</td>
+<td align="right">20</td>
+<td align="right">1.773</td>
+<td align="right">0.272</td>
+<td align="right">1.20</td>
+<td align="right">1.750</td>
+<td align="right">2.40</td>
+</tr>
+</tbody>
+</table>
+<p>The comparisons contrast every other condition against the anchor on
+every dimension, and they carry the four statistics that answer whether
+the matching worked.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>  report<span class="sc">$</span>comparisons,</span>
+<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a>  <span class="at">caption =</span> <span class="fu">paste</span>(</span>
+<span id="cb35-4"><a href="#cb35-4" tabindex="-1"></a>    <span class="st">&quot;Realised control: standardised differences with 90% intervals,&quot;</span>,</span>
+<span id="cb35-5"><a href="#cb35-5" tabindex="-1"></a>    <span class="st">&quot;variance ratios and TOST verdicts&quot;</span></span>
+<span id="cb35-6"><a href="#cb35-6" tabindex="-1"></a>  )</span>
+<span id="cb35-7"><a href="#cb35-7" tabindex="-1"></a>)</span></code></pre></div>
+<table>
+<caption>Realised control: standardised differences with 90% intervals,
+variance ratios and TOST verdicts</caption>
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="10%" />
+<col width="10%" />
+<col width="11%" />
+<col width="11%" />
+<col width="8%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">condition</th>
+<th align="left">reference</th>
+<th align="left">dimension</th>
+<th align="right">cohens_d</th>
+<th align="right">d_ci_low</th>
+<th align="right">d_ci_high</th>
+<th align="right">var_ratio</th>
+<th align="right">tost_p</th>
+<th align="left">equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">low</td>
+<td align="left">high</td>
+<td align="left">frequency</td>
+<td align="right">5.119</td>
+<td align="right">4.586</td>
+<td align="right">5.653</td>
+<td align="right">0.168</td>
+<td align="right">1.0000</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="even">
+<td align="left">low</td>
+<td align="left">high</td>
+<td align="left">length</td>
+<td align="right">0.000</td>
+<td align="right">-0.533</td>
+<td align="right">0.533</td>
+<td align="right">1.000</td>
+<td align="right">0.0611</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="odd">
+<td align="left">low</td>
+<td align="left">high</td>
+<td align="left">n_density</td>
+<td align="right">0.038</td>
+<td align="right">-0.495</td>
+<td align="right">0.571</td>
+<td align="right">0.637</td>
+<td align="right">0.0761</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="even">
+<td align="left">low</td>
+<td align="left">high</td>
+<td align="left">old20</td>
+<td align="right">0.025</td>
+<td align="right">-0.508</td>
+<td align="right">0.559</td>
+<td align="right">0.734</td>
+<td align="right">0.0708</td>
+<td align="left">FALSE</td>
+</tr>
+</tbody>
+</table>
+<p><code>cohens_d</code> is the standardised mean difference against the
+anchor, using the pooled SD. On the manipulated dimension it should be
+large and on a controlled dimension it should be near zero.</p>
+<p><code>d_ci_low</code> and <code>d_ci_high</code> bound it with a 90%
+confidence interval. The interval, not the point estimate, is the
+primary summary of a controlled dimension. Its upper limit is the
+largest imbalance still consistent with the stimuli you have, and with
+few items that limit can be substantial even when the point estimate is
+almost zero. Reporting the interval keeps the dependence on set size
+visible, where a bare ‘no significant difference’ hides it. The width is
+a property of the number of items, so a small set cannot demonstrate
+tight control however good its point estimates look (Sassenhagen &amp;
+Alday, 2016).</p>
+<p><code>var_ratio</code> is the condition’s variance over the anchor’s.
+Two conditions can share a mean and still confound if one is far more
+spread out than the other, which every mean-based statistic misses, so
+this is the distributional check. A ratio near 1 is balanced and a
+common heuristic flags ratios outside roughly 0.5 to 2. See
+<code>?variance_ratio</code> for the sources behind that heuristic.</p>
+<p><code>tost_p</code> and <code>equivalent</code> are the two one-sided
+tests. A conventional non-significant difference test is not evidence of
+equivalence, because failing to reject a null is not the same as
+supporting it, and the failure is easiest to achieve with few items and
+noisy measures. TOST inverts this by testing against an explicit bound:
+the reported p is the larger of two one-sided p-values against a
+difference of plus or minus <code>bound_d</code> pooled SDs, and a value
+below alpha supports equivalence within that bound (Lakens, 2017). The
+bound and alpha are the schema’s, so the verdict is only as meaningful
+as the bound you chose.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="fu">str</span>(schema<span class="sc">$</span>equivalence)</span></code></pre></div>
+<pre><code>List of 2
+ $ bound_d: num 0.5
+ $ alpha  : num 0.05</code></pre>
+<p>A bound of 0.5 SD is the schema default and it is a convention rather
+than a finding. It is a permissive bound for a nuisance dimension in a
+design where that dimension has a strong effect on the response, and a
+study that cares about a particular confound should set a bound it can
+defend. The 90% interval is the 1 - 2 x alpha interval precisely so that
+it corresponds to the TOST decision at alpha: the test declares
+equivalence exactly when the interval falls entirely inside the bounds,
+which means the interval and the verdict are two readings of one
+thing.</p>
+<p>The individual statistics are exported and can be called directly on
+any two vectors.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a>high <span class="ot">&lt;-</span> stim<span class="sc">$</span>old20[stim<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">&quot;high&quot;</span>]</span>
+<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a>low  <span class="ot">&lt;-</span> stim<span class="sc">$</span>old20[stim<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">&quot;low&quot;</span>]</span>
+<span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a><span class="fu">str</span>(<span class="fu">cohens_d_ci</span>(high, low))</span></code></pre></div>
+<pre><code>List of 3
+ $ d      : num 0.0254
+ $ ci_low : num -0.508
+ $ ci_high: num 0.559</code></pre>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="fu">str</span>(<span class="fu">tost_equiv</span>(high, low, <span class="at">bound_d =</span> <span class="fl">0.5</span>))</span></code></pre></div>
+<pre><code>List of 2
+ $ p         : num 0.0708
+ $ equivalent: logi FALSE</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">variance_ratio</span>(low, high), <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>[1] 0.734</code></pre>
+<p><code>balance_check()</code> is the last piece and answers a
+different question: whether the levels of a column occur equally often.
+It returns human-readable warnings and an empty vector when all is well,
+and the pipeline logs whatever it returns.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a><span class="fu">balance_check</span>(stim, <span class="st">&quot;condition&quot;</span>)</span></code></pre></div>
+<pre><code>character(0)</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a><span class="fu">balance_check</span>(<span class="fu">rbind</span>(stim, stim[<span class="dv">1</span>, ]), <span class="st">&quot;condition&quot;</span>)</span></code></pre></div>
+<pre><code>[1] &quot;Column &#39;condition&#39; is unbalanced: high=21, low=20&quot;</code></pre>
+</div>
+<div id="pseudowords" class="section level2">
+<h2>Pseudowords</h2>
+<p>Lexical decision needs non-words, and the difficulty is that they
+must be orthographically plausible without being real.
+<code>build_lexdec_stimuli()</code> draws real words by an even spread
+across the byte-ordered pool, then generates a length-matched pseudoword
+for each.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a>lexdec_pool <span class="ot">&lt;-</span> <span class="fu">build_pool</span>(lex, <span class="fu">list</span>(<span class="at">length =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">7</span>), <span class="at">frequency =</span> <span class="fu">c</span>(<span class="fl">3.5</span>, <span class="fl">6.0</span>)))</span>
+<span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a>stim_lexdec <span class="ot">&lt;-</span> <span class="fu">build_lexdec_stimuli</span>(</span>
+<span id="cb48-3"><a href="#cb48-3" tabindex="-1"></a>  lexdec_pool, <span class="at">n =</span> <span class="dv">8</span>, <span class="at">reference_words =</span> lex<span class="sc">$</span>word</span>
+<span id="cb48-4"><a href="#cb48-4" tabindex="-1"></a>)</span>
+<span id="cb48-5"><a href="#cb48-5" tabindex="-1"></a><span class="fu">head</span>(stim_lexdec[, <span class="fu">c</span>(<span class="st">&quot;target&quot;</span>, <span class="st">&quot;condition&quot;</span>, <span class="st">&quot;length&quot;</span>, <span class="st">&quot;set&quot;</span>)], <span class="dv">4</span>)</span></code></pre></div>
+<pre><code>   target condition length set
+1   aaron      word      5   1
+2 carrier      word      7   2
+3 erected      word      7   3
+4   house      word      5   4</code></pre>
+<p>The presented string is <code>target</code>, the conditions are
+<code>word</code> and <code>pseudoword</code>, and <code>set</code>
+pairs each word with its non-word twin. <code>reference_words</code>
+should be the full lexicon: it supplies the bigram statistics and the
+list of real forms a pseudoword must avoid, and it defaults to the pool
+when omitted, which is rarely what you want.</p>
+<p>Two methods are available, chosen per design under
+<code>items.generation.method</code>.</p>
+<p><code>letter_substitution</code>, the default, changes as few letters
+as possible subject to three constraints: every resulting bigram must be
+attested in the corpus, the form must not be a real word or one already
+generated, and the length must be preserved exactly. Single
+substitutions are searched first, then pairs as a fallback. Among the
+legal candidates the most bigram-plausible wins, with a byte-order
+tie-break.</p>
+<p><code>subsyllabic</code> splits each word into onset, nucleus and
+coda constituents and swaps whole constituents for attested alternatives
+of the same role and length, so the pseudowords keep their syllabic
+structure. Codas and nuclei are changed before onsets, which carry the
+most identifying orthography. Roughly two thirds of a word’s
+constituents are targeted, each swap preserves length, and a word with
+no legal swap falls back to letter substitution, so every word yields a
+pseudoword. It is a deterministic orthographic approximation of Wuggy
+(Keuleers &amp; Brysbaert, 2010), trading Wuggy’s phonological model for
+exact length matching and cross-engine reproducibility.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a>sub_stim <span class="ot">&lt;-</span> <span class="fu">build_lexdec_stimuli</span>(</span>
+<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a>  lexdec_pool, <span class="at">n =</span> <span class="dv">8</span>, <span class="at">reference_words =</span> lex<span class="sc">$</span>word, <span class="at">method =</span> <span class="st">&quot;subsyllabic&quot;</span></span>
+<span id="cb50-3"><a href="#cb50-3" tabindex="-1"></a>)</span>
+<span id="cb50-4"><a href="#cb50-4" tabindex="-1"></a><span class="co"># The real words come first in the frame, so pair each with its twin by `set`.</span></span>
+<span id="cb50-5"><a href="#cb50-5" tabindex="-1"></a><span class="fu">merge</span>(</span>
+<span id="cb50-6"><a href="#cb50-6" tabindex="-1"></a>  sub_stim[sub_stim<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">&quot;word&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;set&quot;</span>, <span class="st">&quot;target&quot;</span>)],</span>
+<span id="cb50-7"><a href="#cb50-7" tabindex="-1"></a>  sub_stim[sub_stim<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">&quot;pseudoword&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;set&quot;</span>, <span class="st">&quot;target&quot;</span>)],</span>
+<span id="cb50-8"><a href="#cb50-8" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">&quot;set&quot;</span>, <span class="at">suffixes =</span> <span class="fu">c</span>(<span class="st">&quot;_word&quot;</span>, <span class="st">&quot;_pseudoword&quot;</span>)</span>
+<span id="cb50-9"><a href="#cb50-9" tabindex="-1"></a>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, ]</span></code></pre></div>
+<pre><code>  set target_word target_pseudoword
+1   1       aaron             ierer
+2   2     carrier           cinrees
+3   3     erected           aristar
+4   4       house             reesi</code></pre>
+<p>Both generators process base words in byte order, so the set of
+already-used pseudowords evolves identically in the two engines and both
+select byte-identical stimuli. Both are also orthographic models defined
+for a-z words: <code>build_lexdec_stimuli()</code> filters the pool to
+those, and the subsyllabic segmenter returns nothing for a word with an
+accent, a hyphen or a digit, which sends it down the letter-substitution
+path. That is why lexical decision is demonstrated on the English
+designs and never on the Chinese one.</p>
+<p><code>generate_pseudowords()</code> and
+<code>make_pseudoword()</code> are available directly if you want the
+forms without the lexical-decision scaffolding around them.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a><span class="fu">generate_pseudowords</span>(<span class="fu">c</span>(<span class="st">&quot;house&quot;</span>, <span class="st">&quot;table&quot;</span>), lex<span class="sc">$</span>word)</span></code></pre></div>
+<pre><code>  base_word pseudoword
+1     house      hoese
+2     table      talle</code></pre>
+<p>In a design this is <code>items.source: generate</code>, with the
+method under <code>items.generation.method</code>.
+<code>design_en_lexdec.yaml</code> and
+<code>design_en_lexdec_wuggy.yaml</code> are the worked examples of the
+two methods, and <code>design_en_lexdec_blocks.yaml</code> adds practice
+and filler blocks to the same generated set.</p>
+</div>
+<div id="items-as-a-random-factor" class="section level2">
+<h2>Items as a random factor</h2>
+<p>A matched set is one sample from the language, and an analysis that
+treats its items as fixed generalises to those items rather than to the
+language they were drawn from (Clark, 1973; Yarkoni, 2022). Crossed
+random effects are the standard answer, and the datasheet suggests a
+model that includes them. <code>resample_stimuli()</code> supports the
+stronger move of drawing several fully matched sets that share no items,
+each one an independent sample, which lets a study run different item
+samples across participant groups or show that an effect survives the
+change of materials.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a>reps <span class="ot">&lt;-</span> <span class="fu">resample_stimuli</span>(pool, design, schema, <span class="at">n_sets =</span> <span class="dv">2</span>)</span>
+<span id="cb54-2"><a href="#cb54-2" tabindex="-1"></a><span class="fu">table</span>(reps<span class="sc">$</span>replicate, reps<span class="sc">$</span>condition)</span></code></pre></div>
+<pre><code>   
+    high low
+  1   20  20
+  2   20  20</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">intersect</span>(</span>
+<span id="cb56-2"><a href="#cb56-2" tabindex="-1"></a>  reps<span class="sc">$</span>word[reps<span class="sc">$</span>replicate <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb56-3"><a href="#cb56-3" tabindex="-1"></a>  reps<span class="sc">$</span>word[reps<span class="sc">$</span>replicate <span class="sc">==</span> <span class="dv">2</span>]</span>
+<span id="cb56-4"><a href="#cb56-4" tabindex="-1"></a>))</span></code></pre></div>
+<pre><code>[1] 0</code></pre>
+<p>Each replicate is matched independently against the pool with the
+earlier replicates’ items removed, so the sets are disjoint by
+construction. Later replicates draw from a depleted pool, which means
+match quality can degrade across replicates. The report will show it if
+it does.</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>Clark, H. H. (1973). The language-as-fixed-effect fallacy: A critique
+of language statistics in psychological research. <em>Journal of Verbal
+Learning and Verbal Behavior</em>, <em>12</em>(4), 335–359. <a href="https://doi.org/10.1016/S0022-5371(73)80014-3" class="uri">https://doi.org/10.1016/S0022-5371(73)80014-3</a></p>
+<p>Coltheart, M., Davelaar, E., Jonasson, J. T., &amp; Besner, D.
+(1977). Access to the internal lexicon. In S. Dornic (Ed.),
+<em>Attention and Performance VI</em> (pp. 535–555). Erlbaum.</p>
+<p>González Alonso, J., Bernabeu, P., Silva, G., DeLuca, V., Poch, C.,
+Ivanova, I., &amp; Rothman, J. (2025). Starting from the very beginning:
+Unraveling third language (L3) development with longitudinal data from
+artificial language learning and EEG. <em>International Journal of
+Multilingualism</em>, <em>22</em>(1), 119–142. <a href="https://doi.org/10.1080/14790718.2024.2415993" class="uri">https://doi.org/10.1080/14790718.2024.2415993</a></p>
+<p>Gu, X. S., &amp; Rosenbaum, P. R. (1993). Comparison of multivariate
+matching methods: Structures, distances, and algorithms. <em>Journal of
+Computational and Graphical Statistics</em>, <em>2</em>(4), 405–420. <a href="https://doi.org/10.1080/10618600.1993.10474623" class="uri">https://doi.org/10.1080/10618600.1993.10474623</a></p>
+<p>Hansen, B. B., &amp; Klopfer, S. O. (2006). Optimal full matching and
+related designs via network flows. <em>Journal of Computational and
+Graphical Statistics</em>, <em>15</em>(3), 609–627. <a href="https://doi.org/10.1198/106186006X137047" class="uri">https://doi.org/10.1198/106186006X137047</a></p>
+<p>Keuleers, E., &amp; Brysbaert, M. (2010). Wuggy: A multilingual
+pseudoword generator. <em>Behavior Research Methods</em>,
+<em>42</em>(3), 627–633. <a href="https://doi.org/10.3758/BRM.42.3.627" class="uri">https://doi.org/10.3758/BRM.42.3.627</a></p>
+<p>Kuperman, V. (2015). Virtual experiments in megastudies: A case study
+of language and emotion. <em>Quarterly Journal of Experimental
+Psychology</em>, <em>68</em>(8), 1693–1710. <a href="https://doi.org/10.1080/17470218.2014.989865" class="uri">https://doi.org/10.1080/17470218.2014.989865</a></p>
+<p>Lakens, D. (2017). Equivalence tests: A practical primer for
+<em>t</em> tests, correlations, and meta-analyses. <em>Social
+Psychological and Personality Science</em>, <em>8</em>(4), 355–362. <a href="https://doi.org/10.1177/1948550617697177" class="uri">https://doi.org/10.1177/1948550617697177</a></p>
+<p>Liben-Nowell, D., Strand, J., Sharp, A., Wexler, T., &amp; Woods, K.
+(2019). The danger of testing by selecting controlled subsets, with
+applications to spoken-word recognition. <em>Journal of Cognition</em>,
+<em>2</em>(1), Article 2. <a href="https://doi.org/10.5334/joc.51" class="uri">https://doi.org/10.5334/joc.51</a></p>
+<p>Rubin, D. B. (1980). Bias reduction using Mahalanobis-metric
+matching. <em>Biometrics</em>, <em>36</em>(2), 293–298. <a href="https://doi.org/10.2307/2529981" class="uri">https://doi.org/10.2307/2529981</a></p>
+<p>Sassenhagen, J., &amp; Alday, P. M. (2016). A common misapplication
+of statistical inference: Nuisance control with null-hypothesis
+significance tests. <em>Brain and Language</em>, <em>162</em>, 42–45. <a href="https://doi.org/10.1016/j.bandl.2016.08.001" class="uri">https://doi.org/10.1016/j.bandl.2016.08.001</a></p>
+<p>Stuart, E. A. (2010). Matching methods for causal inference: A review
+and a look forward. <em>Statistical Science</em>, <em>25</em>(1), 1–21.
+<a href="https://doi.org/10.1214/09-STS313" class="uri">https://doi.org/10.1214/09-STS313</a></p>
+<p>van Heuven, W. J. B., Mandera, P., Keuleers, E., &amp; Brysbaert, M.
+(2014). SUBTLEX-UK: A new and improved word frequency database for
+British English. <em>Quarterly Journal of Experimental Psychology</em>,
+<em>67</em>(6), 1176–1190. <a href="https://doi.org/10.1080/17470218.2013.850521" class="uri">https://doi.org/10.1080/17470218.2013.850521</a></p>
+<p>Yarkoni, T. (2022). The generalizability crisis. <em>Behavioral and
+Brain Sciences</em>, <em>45</em>, Article e1. <a href="https://doi.org/10.1017/S0140525X20001685" class="uri">https://doi.org/10.1017/S0140525X20001685</a></p>
+<p>Yarkoni, T., Balota, D., &amp; Yap, M. (2008). Moving beyond
+Coltheart’s N: A new measure of orthographic similarity. <em>Psychonomic
+Bulletin &amp; Review</em>, <em>15</em>(5), 971–979. <a href="https://doi.org/10.3758/PBR.15.5.971" class="uri">https://doi.org/10.3758/PBR.15.5.971</a></p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

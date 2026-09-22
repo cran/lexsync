@@ -1,0 +1,95 @@
+Licensing note for the lexsync package
+======================================
+
+The MIT licence declared in DESCRIPTION, whose copyright holder and year are in
+the LICENSE file, covers the source code of this package only. Three of the data
+files bundled under inst/extdata are third-party derivatives carrying their own
+terms, which are set out here.
+
+
+Bundled corpus derivatives
+--------------------------
+
+    inst/extdata/en_example.csv
+    inst/extdata/es_example.csv
+    inst/extdata/zh_example.csv
+
+These small example lexica are derived from the wordfreq package (Speer, 2022,
+https://doi.org/10.5281/zenodo.7199437). wordfreq distributes its code and its
+data under different terms. The code is under the Apache License 2.0, and the
+data files, which are what these three derivatives come from, are
+redistributable under
+
+    Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+    https://creativecommons.org/licenses/by-sa/4.0/
+
+The three files above are therefore distributed under CC BY-SA 4.0 rather than
+under the MIT licence. Anyone redistributing them, or an adaptation of them,
+must give appropriate credit to the corpus authors, indicate that changes were
+made, and place any adaptation under the same licence. Everything else in the
+package, including the other files under inst/extdata, is MIT.
+
+
+What lexsync changed
+--------------------
+
+The frequencies are wordfreq's own Zipf values, carried through unaltered. What
+lexsync added is a standardised column layout, shared by every corpus the
+package reads, and two orthographic-neighbourhood variables computed here from
+the word list itself: Coltheart's N, the count of same-length neighbours
+reachable by a single letter substitution, and OLD20, the mean Levenshtein
+distance to the twenty nearest words. Each row names its origin in the 'source'
+column.
+
+
+Credit for SUBTLEX
+------------------
+
+wordfreq's frequencies blend up to eight domains of text, among them Wikipedia,
+OPUS OpenSubtitles, NewsCrawl, Google Books Ngrams, OSCAR, Twitter and Reddit.
+The subtitles domain draws in part on the SUBTLEX word lists, which wordfreq
+carries by permission on two conditions that pass through to anything derived
+from it: work derived from wordfreq must credit the SUBTLEX authors, and it must
+remain clear that SUBTLEX is freely available data. Both are honoured here. The
+lists are freely available, and their authors are credited as follows.
+
+  Brysbaert, M., & New, B. (2009). SUBTLEX-US. Behavior Research Methods,
+  41(4), 977-990. https://doi.org/10.3758/BRM.41.4.977
+
+  van Heuven, W. J. B., Mandera, P., Keuleers, E., & Brysbaert, M. (2014).
+  SUBTLEX-UK. Quarterly Journal of Experimental Psychology, 67(6), 1176-1190.
+  https://doi.org/10.1080/17470218.2013.850521
+
+  Cai, Q., & Brysbaert, M. (2010). SUBTLEX-CH. PLoS ONE, 5(6), e10729.
+  https://doi.org/10.1371/journal.pone.0010729
+
+  Brysbaert, M., Buchmeier, M., Conrad, M., Jacobs, A. M., Bölte, J., & Böhl, A.
+  (2011). SUBTLEX-DE. Experimental Psychology, 58(5), 412-424.
+  https://doi.org/10.1027/1618-3169/a000123
+
+  Keuleers, E., Brysbaert, M., & New, B. (2010). SUBTLEX-NL. Behavior Research
+  Methods, 42(3), 643-650. https://doi.org/10.3758/BRM.42.3.643
+
+SUBTLEX contributes to the blend rather than constituting it. No file bundled
+here is a copy of a SUBTLEX list, and the SUBTLEX resources the corpus registry
+offers are separate corpora a user may fetch directly, not the source of
+anything shipped in this package.
+
+
+Corpora fetched at run time
+---------------------------
+
+Corpora downloaded on demand through the registry are not redistributed with
+this package. Each carries its own licence and citation, recorded in the
+registry entry and reported by list_corpora().
+
+
+The fuller account
+------------------
+
+The repository keeps the complete record, including the provenance caveat that
+travels with the Chinese corpus and the retrieval date and checksum of every
+derived file:
+
+    https://github.com/pablobernabeu/lexsync/blob/main/LICENSE-DATA
+    https://github.com/pablobernabeu/lexsync/blob/main/corpora/ATTRIBUTION.md

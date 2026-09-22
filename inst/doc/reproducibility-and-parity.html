@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Reproducibility, parity and the materials datasheet</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Reproducibility, parity and the materials
+datasheet</h1>
+
+
+
+<p>A stimulus set is usually described rather than shared. The methods
+section says the words were matched on length and frequency, and the set
+itself, the criteria that produced it and the code that applied them are
+not recoverable from the paper. <code>lexsync</code> treats the set as
+an artefact in its own right: the selection and the trial order are
+deterministic, the R and Python engines produce the same artefacts from
+the same input, and each run emits a provenance record with the
+checksums needed to verify it.</p>
+<p>This vignette explains the guarantee and its limits, the mechanisms
+that achieve it, the continuous-integration test that keeps it honest,
+and the two records a run leaves behind.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(lexsync)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>schema <span class="ot">&lt;-</span> yaml<span class="sc">::</span><span class="fu">read_yaml</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;schema.yaml&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lexsync&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>lex <span class="ot">&lt;-</span> <span class="fu">load_lexicon</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;en_example.csv&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lexsync&quot;</span>),</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  schema, <span class="at">language =</span> <span class="st">&quot;english&quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>)</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>pool <span class="ot">&lt;-</span> <span class="fu">build_pool</span>(lex, <span class="fu">list</span>(<span class="at">length =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">7</span>), <span class="at">frequency =</span> <span class="fu">c</span>(<span class="fl">3.8</span>, <span class="fl">7.0</span>)))</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>design <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;vignette_repro&quot;</span>, <span class="at">language =</span> <span class="st">&quot;english&quot;</span>, <span class="at">n_per_condition =</span> <span class="dv">15</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  <span class="at">conditions =</span> <span class="fu">list</span>(</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">name =</span> <span class="st">&quot;high&quot;</span>, <span class="at">define_by =</span> <span class="fu">list</span>(<span class="at">frequency =</span> <span class="fu">c</span>(<span class="fl">5.2</span>, <span class="fl">7.0</span>))),</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">name =</span> <span class="st">&quot;low&quot;</span>,  <span class="at">define_by =</span> <span class="fu">list</span>(<span class="at">frequency =</span> <span class="fu">c</span>(<span class="fl">3.8</span>, <span class="fl">4.4</span>)))</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  ),</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>  <span class="at">match_on =</span> <span class="fu">list</span>(<span class="st">&quot;length&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span>),</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>  <span class="at">counterbalance =</span> <span class="fu">list</span>(<span class="at">lists =</span> <span class="dv">1</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>)</span></code></pre></div>
+<div id="what-is-guaranteed" class="section level2">
+<h2>What is guaranteed</h2>
+<p>The claim is worth stating exactly. Given the same lexicon and the
+same design, the R and Python engines produce byte-identical stimuli
+under the <code>standardised_euclidean</code> and <code>joint</code>
+matching methods, under continuous selection, and under both pseudoword
+generators. The claim covers which items are chosen, how they are paired
+and the order they are presented in, so the generated experiments are
+byte-identical in full. The only exceptions are the
+<code>mahalanobis</code> and <code>optimal</code> matching methods.</p>
+<p>‘Byte-identical’ is meant literally, and stating it that way turned
+out to matter. The parity test originally read both engines’ stimuli
+files back with a CSV parser and compared the values, under which
+<code>1</code> and <code>1.0</code> are the same number. On that test 13
+of the shipped designs passed while differing byte for byte. Three of
+the differences were serialisation: a whole number written
+<code>1</code> by one writer and <code>1.0</code> by the other, a
+boolean written <code>FALSE</code> and <code>False</code>, and a small
+value written <code>9e-4</code> and <code>0.0009</code>. One was not:
+two reported means differed in the last decimal published, because one
+engine’s summation was pairwise and the other’s was not. Every sum in
+the package now goes through a single compensated-summation algorithm
+written out in both engines, whose agreement follows from IEEE-754
+requiring addition and subtraction to be correctly rounded, and the
+mean, variance and standard deviation are built on it. The median sorts
+and takes the middle value, or the plain-double average of the two
+middle values when the count is even, which keeps it clear of the
+long-double accumulator that <code>stats::median()</code> reaches by way
+of <code>mean()</code>. The artefacts are now compared as bytes.</p>
+<p>Two files sit outside the claim by design, because each records the
+engine that produced it: the materials datasheet names its engine and
+that engine’s package versions, and the run log adds wall-clock
+timestamps. Their contents are compared field by field instead.</p>
+<p>Within one engine, selection is a pure function of its input.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">match_stimuli</span>(pool, design, schema)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">match_stimuli</span>(pool, design, schema)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="fu">identical</span>(a, b)</span></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<p>That is not a small claim to make about an R function. Repeated calls
+agree because nothing in the selection path consults a random number
+generator, and because every operation that could depend on the ambient
+environment has been pinned. The interesting question is why the
+<em>Python</em> engine also agrees, since the two implementations share
+no code.</p>
+</div>
+<div id="how-byte-identical-output-is-achieved" class="section level2">
+<h2>How byte-identical output is achieved</h2>
+<p>Cross-engine identity is not an accident of two careful translations.
+Each mechanism below closes a specific way the engines could otherwise
+drift.</p>
+<p>The first is that there is no random number generator anywhere. The
+obvious way to choose 15 items from 700 is to sample them, and
+<code>lexsync</code> never does. The anchor condition is chosen by an
+even spread across its sorted subpool, taking positions along the whole
+range, and every later item is determined by a distance. A seeded RNG
+would not help here, because R’s Mersenne-Twister stream and NumPy’s are
+different streams: the same seed gives different draws, so any sampling
+step would break parity by construction. Determinism through absence is
+the only option that survives two languages, and it now extends to trial
+order, whose shuffle is described below.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>anchor_pool <span class="ot">&lt;-</span> pool[pool<span class="sc">$</span>frequency <span class="sc">&gt;=</span> <span class="fl">5.2</span> <span class="sc">&amp;</span> pool<span class="sc">$</span>frequency <span class="sc">&lt;=</span> <span class="fl">7.0</span>, ]</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>anchor_pool <span class="ot">&lt;-</span> anchor_pool[</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">order</span>(anchor_pool<span class="sc">$</span>frequency, anchor_pool<span class="sc">$</span>word, <span class="at">method =</span> <span class="st">&quot;radix&quot;</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>]</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">round</span>(<span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">nrow</span>(anchor_pool), <span class="at">length.out =</span> <span class="dv">15</span>)))</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>idx</span></code></pre></div>
+<pre><code> [1]  1  6 11 16 21 26 31 36 41 46 51 56 61 66 71</code></pre>
+<p>The spread is <code>seq()</code> over the row positions, rounded to
+integers. Both engines compute the same positions from the same row
+count, and the rounding rule is written out in both.</p>
+<p>Sorting is by byte order everywhere. R’s default string sort is
+locale-collated, and a French locale, a C locale and a Windows locale
+can order the same words differently, while any of those orders would
+differ from Python’s, which sorts by code point. Every sort on the
+selection path therefore passes <code>method = &quot;radix&quot;</code>, which
+sorts by bytes.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>words <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;zebra&quot;</span>, <span class="st">&quot;Apple&quot;</span>, <span class="st">&quot;apple&quot;</span>, <span class="st">&quot;Zebra&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">sort</span>(words, <span class="at">method =</span> <span class="st">&quot;radix&quot;</span>)</span></code></pre></div>
+<pre><code>[1] &quot;Apple&quot; &quot;Zebra&quot; &quot;apple&quot; &quot;zebra&quot;</code></pre>
+<p>Uppercase sorts before lowercase because that is the byte order, and
+this is what Python’s <code>sorted()</code> produces. A locale-collated
+sort would typically interleave them. Case folding is pinned for the
+same reason: <code>load_lexicon()</code> lower-cases through ICU at the
+root locale rather than through <code>tolower()</code>, whose behaviour
+depends on the C library and the locale, and which differs from Python’s
+on Greek final sigma and the dotted Turkish capital I.</p>
+<p>Frequencies of bigrams and of subsyllabic constituents are
+accumulated as integers, never as running floating-point sums, so the
+counts cannot depend on summation order.</p>
+<p>Rounding comes before the tie-break, which is the subtle one of these
+mechanisms. Two candidate words can sit at exactly equal distance from
+an anchor, and the last bits of a square root can differ between two
+linear-algebra implementations. If the engines compared raw doubles, an
+inconsequential difference in the fifteenth decimal would make one
+engine call a tie and the other not, and they would pick different
+words. Distances are therefore rounded to nine decimal places before
+ranking, which puts both engines on the same side of every comparison
+that matters.</p>
+<p>Rounding creates ties rather than removing them, so the ties in turn
+need a rule that both engines can apply identically, and that rule is a
+total order. Candidates are ordered by distance, then by the word’s
+bytes, then by its integer <code>id</code>. That is the comparison the
+matcher makes, and it is reproduced here on three imaginary
+candidates.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>distance <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.2</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>word     <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;beta&quot;</span>, <span class="st">&quot;alpha&quot;</span>, <span class="st">&quot;gamma&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>id       <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="dt">L</span>, <span class="dv">2</span><span class="dt">L</span>, <span class="dv">3</span><span class="dt">L</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>word[<span class="fu">order</span>(distance, word, id, <span class="at">method =</span> <span class="st">&quot;radix&quot;</span>)]</span></code></pre></div>
+<pre><code>[1] &quot;gamma&quot; &quot;alpha&quot; &quot;beta&quot; </code></pre>
+<p><code>gamma</code> wins on distance. <code>alpha</code> and
+<code>beta</code> are tied on distance to the ninth decimal, and the
+word’s bytes settle it, identically in both engines. Since
+<code>word</code> is unique within a lexicon the order is total, so
+there is always exactly one winner and never a coin to flip. The schema
+notes that this order is fixed in the code and deliberately not
+configurable, because it is the mechanism of parity.</p>
+<p>The even-spread rounding is shared as well.
+<code>unique(round(seq(...)))</code> is used identically in both
+engines, including the <code>unique()</code>, which matters when the
+pool is smaller than the requested n and the rounding produces a
+repeated index.</p>
+<div id="trial-order-a-seeded-shuffle-without-a-generator" class="section level3">
+<h3>Trial order: a seeded shuffle without a generator</h3>
+<p>Trial order used to be the honest exception. Each engine drew the
+order from its own seeded generator, R’s Mersenne-Twister against
+NumPy’s PCG64, and the same seed could not give the same permutation, so
+an order was reproducible within an engine and different between the
+engines. That exception is retired. Order is now decided by a keyed
+hash: each row of a list is ranked by the SHA-256 digest of
+<code>seed|replicate|list|set|condition</code>, a tuple that identifies
+the trial uniquely under either counterbalancing recipe. Distinct inputs
+to SHA-256 behave as independent uniform draws, so sorting rows by their
+digests realises a seeded random permutation, and because a digest is a
+pure function of its input, the permutation is a pure function of the
+design: the same bytes from both engines on any platform, no generator
+state to save or restore, and a different order for every seed. The
+implementation is <code>.shuffle_deterministic()</code> in
+<code>R/counterbalancing.R</code>, mirrored in the Python engine’s
+<code>counterbalancing.py</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>stim <span class="ot">&lt;-</span> <span class="fu">counterbalance</span>(<span class="fu">match_stimuli</span>(pool, design, schema), design, schema)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">head</span>(stim[, <span class="fu">c</span>(<span class="st">&quot;trial&quot;</span>, <span class="st">&quot;condition&quot;</span>, <span class="st">&quot;word&quot;</span>)], <span class="dv">4</span>)</span></code></pre></div>
+<pre><code>  trial condition   word
+1     1       low   myth
+2     2      high   with
+3     3      high  local
+4     4      high street</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>same <span class="ot">&lt;-</span> <span class="fu">counterbalance</span>(<span class="fu">match_stimuli</span>(pool, design, schema), design, schema)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">identical</span>(stim<span class="sc">$</span>trial, same<span class="sc">$</span>trial)</span></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<p>The order is still randomised in the sense a study needs: an item’s
+properties bear no systematic relation to its position, and a different
+seed gives a different order. What changed is that the permutation is
+engine-invariant, so it now sits inside the cross-engine contract, and
+the guarantee reaches the generated experiments whole: for every shipped
+design, the PsychoPy script, the OpenSesame file, the jsPsych page and
+both loop-table CSVs are byte-identical across the engines.</p>
+<p>One detail matters to anyone embedding <code>lexsync</code> in a
+longer script: counterbalancing no longer touches the random number
+generator at all, since nothing in the package consults one, so calling
+it cannot disturb the stream your own code is drawing from.</p>
+</div>
+</div>
+<div id="the-unicode-input-contract" class="section level2">
+<h2>The Unicode input contract</h2>
+<p>Word matching, deduplication and the <code>length</code> dimension
+operate on Unicode code points exactly as supplied. Beyond the pinned
+lower-casing described above, the orthographic form is never rewritten,
+and in particular no canonical normalisation is applied, neither NFC nor
+NFD. A precomposed character such as <code>é</code> and its decomposed
+counterpart, the base letter followed by a combining accent, are
+therefore distinct items that differ in length, and a lexicon mixing the
+two conventions carries apparent duplicates that never match one
+another. Supply NFC-normalised text, which is the form most corpora
+already distribute.</p>
+<p>The syllable estimator and the pseudoword generators carry a narrower
+contract still. The vowel class behind <code>n_syllables</code> covers
+the Latin-1 vowels, and the pseudoword generators build their candidates
+from lower-case a to z, so both are orthographic approximations defined
+for Latin orthographies and unavailable for other scripts. The shipped
+Chinese design matches on <code>length</code>, <code>n_density</code>
+and <code>old20</code> for exactly this reason.</p>
+</div>
+<div id="the-documented-exceptions" class="section level2">
+<h2>The documented exceptions</h2>
+<p><code>mahalanobis</code> and <code>optimal</code> are equivalent to
+their byte-identical siblings in what they compute and not in what they
+select, and the reason is worth understanding.</p>
+<p><code>mahalanobis</code> needs the inverse of the pool’s correlation
+matrix. A matrix inverse is computed by LAPACK, and R’s LAPACK is not
+necessarily the one NumPy is built against. The two may differ in
+blocking, in vectorisation and in the order they accumulate sums. The
+results agree to well within any tolerance you would care about and they
+need not agree in their last bits, and the rounding that saves the
+Euclidean path cannot save this one: the distance is now a function of a
+matrix whose entries already differ below the rounding threshold, so the
+rounding can land on either side.</p>
+<p><code>optimal</code> solves a linear assignment problem. Where
+several assignments have the same total cost, which one a solver returns
+is an implementation detail of the solver, and R’s
+<code>clue::solve_LSAP()</code> and SciPy’s implementation resolve those
+ties differently. Both return an optimal assignment. They need not
+return the same one.</p>
+<p>Neither is a bug that a determined engineer could fix. Guaranteeing
+them would mean shipping a bit-exact matrix inverse and a tie-canonical
+assignment solver in both languages, which is a large amount of
+numerical code to maintain for a modest gain. The chosen trade-off is to
+keep the byte-identical methods as the defaults, document the exception,
+and record it per run.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>maha <span class="ot">&lt;-</span> design</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>maha<span class="sc">$</span>matching <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">method =</span> <span class="st">&quot;mahalanobis&quot;</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>maha_stim <span class="ot">&lt;-</span> <span class="fu">match_stimuli</span>(pool, maha, schema)</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>maha_ds <span class="ot">&lt;-</span> <span class="fu">build_datasheet</span>(</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  maha, schema, <span class="cn">NULL</span>, maha_stim,</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>  <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;en_example.csv&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lexsync&quot;</span>),</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">stimuli =</span> <span class="cn">NA_character_</span>), schema<span class="sc">$</span>seed</span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>)</span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>maha_ds<span class="sc">$</span>selection<span class="sc">$</span>cross_engine</span></code></pre></div>
+<pre><code>[1] &quot;approximate (platform linear algebra)&quot;</code></pre>
+<p>Every datasheet carries this field, so a reader of the record does
+not have to know the rule. It reads <code>byte-identical</code> for the
+default methods and <code>approximate (platform linear algebra)</code>
+for these two, and the generated methods paragraph adds a sentence
+stating the caveat in prose when it applies. The constraint also shapes
+the roadmap: a covariance-aware distance might well be the better
+default, and it stays optional precisely because it cannot carry the
+guarantee.</p>
+<p>One further place is worth naming, though it is not an exception.
+Almost everything on the path to a compared artefact is built from
+operations IEEE-754 either mandates correctly rounded or makes exact, so
+the engines agree by construction rather than by measurement. The
+Student t quantile and distribution behind the confidence interval and
+the TOST <em>p</em>-value are where that argument does not reach:
+<code>stats::qt</code> and <code>stats::pt</code> on one side, SciPy’s
+on the other, two independent implementations that were measured to
+disagree by up to about 1e-12 over the range these reports use. The
+published values are rounded to three and four decimal places, which
+leaves 5e-4 and 5e-5 of headroom, so the comparisons files still come
+out byte-identical. The guarantee there rests on a margin of some seven
+orders of magnitude rather than on the construction, and saying so is
+what stops anyone widening the reported precision without checking the
+margin first.</p>
+</div>
+<div id="the-parity-test" class="section level2">
+<h2>The parity test</h2>
+<p>A guarantee that is not tested is a comment. The parity gate in
+continuous integration runs the R pipeline over the shipped designs,
+regenerates each with the Python engine and compares the two, across
+designs covering both engines’ matching methods, continuous selection,
+both pseudoword generators, resampling, priming and self-paced reading,
+three languages including a logographic script, and three reproductions
+of published designs.</p>
+<p>The comparison is on identity columns: the word or target, the
+condition and the <code>set</code> index. Including <code>set</code> is
+what gives the test teeth, since without it the engines could select the
+same items and pair them differently and still pass. Having matched on
+those, the test then checks every other shared column, so the
+<code>trial</code> position and the dimensions each engine computes at
+run time (<code>n_density</code>, <code>old20</code>,
+<code>n_syllables</code>, <code>bigram_freq</code>) must also agree.</p>
+<p>Three details keep the gate from passing vacuously. The test skips
+when the R reference output is absent, since the Python package can be
+installed on its own, so CI sets <code>LEXSYNC_REQUIRE_PARITY=1</code>
+to turn those skips into failures: a job meant to run both engines
+cannot pass by quietly skipping. The R references are regenerated and
+then checked with <code>git diff --exit-code</code>, so an R-engine
+regression fails the build. Without that step the comparison would run
+against a stale snapshot that the regression matches. And the R suite is
+run once from the source tree with a check that nothing skipped, because
+the repository-coupled tests silently skip when run from an installed
+copy.</p>
+</div>
+<div id="the-materials-datasheet" class="section level2">
+<h2>The materials datasheet</h2>
+<p>Each run emits a datasheet in two forms, a JSON record for machines
+and a Markdown rendering for people. It exists because the
+reproducibility literature in linguistics keeps finding the same gap:
+materials are described but rarely deposited in a form that permits
+reuse or verification (Bochynska et al., 2023), and the degrees of
+freedom in preparing them are large enough to matter (Roettger, 2019). A
+datasheet is the FAIR-style record of one selection (Wilkinson et al.,
+2016).</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;lexsync_repro&quot;</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="fu">dir.create</span>(out, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>report <span class="ot">&lt;-</span> <span class="fu">match_report</span>(</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>  stim, <span class="fu">c</span>(<span class="st">&quot;frequency&quot;</span>, <span class="st">&quot;length&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span>), schema</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>)</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>stim_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(out, <span class="st">&quot;stimuli.csv&quot;</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="fu">write.csv</span>(stim, stim_path, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>ds <span class="ot">&lt;-</span> <span class="fu">build_datasheet</span>(</span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a>  design, schema, report, stim,</span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a>  <span class="at">source_path =</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;en_example.csv&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lexsync&quot;</span>),</span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a>  <span class="at">artifacts =</span> <span class="fu">list</span>(<span class="at">stimuli =</span> stim_path),</span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a>  <span class="at">seed =</span> schema<span class="sc">$</span>seed,</span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a>  <span class="at">candidate_pool =</span> <span class="fu">lapply</span>(design<span class="sc">$</span>conditions, <span class="cf">function</span>(cnd)</span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a>      <span class="at">condition =</span> cnd<span class="sc">$</span>name,</span>
+<span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a>      <span class="at">n_candidates =</span> <span class="fu">nrow</span>(<span class="fu">build_pool</span>(pool, cnd<span class="sc">$</span>define_by))</span>
+<span id="cb16-18"><a href="#cb16-18" tabindex="-1"></a>    ))</span>
+<span id="cb16-19"><a href="#cb16-19" tabindex="-1"></a>)</span>
+<span id="cb16-20"><a href="#cb16-20" tabindex="-1"></a><span class="fu">names</span>(ds)</span></code></pre></div>
+<pre><code> [1] &quot;lexsync_datasheet_version&quot; &quot;design&quot;                   
+ [3] &quot;materials_source&quot;          &quot;dimensions&quot;               
+ [5] &quot;selection&quot;                 &quot;relational&quot;               
+ [7] &quot;analysis&quot;                  &quot;equivalence&quot;              
+ [9] &quot;realised_control&quot;          &quot;counterbalancing&quot;         
+[11] &quot;resampling&quot;                &quot;items&quot;                    
+[13] &quot;reproducibility&quot;           &quot;artifacts&quot;                </code></pre>
+<p>The record answers the questions a sceptical reader would ask. Where
+the words came from, and whether this is the same file, is settled by
+<code>materials_source</code>, which carries the path and its SHA-256.
+What was applied is recorded in <code>selection</code>, covering the
+method, the matched dimensions and the tolerance windows as resolved,
+which is the design’s overrides merged onto the schema’s defaults rather
+than the defaults a design may have replaced. What the selection
+achieved is in <code>realised_control</code>, as the effect sizes,
+intervals, variance ratios and TOST verdicts. What it could have chosen
+instead is in <code>candidate_pool</code>, which records how many items
+satisfied each condition before matching.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>ds<span class="sc">$</span>materials_source<span class="sc">$</span>sha256</span></code></pre></div>
+<pre><code>[1] &quot;a3a8f14b3d922cd07b746c9809ea7191d6a5155ca9accd055d8bffe0e2b41413&quot;</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">str</span>(ds<span class="sc">$</span>selection<span class="sc">$</span>tolerance_k)</span></code></pre></div>
+<pre><code>List of 4
+ $ length   : num 2
+ $ frequency: num 1
+ $ n_density: num 2
+ $ old20    : num 2</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(ds<span class="sc">$</span>selection<span class="sc">$</span>candidate_pool, as.data.frame))</span></code></pre></div>
+<pre><code>  condition n_candidates
+1      high           71
+2       low          480</code></pre>
+<p>The candidate-pool counts do a job that is easy to miss. Here the
+high condition was drawn from a few dozen eligible words and the low
+condition from several hundred, which are different epistemic
+situations: choosing 15 items from a large candidate set invites the
+concern that a selection could be steered towards almost any result,
+whereas a condition with barely more candidates than items had little
+freedom to be steered. Recording the counts, alongside the fact that the
+selection is deterministic and blind to any outcome measure, lets a
+reader judge that rather than take it on trust.</p>
+<p>Note that the resolved windows include a <code>frequency</code> entry
+even though this design matches on the three orthographic dimensions
+only. The record reports the windows as resolved from the schema and the
+design, and a window is applied only to a dimension named in
+<code>match_on</code>.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">str</span>(ds<span class="sc">$</span>reproducibility)</span></code></pre></div>
+<pre><code>List of 2
+ $ seed    : int 2026
+ $ versions:List of 10
+  ..$ engine    : chr &quot;R&quot;
+  ..$ lexsync   : chr &quot;0.1.0&quot;
+  ..$ R         : chr &quot;4.6.1&quot;
+  ..$ readr     : chr &quot;2.2.0&quot;
+  ..$ stringdist: chr &quot;0.9.17&quot;
+  ..$ jsonlite  : chr &quot;2.0.0&quot;
+  ..$ digest    : chr &quot;0.6.39&quot;
+  ..$ yaml      : chr &quot;2.3.12&quot;
+  ..$ stringi   : chr &quot;1.8.7&quot;
+  ..$ os        : chr &quot;Windows x86-64&quot;</code></pre>
+<p>The reproducibility block records the seed and the versions of the
+engine and its dependencies, since a bug fix in a dependency can change
+a selection and the record should say which versions produced this
+one.</p>
+<div id="the-methods-paragraph-and-the-pre-registration-template" class="section level3">
+<h3>The methods paragraph and the pre-registration template</h3>
+<p>The datasheet renders itself into prose, which is a small feature
+that removes a common source of error: a methods section transcribed by
+hand from numbers on a screen.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">strwrap</span>(<span class="fu">methods_paragraph</span>(ds), <span class="at">width =</span> <span class="dv">76</span>), <span class="at">sep =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>15 items per condition were selected from the English lexicon (wordfreq
+(Speer, 2022), data CC BY-SA 4.0; full corpus licence and citation at
+https://github.com/pablobernabeu/lexsync/blob/main/corpora/ATTRIBUTION.md)
+and matched item by item on length, n_density, old20 using lexsync&#39;s
+standardised_euclidean matcher. Equivalence was not confirmed on every
+matched dimension; the per-dimension differences are reported in the
+realised-control table. The smallest condition was selected from 71
+eligible candidates, and the selection was deterministic and blind to any
+outcome measure. Materials were counterbalanced into 1 list(s) (a factorial
+split) and generated for PsychoPy, OpenSesame and jsPsych. The selection is
+deterministic and reproducible (seed 2026; lexsync 0.1.0).</code></pre>
+<p>The paragraph is generated from the record, so it cannot disagree
+with the stimuli. It states the candidate-pool size, and it adds the
+cross-engine caveat when the design’s method warrants it. On the
+realised control it takes one of two branches. Where every controlled
+dimension passes its equivalence test, it names the largest standardised
+difference on any matched dimension with its interval, rather than a
+selective best case, and says that this sits within the equivalence
+bound. Where one does not, it declines to summarise and sends the reader
+to the realised-control table instead, which is the branch this run
+takes.</p>
+<p>That is worth seeing, because the paragraph is a draft to adapt
+rather than one to paste unread. What fails here is not the matching but
+the width of the interval, and the interval is wide because this
+demonstration matches only 15 items per condition, which is precisely
+the dependence on set size that the matching vignette warns against
+reading past. A real study would either match enough items to narrow the
+interval or say plainly that the control is established at the point
+estimate and not at the bound.</p>
+<p><code>write_datasheet()</code> writes both forms, and the Markdown
+rendering carries a pre-registration skeleton with its materials section
+already filled in.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>paths <span class="ot">&lt;-</span> <span class="fu">write_datasheet</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>  ds, <span class="fu">file.path</span>(out, <span class="st">&quot;datasheet.json&quot;</span>), <span class="fu">file.path</span>(out, <span class="st">&quot;datasheet.md&quot;</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>)</span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a>md <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(out, <span class="st">&quot;datasheet.md&quot;</span>))</span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="fu">grep</span>(<span class="st">&quot;^#&quot;</span>, md, <span class="at">value =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code> [1] &quot;# Materials datasheet -- vignette_repro (english)&quot;
+ [2] &quot;## Provenance&quot;                                    
+ [3] &quot;## Selection transparency&quot;                        
+ [4] &quot;## Realised control&quot;                              
+ [5] &quot;## Suggested analysis&quot;                            
+ [6] &quot;## Methods paragraph&quot;                             
+ [7] &quot;## Pre-registration template&quot;                     
+ [8] &quot;### Study information&quot;                            
+ [9] &quot;### Hypotheses&quot;                                   
+[10] &quot;### Design&quot;                                       
+[11] &quot;### Materials (from the lexsync datasheet)&quot;       
+[12] &quot;### Sampling plan&quot;                                
+[13] &quot;### Analysis plan&quot;                                </code></pre>
+<p>The sections left blank are the ones no tool can fill: the
+hypotheses, the sampling plan and the inference criteria. The analysis
+plan is the exception: it arrives with a suggested model, and the
+suggestion takes a position.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>ds<span class="sc">$</span>analysis<span class="sc">$</span>suggested_model</span></code></pre></div>
+<pre><code>[1] &quot;response ~ condition + (1 + condition | subject) + (1 | item)&quot;</code></pre>
+<p>The model crosses random effects for subjects and items because items
+are a sample of the language rather than the population of interest, and
+an analysis treating them as fixed generalises only to the words that
+were used (Clark, 1973; Yarkoni, 2022). The accompanying note recommends
+beginning with the maximal structure and reducing it if it does not
+converge. It is a starting point for a design of this shape.</p>
+</div>
+</div>
+<div id="the-run-log" class="section level2">
+<h2>The run log</h2>
+<p>The datasheet records what a run produced. The run log records what
+it did.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>log <span class="ot">&lt;-</span> <span class="fu">new_run_log</span>(</span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>  <span class="st">&quot;vignette_repro&quot;</span>,</span>
+<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>  <span class="at">meta =</span> <span class="fu">list</span>(<span class="at">seed =</span> schema<span class="sc">$</span>seed, <span class="at">language =</span> <span class="st">&quot;english&quot;</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>)</span>
+<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>log <span class="ot">&lt;-</span> <span class="fu">log_step</span>(</span>
+<span id="cb32-6"><a href="#cb32-6" tabindex="-1"></a>  log,</span>
+<span id="cb32-7"><a href="#cb32-7" tabindex="-1"></a>  <span class="fu">sprintf</span>(<span class="st">&quot;lexicon loaded: %d words&quot;</span>, <span class="fu">nrow</span>(lex)),</span>
+<span id="cb32-8"><a href="#cb32-8" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">words =</span> <span class="fu">nrow</span>(lex))</span>
+<span id="cb32-9"><a href="#cb32-9" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>[lexsync] lexicon loaded: 3000 words</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>log <span class="ot">&lt;-</span> <span class="fu">log_step</span>(log, <span class="fu">sprintf</span>(<span class="st">&quot;pool after filters: %d words&quot;</span>, <span class="fu">nrow</span>(pool)))</span></code></pre></div>
+<pre><code>[lexsync] pool after filters: 782 words</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a>log <span class="ot">&lt;-</span> <span class="fu">log_artefact</span>(log, stim_path, <span class="at">rows =</span> <span class="fu">nrow</span>(stim))</span></code></pre></div>
+<pre><code>[lexsync] wrote &#39;stimuli.csv&#39;</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a>log_md <span class="ot">&lt;-</span> <span class="fu">write_run_log</span>(log, <span class="fu">file.path</span>(out, <span class="st">&quot;run_log.md&quot;</span>),</span>
+<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a>                        <span class="fu">file.path</span>(out, <span class="st">&quot;run_log.jsonl&quot;</span>))</span>
+<span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">readLines</span>(log_md), <span class="at">sep =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code># lexsync run log: vignette_repro
+
+- Engine: R 4.6.1
+- Started: 2026-09-12 11:10:29.821358
+- Finished: 2026-09-12 11:10:29.895051
+
+## Run metadata
+
+- seed: 2026
+- language: english
+
+## Steps
+
+- **2026-09-12 11:10:29.860648**: lexicon loaded: 3000 words
+    - words: 3000
+- **2026-09-12 11:10:29.869375**: pool after filters: 782 words
+- **2026-09-12 11:10:29.878956**: wrote &#39;stimuli.csv&#39;
+    - path: C:\Users\pablob\AppData\Local\Temp\Rtmpe2MJ5N/lexsync_repro/stimuli.csv
+    - rows: 30
+    - md5: 323fcd3af815f8a0ca61deddeb45409a</code></pre>
+<p>The pipeline builds this log as it goes, recording each stage with
+its parameters, the equivalence verdict on every dimension, any balance
+warning, and an entry per file written with its row count and MD5. Both
+a Markdown log and a JSON Lines log are emitted, the latter so that a
+run can be checked by a script. The MD5 here is a content fingerprint
+for spotting drift between runs, whereas the datasheet’s SHA-256 is the
+stronger one that belongs in a permanent record.</p>
+</div>
+<div id="reproducing-a-run" class="section level2">
+<h2>Reproducing a run</h2>
+<p>The pipeline does all of the above in one call, and
+<code>run_pipeline()</code> on a design configuration is the
+reproducible unit: it writes the stimuli, the reports, the three
+experiments, the datasheet and the log. Sharing the design file and the
+corpus is then enough for someone else to regenerate the materials and
+verify the checksums, in either language.</p>
+<p>Two habits make that work. Pin the corpus, since a selection is only
+reproducible against a fixed lexicon, which is why the bundled corpora
+are a checksummed snapshot and why the <code>wordfreq</code> connector
+draws on a package frozen in 2024, whose data is a stable snapshot of
+usage through roughly 2021. And where cross-engine reproducibility
+matters, prefer the default matching methods, since they are the ones
+that carry the guarantee.</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>Bochynska, A., Keeble, L., Halfacre, C., Casillas, J. V., Champagne,
+I.-A., Chen, K., Röthlisberger, M., Buchanan, E. M., &amp; Roettger, T.
+B. (2023). Reproducible research practices and transparency across
+linguistics. <em>Glossa Psycholinguistics</em>, <em>2</em>(1). <a href="https://doi.org/10.5070/G6011239" class="uri">https://doi.org/10.5070/G6011239</a></p>
+<p>Clark, H. H. (1973). The language-as-fixed-effect fallacy: A critique
+of language statistics in psychological research. <em>Journal of Verbal
+Learning and Verbal Behavior</em>, <em>12</em>(4), 335–359. <a href="https://doi.org/10.1016/S0022-5371(73)80014-3" class="uri">https://doi.org/10.1016/S0022-5371(73)80014-3</a></p>
+<p>Roettger, T. B. (2019). Researcher degrees of freedom in phonetic
+research. <em>Laboratory Phonology</em>, <em>10</em>(1), Article 1. <a href="https://doi.org/10.5334/labphon.147" class="uri">https://doi.org/10.5334/labphon.147</a></p>
+<p>Wilkinson, M. D., Dumontier, M., Aalbersberg, IJ. J., Appleton, G.,
+Axton, M., Baak, A., Blomberg, N., Boiten, J.-W., da Silva Santos, L.
+B., Bourne, P. E., Bouwman, J., Brookes, A. J., Clark, T., Crosas, M.,
+Dillo, I., Dumon, O., Edmunds, S., Evelo, C. T., Finkers, R., … Mons, B.
+(2016). The FAIR Guiding Principles for scientific data management and
+stewardship. <em>Scientific Data</em>, <em>3</em>, Article 160018. <a href="https://doi.org/10.1038/sdata.2016.18" class="uri">https://doi.org/10.1038/sdata.2016.18</a></p>
+<p>Yarkoni, T. (2022). The generalizability crisis. <em>Behavioral and
+Brain Sciences</em>, <em>45</em>, Article e1. <a href="https://doi.org/10.1017/S0140525X20001685" class="uri">https://doi.org/10.1017/S0140525X20001685</a></p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

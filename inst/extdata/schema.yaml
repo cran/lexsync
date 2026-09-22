@@ -1,0 +1,193 @@
+# lexsync global schema and defaults
+# ---------------------------------------------------------------------------
+# Every numeric constant lives here (and in the per-design configs), so adding a
+# language or a design needs a configuration file, not a change to the code.
+# This file is read identically by the R package and the Python package.
+
+seed: 2026
+
+# ---- Lexicon column contract ----------------------------------------------
+# Derived lexica (corpora/derived/*.csv and the bundled example slices) must
+# expose the 'required' columns; 'optional' columns are used when present.
+lexicon_schema:
+  required:
+    - word            # orthographic form, UTF-8, lower-case
+    - freq_zipf       # Zipf frequency (van Heuven et al., 2014); roughly 1-7
+  optional:
+    - freq_permillion # frequency per million tokens
+    - pos             # part of speech (source tag)
+    - language        # ISO 639-1 / BCP-47 code
+    - source          # corpus identifier (matches corpora/registry.yaml)
+
+# ---- Lexical dimensions ----------------------------------------------------
+# 'column' dimensions are read straight from the lexicon; 'derived' dimensions
+# are computed at load time from the orthographic form, identically in R and
+# Python (Coltheart's N and OLD20 from Levenshtein distances).
+dimensions:
+  length:    { type: derived, compute: n_letters,    unit: 'characters' }
+  frequency: { type: column,  column: freq_zipf,     unit: 'Zipf' }
+  n_density: { type: derived, compute: coltheart_n,  unit: 'neighbours' }
+  old20:     { type: derived, compute: old20,        unit: 'mean Levenshtein distance' }
+  n_syllables: { type: derived, compute: vowel_groups,           unit: 'syllables (orthographic estimate)' }
+  bigram_freq: { type: derived, compute: mean_bigram_probability, unit: 'mean bigram probability (type-based, non-positional)' }
+
+# ---- Semantic and other external dimensions --------------------------------
+# The dimensions above are computed from the orthographic form or read from the
+# lexicon. A dimension that cannot be derived from the form -- concreteness, age of
+# acquisition, valence, imageability -- comes from a published norm table, which is
+# joined per design rather than declared here, because which norms a design needs
+# depends on what it manipulates and because their licences differ:
+#
+#   norms:
+#     - path: norms/en_concreteness.csv
+#       on: word                  # optional join key, default 'word'
+#       columns: [concreteness]   # optional; default every column but the key
+#
+# The tables are joined onto the lexicon before the candidate pool is built, so
+# `pool_filters`, `match_on` and a continuous `predictor` may all name a norm column.
+# The join is case-insensitive and whitespace-insensitive on both sides, keeps the
+# lexicon's own row and column order, and refuses a norm column whose name already
+# exists on the lexicon rather than silently renaming it.
+#
+# lexsync does not bundle norm data. Fetch it from the source, whose licence and
+# citation are the user's to honour, and record the file: every joined table is
+# written into the materials datasheet with its sha256 and its per-column coverage,
+# because a norm table can carry the very variable a design manipulates, and a
+# selection over columns of unstated origin is not reproducible. Coverage matters
+# too -- a word the table does not cover gets a missing value, and the tolerance
+# windows then drop it from the pool.
+
+# ---- Default matching configuration ---------------------------------------
+# Pseudoword generation (the lexical_decision paradigm) is chosen per design under
+# items.generation.method:
+#   letter_substitution  change the fewest single letters, keeping bigrams attested (default)
+#   subsyllabic          swap whole onset/nucleus/coda constituents (Wuggy-style; Keuleers
+#                        & Brysbaert, 2010)
+# Both preserve length and select byte-identical stimuli across the R and Python engines.
+
+matching:
+  method: standardised_euclidean
+  # method options:
+  #   standardised_euclidean  greedy nearest-neighbour on z-scored dimensions (default)
+  #   joint                   optimal-greedy pairing for a two-condition design
+  #   mahalanobis             covariance-aware distance; down-weights correlated dimensions
+  #   optimal                 globally optimal (assignment) pairing for two conditions
+  # standardised_euclidean and joint are byte-identical across the R and Python
+  # engines; mahalanobis and optimal use a covariance inverse / assignment solver,
+  # so the two engines agree closely but not byte-for-byte.
+  # Stage 1, tolerance pre-filter: keep candidates within mean +/- k * SD of the
+  # target condition on each dimension. This generalises the original workflow's
+  # mean +/- SD/9 (frequency) and mean +/- 2*SD (letters) windows.
+  tolerance_k:
+    length: 2.0
+    frequency: 1.0
+    n_density: 2.0
+    old20: 2.0
+  # Selection-size policies; a design may override either under its own matching:
+  # block. shortfall errors by default because the datasheet and the generated
+  # methods paragraph state the requested n, so a silently smaller set would
+  # leave the record misstating the materials.
+  shortfall: error                   # what to do when fewer sets than n_per_condition can be selected: error | allow
+  on_insufficient_tolerance: relax   # when a condition has too few candidates inside the tolerance window: relax | error
+  # Stage 2 ranks candidates by standardised multivariate distance; ties are
+  # broken by (distance, word bytes, id), fixed in matching.py / matching.R.
+  # That order is not configurable: the byte-order tie-break is what makes the
+  # two engines select identical stimuli without an RNG.
+
+# ---- Counterbalancing list assignment --------------------------------------
+# The factorial recipe deals item sets to lists by rank: set 1 to list 1, set 2 to
+# list 2, and so on. That is reproducible but arbitrary with respect to the items, so
+# one list can end up holding systematically shorter or more frequent words than
+# another, which is confounded with the group of participants that receives it.
+#
+# A design may ask for a balanced assignment instead:
+#
+#   counterbalance:
+#     lists: 4
+#     optimise: true
+#     balance_on: [length, n_density, old20]   # optional; defaults to match_on
+#     max_passes: 500                          # optional bound on the search
+#
+# It is OFF by default, and deliberately so: switching it on changes which items a
+# participant sees, which is a design decision and not something a package upgrade
+# should do to a study that is already running.
+#
+# The search exchanges pairs of item sets between lists, taking the single best
+# exchange each pass until none improves the balance. It is a steepest descent to a
+# local optimum, not a global search, and the datasheet records the imbalance before
+# and after so the result is checkable rather than asserted. List sizes are preserved.
+#
+# There is no random number generator and no floating-point score anywhere in it. The
+# dimensions are quantised to integers once, in milli-units of each dimension's own
+# mean so that dimensions on different scales carry comparable weight, and the search
+# then uses only integer arithmetic and comparison; ties are broken by the same seeded
+# keyed hash that fixes trial order. A float objective was measured to differ between
+# the engines by around 3e-16, which is enough to send them down different search
+# paths and select different words.
+#
+# It does not apply to the Latin-square recipe and is refused there: every item
+# appears in every list already, so the lists are balanced on the items by
+# construction and the rotation decides only which condition each item takes.
+
+# ---- Equivalence testing (reported in the descriptives) -------------------
+# Equivalence is assessed by two one-sided tests (TOST), fixed in validation.py /
+# validation.R; only the bound and alpha below are configurable.
+equivalence:
+  bound_d: 0.5    # smallest effect size of interest, Cohen's d (Lakens, 2017)
+  alpha: 0.05
+
+# ---- Hardware triggers (defaults; overridable per design) -----------------
+# Triggers are reset to 0 after reset_after_frames; the reset value is fixed in
+# the emitted PsychoPy and OpenSesame code (scripting.py / scripting.R).
+triggers:
+  parallel_address: '0x0378'   # typical LPT1 base address
+  # How long the onset code is held before it is reset to 0, in milliseconds.
+  #
+  # This was `reset_after_frames: 2`, documented as '~33 ms at 60 Hz'. It was
+  # neither: the reset is queued on one flip and executes on the next, so the code
+  # was actually held across three flip intervals, 50 ms at 60 Hz. And being a
+  # frame count it scaled with the display, falling to 12.5 ms at 240 Hz and 8.3 ms
+  # at 360 Hz, below the 10 ms minimum most recorders need to register a pulse.
+  #
+  # 50 ms preserves exactly what the package has always done at 60 Hz, now stated
+  # honestly and in a unit that does not move. The generated script converts it to
+  # whole flips against the refresh it measures, never fewer than one flip and
+  # never less than 10 ms. `reset_after_frames` is still accepted and converted at
+  # presentation.assumed_refresh_hz.
+  trigger_hold_ms: 50
+  inter_trigger_ms: 10         # spacing of trailing markers (matches the original)
+
+# ---- Presentation defaults (overridable per design) -----------------------
+# The word font used by the generated PsychoPy and OpenSesame experiments. The
+# default is a fixed-width Latin font; set a glyph-complete font per design for
+# non-Latin scripts (for example 'SimHei' for Chinese; see design_zh_*.yaml).
+presentation:
+  font: 'Courier New'
+  opensesame_font: 'mono'      # OpenSesame font_family token (space-free)
+  # Event durations are canonically MILLISECONDS. A design may still declare a
+  # duration in frames (`duration_frames`, and `fixation_frames` / `word_frames` /
+  # `isi_frames` in a design's `timing:` block), which is converted to
+  # milliseconds at load time using the rate below, so designs written before the
+  # millisecond migration keep working unchanged. Set it to the rate those frame
+  # counts were authored for.
+  #
+  # This is NOT the rate the experiment runs at. The generated PsychoPy script
+  # measures the display's actual refresh at start-up and converts milliseconds
+  # back into whole flips, so a design presents its intended duration on a 60,
+  # 120 or 144 Hz monitor alike while the trigger stays bound to the flip. The
+  # script falls back to this value only if that measurement fails.
+  assumed_refresh_hz: 60
+  #
+  # An event's duration may also vary from trial to trial, declared per event in
+  # a design rather than here:
+  #
+  #   duration: {from_column: soa_ms}              read per trial from the items
+  #   duration: {jitter: [400, 800], as: iti_ms}   drawn per trial, uniform, in ms
+  #
+  # A drawn value is not a random number. It is a uniform integer keyed on the
+  # seed, the column name, the list, the set and the condition, so both engines
+  # realise the same milliseconds and a rerun reproduces them. Naming the column
+  # in the key is what makes two jittered events draw independently rather than
+  # sharing a value. Either form writes the realised milliseconds into the
+  # stimuli table, so timing that varies is available to the analysis as a
+  # regressor instead of being undocumented noise. See design_en_priming_jitter.

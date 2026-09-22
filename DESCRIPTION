@@ -1,0 +1,42 @@
+Package: lexsync
+Type: Package
+Title: Lexical Optimisation and Hardware-Timed Experiment Generation
+Version: 0.1.0
+Authors@R: person("Pablo", "Bernabeu", email = "pcbernabeu@gmail.com", role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0003-1083-2460"))
+Description: A cross-platform toolkit that unifies many-language lexical-corpus
+    access, parallel multidimensional stimulus matching, deterministic pseudoword
+    generation, counterbalancing and the automated generation of experiments from a
+    declarative trial-event model, for 'PsychoPy', 'OpenSesame' and the browser
+    ('jsPsych'). The laboratory targets bind electroencephalography onset triggers
+    to the stimulus flip. It is the R member of a dual-language pair; a structurally
+    identical 'Python' package is also provided. Several paradigms (factorial word
+    contrasts, lexical decision, priming, self-paced reading and cued
+    categorisation) are supported, and
+    each design is accompanied by a machine- and human-readable materials datasheet
+    for reproducibility.
+License: MIT + file LICENSE
+Copyright: The MIT licence covers the source code only. The example
+        lexica in inst/extdata are derived from third-party data and
+        are distributed under CC BY-SA 4.0; the terms and the
+        attribution they require are in the LICENSE.note file.
+Encoding: UTF-8
+Language: en-GB
+Depends: R (>= 4.0.0)
+Imports: readr, yaml, stringdist, stringi, jsonlite, digest, stats,
+        tools, utils
+Suggests: testthat (>= 3.0.0), knitr, rmarkdown, spelling, clue, shiny,
+        bslib, DT, zip
+VignetteBuilder: knitr
+URL: https://github.com/pablobernabeu/lexsync,
+        https://pablobernabeu.github.io/lexsync/r/
+BugReports: https://github.com/pablobernabeu/lexsync/issues
+Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0
+NeedsCompilation: no
+Packaged: 2026-09-12 10:10:40 UTC; CodexSandboxOffline
+Author: Pablo Bernabeu [aut, cre] (ORCID:
+    <https://orcid.org/0000-0003-1083-2460>)
+Maintainer: Pablo Bernabeu <pcbernabeu@gmail.com>
+Repository: CRAN
+Date/Publication: 2026-09-22 06:20:09 UTC

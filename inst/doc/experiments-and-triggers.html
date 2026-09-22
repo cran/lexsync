@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Experiments, paradigms and EEG triggers</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Experiments, paradigms and EEG
+triggers</h1>
+
+
+
+<p>Once a stimulus set exists, something has to present it.
+<code>lexsync</code> generates that experiment from a declarative
+description of the trial, sparing the hand-coding that usually follows
+selection. A trial is a list of events, each event says what appears and
+for how long and whether a hardware trigger rides on its onset, and each
+presentation target is an interpreter of that same list. The arrangement
+is what lets one engine serve several paradigms and three targets: a new
+paradigm is a new event list, not new backend code.</p>
+<p>This vignette covers the event model, the paradigm registry, the
+three targets and how they differ, the trigger timing that motivates the
+design, and how to add a paradigm. It runs on the bundled English
+example lexicon and writes everything to a temporary directory.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(lexsync)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>schema <span class="ot">&lt;-</span> yaml<span class="sc">::</span><span class="fu">read_yaml</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;schema.yaml&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lexsync&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>lex <span class="ot">&lt;-</span> <span class="fu">load_lexicon</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;en_example.csv&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lexsync&quot;</span>),</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  schema, <span class="at">language =</span> <span class="st">&quot;english&quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>)</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>pool <span class="ot">&lt;-</span> <span class="fu">build_pool</span>(lex, <span class="fu">list</span>(<span class="at">length =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">7</span>), <span class="at">frequency =</span> <span class="fu">c</span>(<span class="fl">3.8</span>, <span class="fl">7.0</span>)))</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>design <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;vignette_experiment&quot;</span>, <span class="at">language =</span> <span class="st">&quot;english&quot;</span>, <span class="at">n_per_condition =</span> <span class="dv">12</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  <span class="at">paradigm =</span> <span class="st">&quot;factorial&quot;</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>  <span class="at">conditions =</span> <span class="fu">list</span>(</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">name =</span> <span class="st">&quot;high&quot;</span>, <span class="at">define_by =</span> <span class="fu">list</span>(<span class="at">frequency =</span> <span class="fu">c</span>(<span class="fl">5.2</span>, <span class="fl">7.0</span>))),</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">name =</span> <span class="st">&quot;low&quot;</span>,  <span class="at">define_by =</span> <span class="fu">list</span>(<span class="at">frequency =</span> <span class="fu">c</span>(<span class="fl">3.8</span>, <span class="fl">4.4</span>)))</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>  ),</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>  <span class="at">match_on =</span> <span class="fu">list</span>(<span class="st">&quot;length&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span>),</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>  <span class="at">counterbalance =</span> <span class="fu">list</span>(<span class="at">lists =</span> <span class="dv">1</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>)</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>stim <span class="ot">&lt;-</span> <span class="fu">match_stimuli</span>(pool, design, schema)</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>stim <span class="ot">&lt;-</span> <span class="fu">counterbalance</span>(stim, design, schema)</span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a><span class="fu">head</span>(stim[, <span class="fu">c</span>(<span class="st">&quot;trial&quot;</span>, <span class="st">&quot;list&quot;</span>, <span class="st">&quot;set&quot;</span>, <span class="st">&quot;condition&quot;</span>, <span class="st">&quot;word&quot;</span>)], <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>  trial list set condition word
+1     1    1   1       low myth
+2     2    1   7      high head
+3     3    1   4      high  buy</code></pre>
+<div id="the-trial-event-model" class="section level2">
+<h2>The trial-event model</h2>
+<p>A design’s trial is a list of events. Each event is a plain list
+whose <code>type</code> selects the behaviour and whose remaining fields
+parameterise it. The factorial paradigm’s default sequence is a fixation
+cross, the word, a response window and a blank.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>events <span class="ot">&lt;-</span> <span class="fu">resolve_events</span>(design)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">str</span>(events)</span></code></pre></div>
+<pre><code>List of 4
+ $ :List of 3
+  ..$ type           : chr &quot;fixation&quot;
+  ..$ content        : chr &quot;+&quot;
+  ..$ duration_frames: int 30
+ $ :List of 5
+  ..$ type           : chr &quot;text&quot;
+  ..$ content        : chr &quot;{word}&quot;
+  ..$ duration_frames: int 48
+  ..$ trigger        : chr &quot;condition&quot;
+  ..$ onset_locked   : logi TRUE
+ $ :List of 3
+  ..$ type      : chr &quot;response&quot;
+  ..$ keys      : chr [1:2] &quot;left&quot; &quot;right&quot;
+  ..$ timeout_ms: int 2000
+ $ :List of 2
+  ..$ type           : chr &quot;blank&quot;
+  ..$ duration_frames: int 15</code></pre>
+<p><code>resolve_events()</code> is the accessor the backends use, and
+it embodies the precedence rule: a design’s own <code>events</code> list
+wins, and only if there is none does the design inherit its paradigm’s
+default sequence. The eight event types are <code>fixation</code>,
+<code>text</code>, <code>mask</code>, <code>blank</code>,
+<code>region_by_region</code>, <code>response</code>,
+<code>question</code> and <code>feedback</code>. The first four draw
+something (or nothing, for <code>blank</code>) for a fixed number of
+frames. <code>response</code> and <code>question</code> collect a
+keypress. <code>region_by_region</code> presents a segmented sentence
+one region at a time, advancing on a key. <code>feedback</code> scores
+the keypress just collected and reports it, and is described under
+practice blocks below.</p>
+<p>Durations are given in milliseconds, as <code>duration_ms</code>.
+That is the unit a methods section reports and the unit all three
+targets present, so a design means the same interval wherever it runs. A
+visual stimulus can still only appear on a refresh, so the PsychoPy
+script measures the display’s refresh rate when it starts and converts
+each duration into the nearest whole number of flips: 50 ms is three
+flips at 60 Hz and seven at 144 Hz. The trigger stays bound to the flip,
+and the residual quantisation is reported.</p>
+<p>A duration may also be given as <code>duration_frames</code>, which
+designs written before this change still use. A frame count is converted
+to milliseconds when the design loads, at
+<code>presentation.assumed_refresh_hz</code> in the schema (60 by
+default), so it means the rate the count was written for, whatever rate
+the experiment then runs at. The <code>timeout_ms</code> of a response
+window has always been in milliseconds, because a response deadline is
+not tied to the refresh.</p>
+<div id="content-and-field-references" class="section level3">
+<h3>Content and field references</h3>
+<p>An event’s <code>content</code> is either a literal or a reference to
+a column of the trial table. A reference is a single field name in
+braces, and it is what makes an event list a template: one list serves
+every trial in the design.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">lapply</span>(events[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="cf">function</span>(ev) ev<span class="sc">$</span>content)</span></code></pre></div>
+<pre><code>[[1]]
+[1] &quot;+&quot;
+
+[[2]]
+[1] &quot;{word}&quot;</code></pre>
+<p>The fixation event’s content is the literal <code>+</code>, which
+every trial shows. The text event’s content is <code>{word}</code>, so
+each trial shows its own row’s <code>word</code> column.
+<code>required_fields()</code> resolves the references into the columns
+a design’s items must actually carry, which is how a design’s item table
+is validated before anything is generated.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">required_fields</span>(design)</span></code></pre></div>
+<pre><code>[1] &quot;word&quot;</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">required_fields</span>(<span class="fu">list</span>(<span class="at">paradigm =</span> <span class="st">&quot;priming&quot;</span>))</span></code></pre></div>
+<pre><code>[1] &quot;prime&quot;  &quot;target&quot;</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">required_fields</span>(<span class="fu">list</span>(<span class="at">paradigm =</span> <span class="st">&quot;self_paced_reading&quot;</span>))</span></code></pre></div>
+<pre><code>[1] &quot;sentence&quot; &quot;question&quot;</code></pre>
+<p>Presented strings are always carried as data. Each target writes a
+trial table and reads the strings from it at run time, and they are
+never interpolated into generated code. That is why an apostrophe in a
+stimulus cannot break a generated script, and it is enforced on the way
+in: <code>load_items()</code> rejects control characters and over-long
+values in the fields a paradigm presents.</p>
+</div>
+<div id="triggers-on-an-event" class="section level3">
+<h3>Triggers on an event</h3>
+<p>An event may carry a <code>trigger</code>. Three forms are accepted,
+and the choice of form is the choice of what the EEG marker will
+mean.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>priming_events <span class="ot">&lt;-</span> PARADIGMS<span class="sc">$</span>priming<span class="sc">$</span>events</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>or_dash <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="cf">if</span> (<span class="fu">is.null</span>(x)) <span class="st">&quot;-&quot;</span> <span class="cf">else</span> <span class="fu">as.character</span>(x)</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">vapply</span>(priming_events, <span class="cf">function</span>(e) e<span class="sc">$</span>type, <span class="fu">character</span>(<span class="dv">1</span>)),</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  <span class="at">content =</span> <span class="fu">vapply</span>(</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>    priming_events, <span class="cf">function</span>(e) <span class="fu">or_dash</span>(e<span class="sc">$</span>content), <span class="fu">character</span>(<span class="dv">1</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>  ),</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>  <span class="at">trigger =</span> <span class="fu">vapply</span>(priming_events, <span class="cf">function</span>(e) <span class="fu">or_dash</span>(e<span class="sc">$</span>trigger), <span class="fu">character</span>(<span class="dv">1</span>))</span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>      type  content   trigger
+1 fixation        +         -
+2     text  {prime}        20
+3     mask    #####         -
+4     text {target} condition
+5 response        -         -
+6    blank        -         -</code></pre>
+<p>The literal integer 20 on the prime marks every prime with the same
+code, since what is being timestamped is the prime’s appearance,
+whichever prime it is. The token <code>&quot;condition&quot;</code> on the target
+resolves per trial to that trial’s condition code, which is the marker
+an ERP analysis will epoch on. The token <code>&quot;item&quot;</code> resolves to
+a per-item code. Events with no trigger send nothing.</p>
+<p>The tokens are resolved by <code>assign_triggers()</code>, which
+computes the codes and adds them as columns.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>trig <span class="ot">&lt;-</span> <span class="fu">assign_triggers</span>(stim)</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="fu">unique</span>(trig[, <span class="fu">c</span>(<span class="st">&quot;condition&quot;</span>, <span class="st">&quot;condition_trigger&quot;</span>)])</span></code></pre></div>
+<pre><code>  condition condition_trigger
+1       low               101
+2      high               102</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">range</span>(trig<span class="sc">$</span>item_trigger)</span></code></pre></div>
+<pre><code>[1] 40 51</code></pre>
+<p>Condition codes start at 101 and count up in order of first
+appearance. Item codes run from 40 upwards and wrap at 200 values, so a
+design with more than 200 items reuses item codes. That ceiling comes
+from the 8-bit parallel port: a code is one byte, and the block markers
+254 and 255 are reserved. Condition codes stay unique regardless, so the
+analysis that matters is unaffected.</p>
+</div>
+<div id="timing-that-varies-from-trial-to-trial" class="section level3">
+<h3>Timing that varies from trial to trial</h3>
+<p>A duration need not be the same on every trial. An event may instead
+declare a <code>duration:</code> block, in one of two forms:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">type</span><span class="kw">:</span><span class="at"> text</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="at">  </span><span class="fu">content</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;{prime}&#39;</span></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="at">  </span><span class="fu">duration</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="fu">from_column</span><span class="kw">:</span><span class="at"> soa_ms</span><span class="kw">}</span><span class="co">            # read per trial from the items</span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">type</span><span class="kw">:</span><span class="at"> blank</span></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="at">  </span><span class="fu">duration</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="fu">jitter</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="dv">400</span><span class="kw">,</span><span class="at"> </span><span class="dv">800</span><span class="kw">],</span><span class="at"> </span><span class="fu">as</span><span class="kw">:</span><span class="at"> iti_ms</span><span class="kw">}</span><span class="co"> # drawn per trial, in milliseconds</span></span></code></pre></div>
+<p>The two exist for different reasons. A duration read from a column is
+a manipulated variable: the stimulus-onset asynchrony of a priming study
+is the lever that separates automatic from strategic processing, so it
+belongs in the item table and in the analysis. A jittered duration is
+not manipulated at all. It decorrelates the design matrix, as EEG and
+fMRI designs routinely require.</p>
+<p>Neither draws a random number. A jittered value is a uniform integer
+keyed on the seed, the column name, the list, the set and the condition,
+so both engines realise the same milliseconds and a rerun reproduces
+them. Naming the column in the key is what makes two jittered events
+draw independently, since without it they would share a single
+value.</p>
+<p>Either form writes the realised milliseconds into the stimuli table
+and the loop table, because timing that varies is a variable the
+analysis needs, not presentation detail.
+<code>config/design_en_priming_jitter.yaml</code> is a worked example
+carrying both.</p>
+</div>
+</div>
+<div id="the-paradigm-registry" class="section level2">
+<h2>The paradigm registry</h2>
+<p>A paradigm bundles a default event sequence with the fields it needs
+and the recipe for counterbalancing it. <code>PARADIGMS</code> is the
+registry, and it is exported, so it can be read to see exactly what a
+design will inherit.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">names</span>(PARADIGMS)</span></code></pre></div>
+<pre><code>[1] &quot;factorial&quot;          &quot;lexical_decision&quot;   &quot;priming&quot;           
+[4] &quot;categorisation&quot;     &quot;self_paced_reading&quot;</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>  <span class="at">paradigm =</span> <span class="fu">names</span>(PARADIGMS),</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>  <span class="at">fields =</span> <span class="fu">vapply</span>(</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>    PARADIGMS,</span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>    <span class="cf">function</span>(p) <span class="fu">paste</span>(p<span class="sc">$</span>stimulus_fields, <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>),</span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>    <span class="fu">character</span>(<span class="dv">1</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>  ),</span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a>  <span class="at">counterbalance =</span> <span class="fu">vapply</span>(</span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a>    PARADIGMS, <span class="cf">function</span>(p) p<span class="sc">$</span>counterbalance, <span class="fu">character</span>(<span class="dv">1</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a>  ),</span>
+<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a>  <span class="at">n_events =</span> <span class="fu">vapply</span>(PARADIGMS, <span class="cf">function</span>(p) <span class="fu">length</span>(p<span class="sc">$</span>events), <span class="fu">integer</span>(<span class="dv">1</span>)),</span>
+<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">NULL</span></span>
+<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>            paradigm                   fields      counterbalance n_events
+1          factorial                     word           factorial        4
+2   lexical_decision                   target           factorial        4
+3            priming            prime, target latin_square_target        6
+4     categorisation target, category, answer latin_square_target        5
+5 self_paced_reading       sentence, question latin_square_target        4</code></pre>
+<p><code>factorial</code> shows a matched word per trial.
+<code>lexical_decision</code> is the same shape but presents a
+<code>target</code>, which is a real word or a generated pseudoword.
+<code>priming</code> adds a brief prime and a mask before the target.
+<code>self_paced_reading</code> replaces the word event with a
+region-by-region sentence and adds a comprehension question.
+<code>categorisation</code> shows a category cue and then the word to
+judge against it.</p>
+<p>That last one is worth a paragraph, because what separates it from
+lexical decision is not the shape of the trial but where the question
+lives. The cue is a trial event, shown afresh each time, since the
+category varies from trial to trial, and crossing one word with two cues
+is how a categorisation study separates a property of the word from the
+demands of the task. A robin is a bird quickly and an animal slowly, and
+only the question changed. Its <code>answer</code> field holds the key
+that is correct on the trial, so scoring is a string comparison against
+the recorded response with nothing to look up in whatever language the
+analysis is written in. The paradigm requires the field, which means an
+unscoreable categorisation experiment cannot be generated.</p>
+<p>The <code>counterbalance</code> entry is the part that is easy to
+overlook and important to get right. The factorial recipe shows every
+matched item and splits the matched sets across lists. The Latin-square
+recipe exists because <code>priming</code>,
+<code>self_paced_reading</code> and <code>categorisation</code> have a
+property the word paradigms do not: the same target appears in more than
+one condition. Showing a participant both the related and the unrelated
+version of one target would let them see the manipulation, and showing
+the same word under both category cues would turn the second
+presentation into a repetition-priming trial. The Latin square gives
+each item exactly one condition per list and rotates it across lists, so
+no target repeats within a list and conditions stay balanced.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">table</span>(<span class="at">list =</span> stim<span class="sc">$</span>list, <span class="at">condition =</span> stim<span class="sc">$</span>condition)</span></code></pre></div>
+<pre><code>    condition
+list high low
+   1   12  12</code></pre>
+<div id="balanced-list-assignment" class="section level3">
+<h3>Balanced list assignment</h3>
+<p>The factorial deal sends set 1 to list 1, set 2 to list 2 and so on.
+That is reproducible, but it balances nothing: every <em>n</em>th set
+lands in the same list, so a dimension that happens to vary smoothly
+across sets is dealt out unevenly, and where each list goes to a
+different group of participants, the unevenness is confounded with the
+group.</p>
+<p><code>counterbalance.optimise</code> searches instead for an
+assignment whose lists have near-equal totals on the dimensions you
+name, by exchanging pairs of item sets between lists. List sizes are
+preserved, since a swap trades one set for another.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">counterbalance</span><span class="kw">:</span></span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a><span class="at">  </span><span class="fu">lists</span><span class="kw">:</span><span class="at"> </span><span class="dv">4</span></span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a><span class="at">  </span><span class="fu">optimise</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a><span class="at">  </span><span class="fu">balance_on</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">length</span><span class="kw">,</span><span class="at"> n_density</span><span class="kw">,</span><span class="at"> old20</span><span class="kw">,</span><span class="at"> frequency</span><span class="kw">]</span></span></code></pre></div>
+<p><code>balance_on</code> defaults to <code>match_on</code>, and the
+example widens it deliberately. Frequency is the manipulated variable
+and so is not matched on, but it is manipulated <em>within</em> a list,
+since every list holds both conditions. Equating the lists on its total
+therefore costs the manipulation nothing and removes a difference
+between the participant groups who receive different lists. Naming only
+the matched dimensions leaves frequency dealt arbitrarily, and
+measurably so: on the shipped design the optimiser then improves the
+three named dimensions and makes frequency worse than the arbitrary deal
+had it. Balance what you want equated across lists, which is usually
+everything.</p>
+<p>This is a steepest descent to a local optimum, not a global search.
+What it guarantees is that no single exchange would improve matters
+further, and the datasheet records the imbalance before and after, so
+the improvement is checkable. The objective is all-integer and ties are
+broken by the seeded keyed hash, which keeps the two engines on the same
+assignment and stops list 1 being favoured for being numbered first.</p>
+<p>It is off by default, and stays off. Switching it on changes which
+items a participant sees, so it has to be a deliberate design decision.
+A package upgrade must never make that change for a study that is
+already running. It is refused on a Latin-square design, where every
+item already appears in every list and the lists are balanced on the
+items by construction. <code>balance_lists()</code> runs the search
+alone if you want the assignment without applying it, and
+<code>design_en_balanced_lists.yaml</code> is the worked example.</p>
+</div>
+</div>
+<div id="practice-fillers-and-feedback" class="section level2">
+<h2>Practice, fillers and feedback</h2>
+<p>Everything above treats one frame as both the materials record and
+the thing that runs. That holds only while the two are the same trials,
+and they usually are not. Practice exists to settle the participant into
+the task and is discarded before analysis. Fillers exist to dilute the
+manipulation so the participant cannot guess it, and are likewise not
+analysed. Both have to reach the generated experiment, and neither
+belongs in the stimuli file, the descriptives or the realised
+control.</p>
+<p>The pipeline therefore splits. The stimuli CSV and the reports are
+written from the main rows. The PsychoPy, OpenSesame and jsPsych
+experiments are generated from every presented trial. A
+<code>block</code> column marks which is which, and it appears only when
+a design declares the blocks, so a design without them keeps exactly the
+columns it had.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="fu">practice</span><span class="kw">:</span></span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="at">  </span><span class="fu">path</span><span class="kw">:</span><span class="at"> items/practice_en_lexdec.csv</span></span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a><span class="fu">fillers</span><span class="kw">:</span></span>
+<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a><span class="at">  </span><span class="fu">path</span><span class="kw">:</span><span class="at"> items/fillers_en_lexdec.csv</span></span></code></pre></div>
+<p>Where each block goes is a methodological choice. Practice comes
+first, as its own run, shuffled within itself so participants do not all
+meet the practice items in one order. Fillers are interleaved with the
+main trials, because a block of fillers at the end is not a filler at
+all: it is a second block the participant can tell apart. They are
+merged in before the order is drawn, so one deterministic shuffle mixes
+them through, which does renumber the main trials. That is correct,
+since adding fillers changes the sequence and the stimuli file records
+where each item actually appeared. Both blocks appear in every list and
+neither is counterbalanced, because they carry no manipulation to rotate
+and every participant should get the same practice.</p>
+<p>Each block’s item table is read with the same validation as any
+other, and given a <code>set</code> range that cannot collide with the
+main items, which a naive read would not manage since practice item 1
+and main item 1 would both be set 1. The counts and the tables’
+checksums go into the datasheet, because what the participant saw is
+part of the materials even when it is not part of the analysis.</p>
+<p>A <code>feedback</code> event scores the trial and shows the result.
+It reads the field named by <code>answer</code>, compares it as a string
+with the key the participant pressed, and displays <code>correct</code>,
+<code>incorrect</code> or <code>no_response</code> for
+<code>duration_ms</code>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">type</span><span class="kw">:</span><span class="at"> feedback</span></span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a><span class="at">  </span><span class="fu">answer</span><span class="kw">:</span><span class="at"> answer</span></span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a><span class="at">  </span><span class="fu">correct</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;Correct&#39;</span></span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a><span class="at">  </span><span class="fu">incorrect</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;Incorrect&#39;</span></span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="at">  </span><span class="fu">no_response</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;Too slow&#39;</span></span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a><span class="at">  </span><span class="fu">duration_ms</span><span class="kw">:</span><span class="at"> </span><span class="dv">600</span></span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a><span class="at">  </span><span class="fu">blocks</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">practice</span><span class="kw">]</span></span></code></pre></div>
+<p><code>blocks:</code> restricts an event to the named blocks, and this
+is its main use: feedback teaches the mapping during practice, and would
+contaminate reaction times in the task itself. The restriction has to be
+expressed on the event because the event list is global to the design.
+Since a feedback event scores a keypress, something before it must have
+collected one. A design whose feedback event has no preceding
+<code>response</code> or <code>question</code> is refused when the
+experiment is generated. Left to run time, that one design error would
+surface as three different failures, one per target.
+<code>design_en_lexdec_blocks.yaml</code> puts all of this together.</p>
+</div>
+<div id="the-three-presentation-targets" class="section level2">
+<h2>The three presentation targets</h2>
+<p>The same rendered event list feeds all three exporters, so the
+procedure is the same in each. What differs is what the platform can
+do.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;lexsync_experiment&quot;</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a><span class="fu">dir.create</span>(out, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">export_experiments</span>(stim, design, schema, out)</span>
+<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a><span class="fu">basename</span>(<span class="fu">unlist</span>(files))</span></code></pre></div>
+<pre><code>[1] &quot;vignette_experiment_english_psychopy.py&quot;
+[2] &quot;vignette_experiment_english.osexp&quot;      
+[3] &quot;vignette_experiment_english.html&quot;       </code></pre>
+<p><code>export_experiments()</code> calls
+<code>assign_triggers()</code> first, then each exporter, and returns
+the three experiment scripts. The directory holds more than that, and
+the difference is the interesting part.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="fu">list.files</span>(out)</span></code></pre></div>
+<pre><code>[1] &quot;vignette_experiment_english.html&quot;          
+[2] &quot;vignette_experiment_english.osexp&quot;         
+[3] &quot;vignette_experiment_english_opensesame.csv&quot;
+[4] &quot;vignette_experiment_english_psychopy.csv&quot;  
+[5] &quot;vignette_experiment_english_psychopy.py&quot;   </code></pre>
+<p>PsychoPy and OpenSesame each got their own trial table and read it at
+run time, which is why two CSVs appear alongside the three scripts. The
+jsPsych target has no second file, because it embeds its trials in the
+HTML. That single file is enough to reproduce the procedure in a
+browser.</p>
+<p>PsychoPy (Peirce et al., 2019) is the reference target. The generated
+script carries the event list as embedded JSON and interprets it, and it
+writes onset triggers to the parallel port locked to the flip. It is the
+target to use for EEG.</p>
+<p>OpenSesame (Mathôt et al., 2012) is generated as a complete
+plain-text <code>.osexp</code>, block by block, with each event becoming
+an inline script. It gets its trigger by a different route, discussed
+below, and it opens the trigger device with a fallback: if no parallel
+port or serial device is available, it prints the codes and carries on,
+so the experiment still runs on a machine without the hardware.</p>
+<p>jsPsych is the browser target. A browser cannot address a parallel
+port, so the trigger codes go into each trial’s data and no marker
+leaves the machine. That makes it suitable for behavioural work, for
+piloting and for sharing a procedure, though never for EEG. The
+generated HTML embeds the events and the trials and saves responses
+locally, so no server is needed. The jsPsych library itself loads from a
+CDN, so the first run needs an internet connection.</p>
+<p>Two smaller differences are worth knowing. The OpenSesame loop is
+written as <code>sequential</code> on purpose, because its default is
+random, which would discard the seeded trial order and make the three
+targets present different sequences. The order is worth protecting,
+since it is computed from the design by a keyed-hash shuffle and is
+identical in the R and Python engines. And the jsPsych exporter maps the
+event model’s key names onto browser key names, so <code>left</code>
+becomes <code>arrowleft</code>, since the same event list has to mean
+the same thing to a browser as to PsychoPy.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>psychopy_csv <span class="ot">&lt;-</span> <span class="fu">file.path</span>(out, <span class="st">&quot;vignette_experiment_english_psychopy.csv&quot;</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a><span class="fu">names</span>(<span class="fu">read.csv</span>(psychopy_csv))</span></code></pre></div>
+<pre><code>[1] &quot;trial&quot;             &quot;list&quot;              &quot;set&quot;              
+[4] &quot;condition&quot;         &quot;word&quot;              &quot;condition_trigger&quot;
+[7] &quot;item_trigger&quot;     </code></pre>
+<p>The trial table carries exactly the columns the events reference plus
+the bookkeeping ones. A field no event mentions is not exported, which
+keeps the generated table minimal and means the trial table is itself a
+readable statement of what the experiment uses.</p>
+</div>
+<div id="trigger-timing-and-the-flip-lock" class="section level2">
+<h2>Trigger timing and the flip lock</h2>
+<p>This is the part that justifies generating the experiment at all. An
+ERP is averaged over epochs cut around a marker, so the marker’s timing
+error propagates straight into the waveform. If the trigger is sent when
+the code decides to draw the stimulus rather than when the display
+actually shows it, the error is the interval between those two moments,
+which is up to one refresh (about 17 ms at 60 Hz) plus whatever the
+drawing code took, and it is variable from trial to trial. A constant
+offset can be subtracted afterwards. Jitter cannot: it smears the
+average and shrinks the component you are measuring.</p>
+<p>The generated PsychoPy script never sends a trigger from the drawing
+sequence. It registers the write with the window, to be executed on the
+next flip:</p>
+<pre><code>win.callOnFlip(port.setData, trigger)</code></pre>
+<p><code>callOnFlip</code> defers the call until the flip that puts the
+stimulus on screen, so the port write happens in the same operation that
+makes the stimulus visible. That is the guarantee, and it is a property
+of the generated code. The Python package’s test suite pins it, driving
+the generated script against a mock PsychoPy window and a mock port and
+asserting that the trigger is bound to the flip.</p>
+<p>The reset is handled the same way. A recorder needs the line to
+return to zero before the next code, so the script schedules a write of
+0 on a later flip.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="fu">str</span>(schema<span class="sc">$</span>triggers)</span></code></pre></div>
+<pre><code>List of 3
+ $ parallel_address: chr &quot;0x0378&quot;
+ $ trigger_hold_ms : int 50
+ $ inter_trigger_ms: int 10</code></pre>
+<p><code>trigger_hold_ms</code> is 50, comfortably above the 10 ms
+minimum most recorders need to register a pulse. The script converts it
+to whole flips against the refresh it measures, so the pulse stays about
+50 ms whether the display runs at 60 Hz or at 240 Hz. As a frame count
+it used to shorten with the refresh, reaching 12.5 ms at 240 Hz. The
+older <code>reset_after_frames</code> is still accepted and converted.
+<code>inter_trigger_ms</code> spaces any trailing markers.
+<code>parallel_address</code> is the LPT1 base address on a typical
+laboratory machine, and it is a schema value because it belongs to the
+machine, which will run many designs.</p>
+<p>OpenSesame reaches the same place by a different route, and the
+difference is worth being explicit about. It has no
+<code>callOnFlip</code>, so the generated inline script sends the
+trigger on the line after <code>c.show()</code>:</p>
+<pre><code>var.onset_time = c.show()
+send_trigger(var.condition_trigger)</code></pre>
+<p>This is sound because <code>show()</code> blocks until the display
+refresh and returns at it, so the next statement runs immediately after
+the stimulus becomes visible. The residual offset is the few
+microseconds of the return and the port write, and it is constant rather
+than jittered. That makes it a close second to the flip lock, which is
+why PsychoPy stays the reference target for EEG.</p>
+<p>Neither generation nor its tests import PsychoPy, pyserial or any
+port driver. Generation only writes text. The hardware is needed to
+<em>run</em> an experiment, not to build one, which is what lets the
+whole demonstration reproduce on a laptop.</p>
+</div>
+<div id="adding-a-paradigm" class="section level2">
+<h2>Adding a paradigm</h2>
+<p>A design can override the event list outright, and this is the route
+that needs no change to the package. The events below present a word
+twice with a mask between, which no registered paradigm does, and both
+<code>text</code> events are triggered so the recording can distinguish
+the two presentations.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>custom <span class="ot">&lt;-</span> design</span>
+<span id="cb39-2"><a href="#cb39-2" tabindex="-1"></a>custom<span class="sc">$</span>name <span class="ot">&lt;-</span> <span class="st">&quot;vignette_custom&quot;</span></span>
+<span id="cb39-3"><a href="#cb39-3" tabindex="-1"></a>custom<span class="sc">$</span>events <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb39-4"><a href="#cb39-4" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;fixation&quot;</span>, <span class="at">content =</span> <span class="st">&quot;+&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">30</span><span class="dt">L</span>),</span>
+<span id="cb39-5"><a href="#cb39-5" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;text&quot;</span>, <span class="at">content =</span> <span class="st">&quot;{word}&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">12</span><span class="dt">L</span>,</span>
+<span id="cb39-6"><a href="#cb39-6" tabindex="-1"></a>       <span class="at">trigger =</span> <span class="dv">30</span><span class="dt">L</span>, <span class="at">onset_locked =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb39-7"><a href="#cb39-7" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;mask&quot;</span>, <span class="at">content =</span> <span class="st">&quot;#####&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">6</span><span class="dt">L</span>),</span>
+<span id="cb39-8"><a href="#cb39-8" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;text&quot;</span>, <span class="at">content =</span> <span class="st">&quot;{word}&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">48</span><span class="dt">L</span>,</span>
+<span id="cb39-9"><a href="#cb39-9" tabindex="-1"></a>       <span class="at">trigger =</span> <span class="st">&quot;condition&quot;</span>, <span class="at">onset_locked =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb39-10"><a href="#cb39-10" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">keys =</span> <span class="fu">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;right&quot;</span>), <span class="at">timeout_ms =</span> <span class="dv">2000</span><span class="dt">L</span>),</span>
+<span id="cb39-11"><a href="#cb39-11" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;blank&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">15</span><span class="dt">L</span>)</span>
+<span id="cb39-12"><a href="#cb39-12" tabindex="-1"></a>)</span>
+<span id="cb39-13"><a href="#cb39-13" tabindex="-1"></a><span class="fu">required_fields</span>(custom)</span></code></pre></div>
+<pre><code>[1] &quot;word&quot;</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>custom_files <span class="ot">&lt;-</span> <span class="fu">export_experiments</span>(stim, custom, schema, out)</span>
+<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a><span class="fu">basename</span>(<span class="fu">unlist</span>(custom_files))</span></code></pre></div>
+<pre><code>[1] &quot;vignette_custom_english_psychopy.py&quot; &quot;vignette_custom_english.osexp&quot;      
+[3] &quot;vignette_custom_english.html&quot;       </code></pre>
+<p>Nothing in the backends changed. All three targets rendered a
+sequence they had never seen, because each one walks the event list and
+knows nothing about paradigms. The design also inherits a consequence of
+declaring its own events: a design with an explicit <code>events</code>
+list counterbalances factorially, since the Latin-square recipe belongs
+to the registered paradigms that need it.</p>
+<p>To register a paradigm for reuse across designs, add an entry to the
+<code>PARADIGMS</code> registry in <code>R/paradigms.R</code>, giving
+its <code>stimulus_fields</code>, its <code>counterbalance</code> recipe
+and its <code>events</code>, and add the matching entry to
+<code>python_workflow/src/lexsync/paradigms.py</code> so that the two
+engines stay in step. Designs can then name it. The registry is a plain
+named list and the entries above are the pattern to copy.</p>
+<p>Adding a presentation target is the mirror image: write an
+<code>export_&lt;target&gt;()</code> that walks the same rendered event
+list, and it will serve every paradigm at once.</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>Mathôt, S., Schreij, D., &amp; Theeuwes, J. (2012). OpenSesame: An
+open-source, graphical experiment builder for the social sciences.
+<em>Behavior Research Methods</em>, <em>44</em>(2), 314–324. <a href="https://doi.org/10.3758/s13428-011-0168-7" class="uri">https://doi.org/10.3758/s13428-011-0168-7</a></p>
+<p>Peirce, J., Gray, J. R., Simpson, S., MacAskill, M., Höchenberger,
+R., Sogo, H., Kastman, E., &amp; Lindeløv, J. K. (2019). PsychoPy2:
+Experiments in behavior made easy. <em>Behavior Research Methods</em>,
+<em>51</em>(1), 195–203. <a href="https://doi.org/10.3758/s13428-018-01193-y" class="uri">https://doi.org/10.3758/s13428-018-01193-y</a></p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

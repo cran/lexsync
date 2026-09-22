@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Getting started with lexsync</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Getting started with lexsync</h1>
+
+
+
+<p><code>lexsync</code> selects stimuli that are matched in parallel
+across several lexical dimensions and then generates the experiment
+scripts that present them. This vignette runs a small high- versus
+low-frequency contrast on the bundled English example lexicon.</p>
+<p>The selection is deterministic, and it ships as two independent
+packages, one for R and one for Python, which select byte-identical
+stimuli from the same lexicon and design. No random number generator is
+involved: the engines agree because every ordering is by byte and every
+tie is broken by a rule both apply. This holds for the default matching
+methods. The optional <code>mahalanobis</code> and <code>optimal</code>
+methods are equivalent but not byte-identical, because a covariance
+inverse and an assignment solver differ in their last bits between the
+two platforms.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(lexsync)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>schema <span class="ot">&lt;-</span> yaml<span class="sc">::</span><span class="fu">read_yaml</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;schema.yaml&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lexsync&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>lex <span class="ot">&lt;-</span> <span class="fu">load_lexicon</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;en_example.csv&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lexsync&quot;</span>),</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  schema, <span class="at">language =</span> <span class="st">&quot;english&quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>)</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="fu">nrow</span>(lex)</span></code></pre></div>
+<pre><code>[1] 3000</code></pre>
+<div id="define-and-run-a-design" class="section level2">
+<h2>Define and run a design</h2>
+<p>A design names the conditions, the dimensions to match and the number
+of items, together with the filters that narrow the lexicon to a
+candidate pool. The pool is built first, exactly as the pipeline does,
+and matching then runs over it.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>design <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;vignette_demo&quot;</span>, <span class="at">language =</span> <span class="st">&quot;english&quot;</span>, <span class="at">n_per_condition =</span> <span class="dv">15</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">pool_filters =</span> <span class="fu">list</span>(<span class="at">length =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">7</span>), <span class="at">frequency =</span> <span class="fu">c</span>(<span class="fl">3.8</span>, <span class="dv">7</span>)),</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="at">conditions =</span> <span class="fu">list</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">name =</span> <span class="st">&quot;high&quot;</span>, <span class="at">define_by =</span> <span class="fu">list</span>(<span class="at">frequency =</span> <span class="fu">c</span>(<span class="fl">5.2</span>, <span class="fl">7.0</span>))),</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">name =</span> <span class="st">&quot;low&quot;</span>,  <span class="at">define_by =</span> <span class="fu">list</span>(<span class="at">frequency =</span> <span class="fu">c</span>(<span class="fl">3.8</span>, <span class="fl">4.4</span>)))</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  ),</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="at">match_on =</span> <span class="fu">list</span>(<span class="st">&quot;length&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>)</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>pool <span class="ot">&lt;-</span> <span class="fu">build_pool</span>(lex, design<span class="sc">$</span>pool_filters)</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>stim <span class="ot">&lt;-</span> <span class="fu">match_stimuli</span>(pool, design, schema)</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="fu">head</span>(stim[, <span class="fu">c</span>(</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>  <span class="st">&quot;word&quot;</span>, <span class="st">&quot;condition&quot;</span>, <span class="st">&quot;length&quot;</span>, <span class="st">&quot;frequency&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>)])</span></code></pre></div>
+<pre><code>    word condition length frequency n_density old20
+1   knew      high      4      5.20         3  1.75
+2 points      high      6      5.23         5  1.65
+3  field      high      5      5.24         3  1.75
+4 street      high      6      5.28         1  1.90
+5    low      high      3      5.33        24  1.00
+6   lost      high      4      5.39        12  1.25</code></pre>
+</div>
+<div id="anatomy-of-a-design-file" class="section level2">
+<h2>Anatomy of a design file</h2>
+<p>The list above is convenient in a vignette, but a real study writes
+its design as YAML. That is what makes a design portable:
+<code>config/schema.yaml</code> holds everything global and every
+numeric default, the design holds what is specific to the study, and
+both are read identically by the R and the Python package, so a design
+file can be attached to a pre-registration and handed to someone running
+the other engine. Here is the English frequency contrast in full, from
+<code>config/design_en_freqcontrast.yaml</code> in the repository.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> en_freqcontrast</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">language</span><span class="kw">:</span><span class="at"> english</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">lexicon</span><span class="kw">:</span><span class="at"> corpora/derived/en.csv</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="fu">description</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;High versus low frequency English words, matched on length, neighbourhood density and OLD20.&#39;</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">n_per_condition</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="fu">pool_filters</span><span class="kw">:</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="at">  </span><span class="fu">length</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="dv">3</span><span class="kw">,</span><span class="at"> </span><span class="dv">8</span><span class="kw">]</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="at">  </span><span class="fu">frequency</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="fl">3.8</span><span class="kw">,</span><span class="at"> </span><span class="fl">7.0</span><span class="kw">]</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="fu">conditions</span><span class="kw">:</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> high_frequency</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="at">    </span><span class="fu">define_by</span><span class="kw">:</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="at">      </span><span class="fu">frequency</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="fl">5.2</span><span class="kw">,</span><span class="at"> </span><span class="fl">7.0</span><span class="kw">]</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> low_frequency</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="at">    </span><span class="fu">define_by</span><span class="kw">:</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="at">      </span><span class="fu">frequency</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="fl">3.8</span><span class="kw">,</span><span class="at"> </span><span class="fl">4.4</span><span class="kw">]</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="fu">match_on</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">length</span><span class="kw">,</span><span class="at"> n_density</span><span class="kw">,</span><span class="at"> old20</span><span class="kw">]</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="fu">counterbalance</span><span class="kw">:</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="at">  </span><span class="fu">lists</span><span class="kw">:</span><span class="at"> </span><span class="dv">1</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="fu">timing</span><span class="kw">:</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="at">  </span><span class="fu">fixation_frames</span><span class="kw">:</span><span class="at"> </span><span class="dv">30</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="at">  </span><span class="fu">word_frames</span><span class="kw">:</span><span class="at"> </span><span class="dv">30</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="at">  </span><span class="fu">isi_frames</span><span class="kw">:</span><span class="at"> </span><span class="dv">15</span></span></code></pre></div>
+<div id="the-keys" class="section level3">
+<h3>The keys</h3>
+<p><code>name</code> and <code>language</code> are required, and
+together they form the slug every written file is named after.
+<code>en_freqcontrast</code> plus <code>english</code> becomes
+<code>en_freqcontrast_english</code>, and from that come
+<code>en_freqcontrast_english_stimuli_R.csv</code>,
+<code>en_freqcontrast_english.osexp</code> and the rest.
+<code>language</code> is a free-text label rather than a code, because
+it is what the experiment displays. When the browser target needs a real
+BCP 47 tag it maps the common labels and falls back to <code>und</code>,
+or you can state <code>language_tag</code> outright.</p>
+<p><code>lexicon</code> names the derived corpus to read. It may also be
+written as <code>items.lexicon</code>, which is the form the
+lexical-decision designs use, since they also have to say where the
+items come from.</p>
+<p><code>items</code> selects where the stimuli come from, and there are
+four sources.</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>items.source</code></th>
+<th>Where stimuli come from</th>
+<th>Also needs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>corpus</code> (the default)</td>
+<td>Words selected from the lexicon by matching, or by spanning a
+predictor.</td>
+<td><code>lexicon</code>, <code>conditions</code> or
+<code>continuous</code>, <code>match_on</code></td>
+</tr>
+<tr class="even">
+<td><code>generate</code></td>
+<td>Real words plus a deterministically generated pseudoword for
+each.</td>
+<td><code>lexicon</code>, optionally
+<code>items.generation.method</code></td>
+</tr>
+<tr class="odd">
+<td><code>table</code></td>
+<td>A CSV of prepared items (prime-target pairs, sentences). Add
+<code>items.members</code> to make it pair-keyed.</td>
+<td><code>items.path</code></td>
+</tr>
+<tr class="even">
+<td><code>pool</code></td>
+<td>A candidate word list of your own, matched over as if it were a
+pool.</td>
+<td><code>items.path</code>, normally <code>items.lexicon</code>, plus
+<code>conditions</code> and <code>match_on</code> as for
+<code>corpus</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>pool_filters</code> narrows the lexicon to the candidates the
+design will consider at all. Each key is a column and each value an
+inclusive <code>[min, max]</code> range for a numeric column, or a set
+of permitted values otherwise. This is a real step and not a formality:
+<code>match_stimuli()</code> never reads <code>pool_filters</code>
+itself, so a script that skips <code>build_pool()</code> matches over
+the whole lexicon and quietly ignores the design’s bands.</p>
+<p><code>conditions</code> is a list, each entry with a
+<code>name</code> and a <code>define_by</code> block that carves the
+condition out of the pool by the same filter syntax. Two conditions make
+a contrast. Four make the 2 × 2 that
+<code>design_en_andrews_repro.yaml</code> uses to reproduce Andrews
+(1989). A design may instead declare a <code>continuous</code> block and
+dispense with conditions altogether.</p>
+<p><code>match_on</code> lists the dimensions to equate across
+conditions and <code>n_per_condition</code> how many items each should
+hold. Both are the heart of the design and both are covered at length in
+<em>Matching, dimensions and designs</em>.</p>
+<p><code>matching</code> overrides the schema defaults for this design
+alone: <code>matching.method</code> picks one of the four methods, and
+<code>matching.tolerance_k</code> sets the half-width, in standard
+deviations, of the tolerance window on each dimension. Overriding a
+single dimension is common when reproducing a published study’s exact
+windows.</p>
+<p><code>counterbalance.lists</code> sets the number of lists, and
+<code>counterbalance.optimise</code> asks for an assignment whose lists
+are equated on the item dimensions rather than dealt by set rank.
+<code>practice</code> and <code>fillers</code> each name an item table
+whose trials are presented but not analysed. <code>timing</code> sets
+the fixation, critical-word and inter-stimulus durations. Milliseconds
+are canonical (<code>fixation_ms</code>, <code>word_ms</code>,
+<code>isi_ms</code>), which is why a design means the same interval on
+any display. This design predates that change and still uses the
+<code>*_frames</code> form above, which is accepted and converted on
+load at the schema’s <code>presentation.assumed_refresh_hz</code>, so
+its 30 frames become the 500 ms they were written for. <code>font</code>
+overrides the presentation font, which matters for a non-Latin script:
+<code>design_zh_freqcontrast.yaml</code> sets <code>SimHei</code>,
+because the Latin default has no glyphs for Han characters.</p>
+<p><code>paradigm</code> names one of the five registered paradigms and
+inherits its trial-event sequence and its counterbalancing recipe.
+Omitting it gives <code>factorial</code>. A design may instead supply an
+explicit <code>events</code> list and describe its own trial. Both
+routes are covered in <em>Experiments, paradigms and EEG
+triggers</em>.</p>
+</div>
+<div id="running-one" class="section level3">
+<h3>Running one</h3>
+<p><code>run_pipeline()</code> takes a design path and does everything
+this vignette has done by hand, plus the datasheet and the run log. From
+a clone of the repository:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>out_one <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="st">&quot;lexsync_one_&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">run_pipeline</span>(<span class="st">&quot;config/design_en_freqcontrast.yaml&quot;</span>, <span class="at">outdir =</span> out_one)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>out_all <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="st">&quot;lexsync_all_&quot;</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="fu">run_all</span>(<span class="at">outdir =</span> out_all)  <span class="co"># every design_*.yaml in config/</span></span></code></pre></div>
+<p>Paths inside a design are resolved relative to the working directory,
+so run these from the root of a checkout.</p>
+</div>
+</div>
+<div id="inspect-the-match-quality" class="section level2">
+<h2>Inspect the match quality</h2>
+<p>Matching always returns a set, so the report is what tells you
+whether the set is any good. It belongs before anything is generated
+from the stimuli.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>report <span class="ot">&lt;-</span> <span class="fu">match_report</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  stim, <span class="fu">c</span>(<span class="st">&quot;length&quot;</span>, <span class="st">&quot;frequency&quot;</span>, <span class="st">&quot;n_density&quot;</span>, <span class="st">&quot;old20&quot;</span>), schema</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>)</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  report<span class="sc">$</span>descriptives,</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">&quot;Descriptive statistics per condition&quot;</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>)</span></code></pre></div>
+<table>
+<caption>Descriptive statistics per condition</caption>
+<thead>
+<tr class="header">
+<th align="left">group</th>
+<th align="left">dimension</th>
+<th align="right">n</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">min</th>
+<th align="right">median</th>
+<th align="right">max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">high</td>
+<td align="left">length</td>
+<td align="right">15</td>
+<td align="right">4.533</td>
+<td align="right">0.915</td>
+<td align="right">3.0</td>
+<td align="right">4.00</td>
+<td align="right">6.00</td>
+</tr>
+<tr class="even">
+<td align="left">high</td>
+<td align="left">frequency</td>
+<td align="right">15</td>
+<td align="right">5.589</td>
+<td align="right">0.424</td>
+<td align="right">5.2</td>
+<td align="right">5.49</td>
+<td align="right">6.85</td>
+</tr>
+<tr class="odd">
+<td align="left">high</td>
+<td align="left">n_density</td>
+<td align="right">15</td>
+<td align="right">7.800</td>
+<td align="right">6.190</td>
+<td align="right">1.0</td>
+<td align="right">5.00</td>
+<td align="right">24.00</td>
+</tr>
+<tr class="even">
+<td align="left">high</td>
+<td align="left">old20</td>
+<td align="right">15</td>
+<td align="right">1.467</td>
+<td align="right">0.286</td>
+<td align="right">1.0</td>
+<td align="right">1.55</td>
+<td align="right">1.90</td>
+</tr>
+<tr class="odd">
+<td align="left">low</td>
+<td align="left">length</td>
+<td align="right">15</td>
+<td align="right">4.533</td>
+<td align="right">0.915</td>
+<td align="right">3.0</td>
+<td align="right">4.00</td>
+<td align="right">6.00</td>
+</tr>
+<tr class="even">
+<td align="left">low</td>
+<td align="left">frequency</td>
+<td align="right">15</td>
+<td align="right">4.146</td>
+<td align="right">0.203</td>
+<td align="right">3.8</td>
+<td align="right">4.14</td>
+<td align="right">4.40</td>
+</tr>
+<tr class="odd">
+<td align="left">low</td>
+<td align="left">n_density</td>
+<td align="right">15</td>
+<td align="right">7.867</td>
+<td align="right">5.604</td>
+<td align="right">1.0</td>
+<td align="right">5.00</td>
+<td align="right">20.00</td>
+</tr>
+<tr class="even">
+<td align="left">low</td>
+<td align="left">old20</td>
+<td align="right">15</td>
+<td align="right">1.473</td>
+<td align="right">0.293</td>
+<td align="right">1.0</td>
+<td align="right">1.60</td>
+<td align="right">1.90</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  report<span class="sc">$</span>comparisons,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="at">caption =</span> <span class="fu">paste</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>    <span class="st">&quot;Standardised mean differences with 90% confidence intervals, plus the&quot;</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    <span class="st">&quot;complementary TOST equivalence test&quot;</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  )</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>)</span></code></pre></div>
+<table>
+<caption>Standardised mean differences with 90% confidence intervals,
+plus the complementary TOST equivalence test</caption>
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="10%" />
+<col width="10%" />
+<col width="11%" />
+<col width="11%" />
+<col width="8%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">condition</th>
+<th align="left">reference</th>
+<th align="left">dimension</th>
+<th align="right">cohens_d</th>
+<th align="right">d_ci_low</th>
+<th align="right">d_ci_high</th>
+<th align="right">var_ratio</th>
+<th align="right">tost_p</th>
+<th align="left">equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">low</td>
+<td align="left">high</td>
+<td align="left">length</td>
+<td align="right">0.000</td>
+<td align="right">-0.621</td>
+<td align="right">0.621</td>
+<td align="right">1.000</td>
+<td align="right">0.0909</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="even">
+<td align="left">low</td>
+<td align="left">high</td>
+<td align="left">frequency</td>
+<td align="right">4.343</td>
+<td align="right">3.722</td>
+<td align="right">4.964</td>
+<td align="right">0.229</td>
+<td align="right">1.0000</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="odd">
+<td align="left">low</td>
+<td align="left">high</td>
+<td align="left">n_density</td>
+<td align="right">-0.011</td>
+<td align="right">-0.632</td>
+<td align="right">0.610</td>
+<td align="right">0.820</td>
+<td align="right">0.0958</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="even">
+<td align="left">low</td>
+<td align="left">high</td>
+<td align="left">old20</td>
+<td align="right">-0.023</td>
+<td align="right">-0.644</td>
+<td align="right">0.598</td>
+<td align="right">1.044</td>
+<td align="right">0.1010</td>
+<td align="left">FALSE</td>
+</tr>
+</tbody>
+</table>
+<p>The manipulated dimension (frequency) differs strongly, while the
+controlled dimensions (length, neighbourhood density and OLD20) are
+closely equated. The report leads with the standardised mean difference
+(<code>cohens_d</code>) and its 90% confidence interval
+(<code>d_ci_low</code>, <code>d_ci_high</code>). A non-significant
+difference test is not evidence of matching, and its outcome depends on
+the number of items. The effect size and its interval, whose upper limit
+is the largest imbalance still consistent with the stimuli, are
+therefore the primary summary. The TOST equivalence test is reported
+alongside as a bound-referenced verdict.</p>
+</div>
+<div id="generate-the-experiment-scripts" class="section level2">
+<h2>Generate the experiment scripts</h2>
+<p>The trial is described once, as a sequence of events, and each
+presentation target renders that same description. One call therefore
+produces all three.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;lexsync_demo&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">dir.create</span>(out, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">export_experiments</span>(stim, design, schema, out)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="fu">basename</span>(<span class="fu">unlist</span>(files))</span></code></pre></div>
+<pre><code>[1] &quot;vignette_demo_english_psychopy.py&quot; &quot;vignette_demo_english.osexp&quot;      
+[3] &quot;vignette_demo_english.html&quot;       </code></pre>
+<p>Three experiments are generated from one description of the trial.
+The PsychoPy script binds each onset trigger to the stimulus flip with
+<code>win.callOnFlip</code>. The OpenSesame <code>.osexp</code> draws
+and shows the word inside an <code>inline_script</code> and sends the
+marker immediately after <code>show()</code> returns, which it does at
+the display refresh. The jsPsych HTML runs the same procedure in a
+browser and records the trigger codes in the trial data, since a browser
+cannot address a parallel port. Neither the matching nor the script
+generation requires PsychoPy, OpenSesame or any hardware to be
+installed.</p>
+</div>
+<div id="where-next" class="section level2">
+<h2>Where next</h2>
+<p>The pipeline does all of the above in one call.
+<code>run_pipeline()</code> on a design configuration writes the
+stimuli, the reports, the three experiments, a materials datasheet
+recording the provenance and realised control of the run, and a run
+log.</p>
+<p>Four further articles go into depth. <em>Matching, dimensions and
+designs</em> covers the lexical dimensions and their units, the four
+matching methods and when each one suits, tolerance windows, continuous
+designs and how to read the validation report. <em>Experiments,
+paradigms and EEG triggers</em> covers the trial-event model, the
+paradigm registry, the three presentation targets and the flip-locked
+trigger timing. <em>Reproducibility, parity and the materials
+datasheet</em> covers the cross-engine guarantee, how it is achieved and
+where it stops. <em>The app</em> covers the Shiny front-end in the
+repository, which assembles a design through a browser tab, runs this
+same pipeline and exports the code that reproduces the run.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

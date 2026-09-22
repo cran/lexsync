@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>The app</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">The app</h1>
+
+
+
+<p>Not every design has to be written as code. The repository carries a
+Shiny front-end over this package which drives the whole workflow
+through a browser tab, from choosing a paradigm to downloading the
+stimuli, the realised-control report and the materials datasheet. It is
+a front-end and nothing more. Every number it shows comes from the
+installed <code>lexsync</code> package, never from a re-implementation,
+and the design it assembles is an ordinary YAML file that you can save,
+share and run from a script afterwards.</p>
+<p>This article describes the app without running it, since the app
+needs a live server, so the code below is shown but not evaluated.</p>
+<div id="launching-it" class="section level2">
+<h2>Launching it</h2>
+<p>The app is not part of the package. It lives in the repository, under
+<code>apps/r_shiny</code>, beside the corpora and the example item
+tables that it reads, so launch it from a clone. The interface needs
+shiny, bslib and DT, and the download button needs zip. All four are
+listed in the package’s <code>Suggests</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;shiny&quot;</span>, <span class="st">&quot;bslib&quot;</span>, <span class="st">&quot;DT&quot;</span>, <span class="st">&quot;zip&quot;</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>shiny<span class="sc">::</span><span class="fu">runApp</span>(<span class="st">&quot;apps/r_shiny&quot;</span>, <span class="at">port =</span> <span class="dv">8502</span>)</span></code></pre></div>
+<p>Run that from the root of the clone. The app looks for
+<code>corpora/derived/</code> in the working directory and then in the
+two directories above it, and it finds the example item tables under
+<code>items/</code> the same way, so a launch from somewhere else leaves
+it with no lexicon to offer. It opens at
+<code>http://127.0.0.1:8502</code>.</p>
+<p>The repository also carries a launcher for the terminal, which takes
+an optional port and is what a container or a headless session should
+use.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">Rscript</span> apps/r_shiny/run.R          <span class="co"># 8502 unless a port is given</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">Rscript</span> apps/r_shiny/run.R 8600</span></code></pre></div>
+<p>The launcher fixes the host and the port and never opens a browser
+itself. A server started with an auto-launched browser or an unbound
+port can exit the moment it is backgrounded, which is the usual reason
+an app appears not to stay up in an automated environment.</p>
+</div>
+<div id="the-sidebar" class="section level2">
+<h2>The sidebar</h2>
+<p>Whatever the paradigm, the same few fields sit in the sidebar.
+‘Paradigm’ chooses between a factorial word contrast drawn from a
+corpus, lexical decision with generated pseudowords, priming and
+self-paced reading, the last two reading prepared items from a table.
+‘Design name’ and ‘Language label’ become the slug that every written
+file is named after, exactly as in a design file, so
+<code>my_design</code> plus <code>english</code> gives
+<code>my_design_english_stimuli_R.csv</code> and its companions.
+‘Stimulus font’ overrides the presentation font, which matters for a
+non-Latin script, and it reaches the design only when it differs from
+the <code>Courier New</code> default, leaving the schema in charge
+otherwise.</p>
+<p>Under those the sidebar prints the version of lexsync that is
+running, with the reminder that the app runs the installed package. If
+that line disagrees with the version you expect, the app is reading a
+different install.</p>
+</div>
+<div id="describing-the-design" class="section level2">
+<h2>Describing the design</h2>
+<p>The main panel changes with the paradigm, since a corpus-matched
+contrast and a prepared item table need different things.</p>
+<div id="a-factorial-word-contrast" class="section level3">
+<h3>A factorial word contrast</h3>
+<p>‘Lexicon’ lists the derived corpora the clone holds under
+<code>corpora/derived/</code>, which are English, Spanish, a Spanish
+lexicon carrying grammatical gender, and Mandarin Chinese. Two sliders
+then narrow the lexicon to the candidate pool the design will consider
+at all, one for length in letters or characters and one for frequency in
+Zipf. They are the design’s <code>pool_filters</code>, and they are a
+step that matters, because matching never re-reads them.</p>
+<p>The conditions are an editable table. Each row names a condition and
+carves it out of the pool, either by a numeric window through the
+<code>dimension</code>, <code>lower</code> and <code>upper</code>
+columns or by a set of comma-separated values through
+<code>categories</code>, which is what a categorical column such as the
+gender of the Spanish lexicon needs. The optional
+<code>dimension2</code>, <code>lower2</code> and <code>upper2</code>
+columns add a second factor to the same row, so one row can define a
+full cell of a 2 × 2. Three presets fill the table in one click, a high
+versus low frequency contrast, a dense versus sparse neighbourhood
+contrast and a 2 × 2 of frequency by neighbourhood, and every cell stays
+editable afterwards, so a preset is only a starting point.</p>
+<p>Below the table sit the choices that govern the match itself. ‘Items
+per condition’ sets how many stimuli each condition should hold.
+‘Matching method’ offers the four the engine implements,
+<code>standardised_euclidean</code>, <code>joint</code>,
+<code>mahalanobis</code> and <code>optimal</code>. ‘Resampled disjoint
+sets’ draws several matched sets that share no item, which is what lets
+items be treated as a random factor, and zero switches it off. ‘Match
+on’ picks the dimensions to equate across conditions, from length,
+frequency, neighbourhood N, OLD20, syllable count and bigram frequency.
+‘Counterbalancing lists’ sets how many lists the items are rotated
+across.</p>
+<p>The advanced panel underneath holds one tolerance window per matched
+dimension, the half-width in standard deviations of the band a candidate
+must fall inside. It is closed by default because the schema already
+carries a sensible default for every dimension, and a zero there leaves
+that default alone, where you might expect it to pin the window to
+nothing. Reproducing the exact window of a published study is the usual
+reason to touch the panel at all, and the panel itself gives the worked
+example that <em>Matching, dimensions and designs</em> discusses, a
+frequency k of 0.111 for a band of the mean plus or minus a ninth of a
+standard deviation.</p>
+</div>
+<div id="lexical-decision" class="section level3">
+<h3>Lexical decision</h3>
+<p>A lexical-decision design takes the same lexicon and pool filters and
+then asks only for the number of items per condition, words and
+pseudowords being equal in number, and for the generator.
+<code>letter_substitution</code>, the engine default, changes as few
+single letters as it can while keeping every bigram attested.
+<code>subsyllabic</code> swaps whole onset, nucleus and coda
+constituents in the manner of Wuggy (Keuleers &amp; Brysbaert, 2010).
+Both are deterministic, so the pseudowords are the same ones the package
+would generate from a script.</p>
+</div>
+<div id="priming-and-self-paced-reading" class="section level3">
+<h3>Priming and self-paced reading</h3>
+<p>These two paradigms read prepared items instead of selecting any, so
+no corpus and no matching are involved. The app uses the bundled example
+table for the paradigm, <code>items/priming_pairs_en.csv</code> or
+<code>items/spr_sentences_en.csv</code>, and asks only how many
+counterbalancing lists to build.</p>
+</div>
+</div>
+<div id="running-it" class="section level2">
+<h2>Running it</h2>
+<p>‘Run design’ assembles the design, writes it to a
+<code>design.yaml</code> in a temporary directory with the lexicon and
+item paths resolved to absolute ones, and hands it to
+<code>run_pipeline()</code> with the schema that ships inside the
+package. Two conditions are checked first, that a lexicon has been
+chosen where the paradigm needs one and that a factorial design defines
+at least two conditions, and anything the pipeline itself refuses comes
+back as the error the pipeline raised, in its own words. A successful
+run reports how many rows were selected and opens the results.</p>
+</div>
+<div id="reading-the-results" class="section level2">
+<h2>Reading the results</h2>
+<p>The results arrive as six tabs, which between them cover what was
+selected, whether it is any good, what it will present and how to
+reproduce it.</p>
+<p>‘Stimuli’ is the selected set as a table, the same one the run wrote
+to disk.</p>
+<p>‘Realised control’ is the part that decides whether the set is
+usable. It reports Cohen’s <em>d</em> against the anchor condition for
+each controlled dimension, with its 90% confidence interval, the
+variance ratio and the verdict of the two one-sided tests procedure,
+then draws the absolute standardised mean difference per dimension as a
+bar chart with a dashed line at 0.5 standard deviations. Manipulated
+dimensions stand well above that line and matched ones sit near zero, so
+the chart shows immediately whether the matching worked. The
+per-condition descriptive statistics follow underneath. A design drawn
+from an item table produces no corpus-matching report, and the tab says
+as much where an empty table would otherwise sit.</p>
+<p>‘Datasheet’ renders the materials datasheet for the run, carrying the
+provenance of the corpus, the checksums, the realised control and the
+pre-registration skeleton.</p>
+<p>‘Experiment scripts’ offers one download per generated experiment,
+the PsychoPy script, the OpenSesame <code>.osexp</code> and the jsPsych
+HTML that runs in a browser, all three compiled from the same trial
+description.</p>
+<p>‘Reproducible code’ is what stops a session in the app from being a
+dead end. It shows the design configuration as YAML, with
+repository-relative paths such as <code>corpora/derived/en.csv</code>
+rather than the temporary ones the run used, followed by the one-line R,
+Python and command-line calls that reproduce the same operation. Saving
+the YAML under the name the panel gives it and running any of those
+three lines repeats the run outside the app.</p>
+<p>‘Download’ packages the design and every artefact the run wrote, the
+stimuli, the reports, the datasheet, the run log and the three
+experiments, into a single archive named after the design.</p>
+</div>
+<div id="what-you-leave-with" class="section level2">
+<h2>What you leave with</h2>
+<p>A session in the app ends with the same artefacts a scripted run
+produces, which is why it was built as a front-end over the package and
+not as a tool of its own. The design YAML is portable across both
+engines, so a set assembled here can be reproduced by a collaborator
+working in Python, byte for byte under the deterministic matching
+methods. <em>Reproducibility, parity and the materials datasheet</em>
+covers what that guarantee promises and where it stops, and
+<em>Matching, dimensions and designs</em> reads the realised-control
+report column by column.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

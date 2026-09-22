@@ -1,0 +1,165 @@
+---
+title: "About"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{About}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "",
+  R.options = list(
+    cli.num_colors = 1,
+    cli.hyperlink = FALSE,
+    crayon.enabled = FALSE,
+    width = 80
+  )
+)
+# Console colour carries no meaning on a rendered page. pkgdown turns it on for
+# its own build, and the escape sequences then reach the reader as literal text,
+# so colour is switched off here for a plain vignette render and a site build
+# alike. The fixed width keeps printed output inside the documentation column.
+```
+
+## Citing lexsync
+
+If lexsync contributes to published work, please cite it. Nothing has been
+deposited on Zenodo yet, so the citation is a software reference pointing at the
+repository rather than at a DOI.
+
+> Bernabeu, P. (2026). lexsync: Lexical optimisation and hardware-timed
+> experiment generation. R package version
+> `r packageVersion("lexsync")`. https://github.com/pablobernabeu/lexsync
+
+```{r bibtex, echo = FALSE, results = "asis"}
+# Build the BibTeX entry from the installed version so it never drifts, then
+# render it with a copy button and a download link. The button uses the
+# browser clipboard API; the link is a self-contained data URI, so neither
+# depends on a static file being shipped alongside the site.
+ver <- as.character(utils::packageVersion("lexsync"))
+bib <- paste(
+  "@Manual{lexsync,",
+  "  title  = {{lexsync}: Lexical optimisation and hardware-timed experiment generation},",
+  "  author = {Pablo Bernabeu},",
+  "  year   = {2026},",
+  sprintf("  note   = {R package version %s},", ver),
+  "  url    = {https://github.com/pablobernabeu/lexsync},",
+  "}",
+  sep = "\n"
+)
+esc <- function(x) {
+  x <- gsub("&", "&amp;", x, fixed = TRUE)
+  x <- gsub("<", "&lt;", x, fixed = TRUE)
+  gsub(">", "&gt;", x, fixed = TRUE)
+}
+uri <- paste0(
+  "data:application/x-bibtex;charset=utf-8,",
+  utils::URLencode(bib, reserved = TRUE)
+)
+cat(sprintf(
+'<div class="citation-bibtex">
+<pre id="lexsync-bibtex"><code>%s</code></pre>
+<p class="citation-bibtex-actions">
+<button type="button" class="btn btn-primary btn-sm" onclick="lexsyncCopyBibtex(this)">Copy BibTeX</button>
+<a class="btn btn-outline-primary btn-sm" download="lexsync.bib" href="%s">Download .bib</a>
+</p>
+</div>
+<script>
+function lexsyncCopyBibtex(btn) {
+  var code = document.getElementById("lexsync-bibtex");
+  navigator.clipboard.writeText(code.innerText).then(function () {
+    var label = btn.textContent;
+    btn.textContent = "Copied";
+    setTimeout(function () { btn.textContent = label; }, 1500);
+  });
+}
+</script>
+', esc(bib), uri))
+```
+
+R users can also retrieve this citation directly with `citation("lexsync")`. The
+repository carries a machine-readable
+[`CITATION.cff`](https://github.com/pablobernabeu/lexsync/blob/main/CITATION.cff)
+as well, which GitHub turns into a ready-made citation through its 'Cite this
+repository' button and which reference managers can import.
+
+A manuscript describing lexsync is in preparation, under the title *lexsync: A
+cross-platform pipeline for multidimensional lexical optimisation and
+hardware-timed experiment generation*. It is unpublished and has no venue as
+yet. `CITATION.cff` already names it as the preferred citation for the day it
+appears, and until then the software reference above is the one to use.
+
+## Citing the corpus
+
+The software citation covers the tool, not the data your items came from. The
+corpora are third-party work with terms of their own, and every one is credited,
+with its licence and its retrieval date, in
+[`corpora/ATTRIBUTION.md`](https://github.com/pablobernabeu/lexsync/blob/main/corpora/ATTRIBUTION.md).
+Each run's materials datasheet records the source file the run read and its
+SHA-256, so the corpus behind a published stimulus set stays identifiable long
+after the run, and a reader can check that the file they hold is the file the
+selection was made from.
+
+## The developer
+
+[Pablo Bernabeu](https://pablobernabeu.github.io) is a researcher in the
+Department of Education at the University of Oxford, with hands-on experience of
+behavioural experiments, EEG, corpus analysis, computational modelling and
+statistics. He develops open, reproducible research software in R and Python,
+and is a Fellow of the Software Sustainability Institute. His
+[ORCID record](https://orcid.org/0000-0003-1083-2460) lists his other work.
+
+lexsync has a feature-parity twin in Python, documented at
+[its own site](https://pablobernabeu.github.io/lexsync/python/). The two
+packages are built from one repository and released in step under one version,
+and under the deterministic matching methods they select byte-identical stimuli
+from the same lexicon and design. A group can therefore work in whichever
+language suits it without the materials diverging.
+
+## Licence
+
+The source code is released under the
+[MIT licence](https://pablobernabeu.github.io/lexsync/r/LICENSE.html). The
+corpus derivatives bundled with the package are not covered by it. They inherit
+share-alike terms from the corpora they were built from, so they are distributed
+under CC BY-SA 4.0 instead, for the reasons
+[`LICENSE-DATA`](https://github.com/pablobernabeu/lexsync/blob/main/LICENSE-DATA)
+sets out, with the sources and retrieval dates recorded in
+[`corpora/ATTRIBUTION.md`](https://github.com/pablobernabeu/lexsync/blob/main/corpora/ATTRIBUTION.md). The distinction becomes practical if you redistribute
+a lexicon derived from the bundled data, since that means crediting the original
+corpus authors, saying what was changed and passing the same licence on. Nothing
+of the sort applies to the code you write with the package. A reader who has only
+the package rather than the repository will find the same terms, and the credit
+they require, in the `LICENSE.note` file that ships in the sources.
+
+## Versioning and archival
+
+lexsync follows semantic versioning, and the R and Python packages share one
+version number so that a citation identifies the same state of both. Releases
+are tagged on GitHub, and the
+[changelog](https://pablobernabeu.github.io/lexsync/r/news/index.html) records
+what changed in each of them.
+
+Archival is prepared but not yet done. The deposition metadata sits in
+[`.zenodo.json`](https://github.com/pablobernabeu/lexsync/blob/main/.zenodo.json),
+waiting on the first published release, and no version has been archived, so
+there is no concept DOI to cite. The package is not on CRAN either. Cite the
+version, as the reference above does, until an archive exists to point at.
+
+## Contributing and support
+
+Bugs and feature requests are welcome on the
+[issue tracker](https://github.com/pablobernabeu/lexsync/issues), which is also
+where questions about a design or a generated experiment are best raised. The
+[contributing guide](https://github.com/pablobernabeu/lexsync/blob/main/.github/CONTRIBUTING.md) describes the development setup for
+both engines and the parity rule that governs every change, and everyone taking
+part is asked to honour the [Code of Conduct](https://github.com/pablobernabeu/lexsync/blob/main/.github/CODE_OF_CONDUCT.md).
+
+A report worth acting on carries the design YAML that was run alongside the run
+log that `run_pipeline()` wrote beside the results. Between them they pin the
+inputs and every step that ran, which is usually enough to reproduce a problem
+without a further round of questions. Where a corpus is involved, the materials
+datasheet from the same run identifies it by path and checksum.
