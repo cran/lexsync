@@ -17,11 +17,9 @@
 #
 # python_workflow/tests/test_categorisation.py asserts the same properties.
 
-cat_repo <- function(...) {
-  # The tests run with the installed package, so the repository is two levels up from
-  # the R package directory rather than reachable from the library path.
-  file.path(normalizePath(file.path(getwd(), "..", "..", "..")), ...)
-}
+# The tests run with the installed package, so the tables are reached through the
+# repository around the package rather than the library path (see helper-repo.R).
+cat_repo <- function(...) repo_path(..., message = "repository item table absent")
 cat_items <- function() cat_repo("items", "categorisation_en.csv")
 cat_design_path <- function() cat_repo("config", "design_en_categorisation.yaml")
 cat_schema <- function() yaml::read_yaml(system.file("extdata", "schema.yaml", package = "lexsync"))

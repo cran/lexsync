@@ -14,11 +14,11 @@
 #
 # Comparing the bytes is the check that catches it. Twinned with
 # python_workflow/tests/test_templates.py.
-# Repository-level checks skip gracefully when the package is checked in
-# isolation, as test-config.R already does.
+# Repository-level checks skip when the package is checked away from its
+# repository; helper-repo.R says why a directory named templates/ is not enough.
 
 repo_templates_dir <- function() {
-  path <- testthat::test_path("..", "..", "..", "templates")
+  path <- repo_path("templates", message = "repository templates not available")
   testthat::skip_if_not(dir.exists(path), "repository templates not available")
   path
 }
@@ -45,8 +45,11 @@ test_that("each packaged template is byte-identical to the repository copy", {
   canonical_dir <- repo_templates_dir()
   packaged_dir <- packaged_templates_dir()
   for (rel in relative_tree(canonical_dir)) {
-    expect_identical(read_raw(file.path(packaged_dir, rel)),
-                     read_raw(file.path(canonical_dir, rel)),
-                     info = rel)
+    # A template missing from the mirror is a failure in its own right; reading it
+    # would only add an unrelated connection error and warning to the report.
+    packaged <- file.path(packaged_dir, rel)
+    expect_true(file.exists(packaged), info = rel)
+    if (!file.exists(packaged)) next
+    expect_identical(read_raw(packaged), read_raw(file.path(canonical_dir, rel)), info = rel)
   }
 })

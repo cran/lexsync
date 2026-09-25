@@ -4,7 +4,14 @@
 \alias{export_experiments}
 \title{Export all presentation targets (PsychoPy, OpenSesame, jsPsych)}
 \usage{
-export_experiments(stimuli, design, schema, outdir, base = NULL)
+export_experiments(
+  stimuli,
+  design,
+  schema,
+  outdir,
+  base = NULL,
+  conditions = NULL
+)
 }
 \arguments{
 \item{stimuli}{Stimuli with trigger columns (see \code{\link[=assign_triggers]{assign_triggers()}}).}
@@ -16,10 +23,20 @@ export_experiments(stimuli, design, schema, outdir, base = NULL)
 \item{outdir}{Output directory.}
 
 \item{base}{Optional file-name stem.}
+
+\item{conditions}{Optional character vector of condition labels in the order
+that assigns their trigger codes (see \code{\link[=assign_triggers]{assign_triggers()}}). \code{NULL} (the
+default) takes the order of the design's \code{conditions}.}
 }
 \value{
 A named list of generated file paths.
 }
 \description{
-Export all presentation targets (PsychoPy, OpenSesame, jsPsych)
+Assigns the EEG trigger codes with \code{\link[=assign_triggers]{assign_triggers()}} and then writes each
+target. The condition codes follow \code{conditions}, which defaults to the order of
+the design's \code{conditions} entries, so in a design that declares its conditions
+the first is 101, the second 102, and so on, whatever order the counterbalanced
+trials put them in. A design with no \code{conditions} block (a generated lexical
+decision, an item table) falls back to the order of first appearance, unless
+\code{conditions} is given.
 }

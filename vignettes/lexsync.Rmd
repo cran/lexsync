@@ -37,6 +37,14 @@ for the default matching methods. The optional `mahalanobis` and `optimal` metho
 are equivalent but not byte-identical, because a covariance inverse and an
 assignment solver differ in their last bits between the two platforms.
 
+The package is on [CRAN](https://CRAN.R-project.org/package=lexsync), and the
+[README](https://pablobernabeu.github.io/lexsync/r/index.html#installation)
+also covers installing the development version.
+
+```{r install, eval = FALSE}
+install.packages("lexsync")
+```
+
 ```{r setup}
 library(lexsync)
 schema <- yaml::read_yaml(

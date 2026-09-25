@@ -26,13 +26,13 @@ knitr::opts_chunk$set(
 
 ## Citing lexsync
 
-If lexsync contributes to published work, please cite it. Nothing has been
-deposited on Zenodo yet, so the citation is a software reference pointing at the
-repository rather than at a DOI.
+If lexsync contributes to published work, please cite it. The reference below
+points at the DOI that [CRAN](https://CRAN.R-project.org/package=lexsync)
+assigned to the package.
 
 > Bernabeu, P. (2026). lexsync: Lexical optimisation and hardware-timed
 > experiment generation. R package version
-> `r packageVersion("lexsync")`. https://github.com/pablobernabeu/lexsync
+> `r packageVersion("lexsync")`. https://doi.org/10.32614/CRAN.package.lexsync
 
 ```{r bibtex, echo = FALSE, results = "asis"}
 # Build the BibTeX entry from the installed version so it never drifts, then
@@ -46,7 +46,8 @@ bib <- paste(
   "  author = {Pablo Bernabeu},",
   "  year   = {2026},",
   sprintf("  note   = {R package version %s},", ver),
-  "  url    = {https://github.com/pablobernabeu/lexsync},",
+  "  doi    = {10.32614/CRAN.package.lexsync},",
+  "  url    = {https://CRAN.R-project.org/package=lexsync},",
   "}",
   sep = "\n"
 )
@@ -80,8 +81,9 @@ function lexsyncCopyBibtex(btn) {
 ', esc(bib), uri))
 ```
 
-R users can also retrieve this citation directly with `citation("lexsync")`. The
-repository carries a machine-readable
+R users can also retrieve this citation with `citation("lexsync")`, although
+the 0.1.0 release on CRAN, built before the DOI existed, prints the GitHub
+address and no DOI. The repository carries a machine-readable
 [`CITATION.cff`](https://github.com/pablobernabeu/lexsync/blob/main/CITATION.cff)
 as well, which GitHub turns into a ready-made citation through its 'Cite this
 repository' button and which reference managers can import.
@@ -89,8 +91,8 @@ repository' button and which reference managers can import.
 A manuscript describing lexsync is in preparation, under the title *lexsync: A
 cross-platform pipeline for multidimensional lexical optimisation and
 hardware-timed experiment generation*. It is unpublished and has no venue as
-yet. `CITATION.cff` already names it as the preferred citation for the day it
-appears, and until then the software reference above is the one to use.
+yet. Once it is accepted, `CITATION.cff` will name it as the preferred citation,
+and until then the software reference above is the one to use.
 
 ## Citing the corpus
 
@@ -143,11 +145,14 @@ are tagged on GitHub, and the
 [changelog](https://pablobernabeu.github.io/lexsync/r/news/index.html) records
 what changed in each of them.
 
-Archival is prepared but not yet done. The deposition metadata sits in
-[`.zenodo.json`](https://github.com/pablobernabeu/lexsync/blob/main/.zenodo.json),
-waiting on the first published release, and no version has been archived, so
-there is no concept DOI to cite. The package is not on CRAN either. Cite the
-version, as the reference above does, until an archive exists to point at.
+The R package is on [CRAN](https://CRAN.R-project.org/package=lexsync), which
+keeps the source of every version it publishes. A single DOI,
+[10.32614/CRAN.package.lexsync](https://doi.org/10.32614/CRAN.package.lexsync),
+covers all of those versions, so the reference above names the version as well.
+Zenodo also archives every GitHub release, which carries both packages, under
+the concept DOI [10.5281/zenodo.22906962](https://doi.org/10.5281/zenodo.22906962). That is the
+identifier the Python package cites, since the CRAN DOI names the R package
+alone.
 
 ## Contributing and support
 

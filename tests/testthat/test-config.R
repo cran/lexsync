@@ -8,7 +8,7 @@
 bundled_schema <- function() system.file("extdata", "schema.yaml", package = "lexsync")
 
 repo_file <- function(...) {
-  path <- testthat::test_path("..", "..", "..", ...)
+  path <- repo_path(..., message = "repository configuration not available")
   testthat::skip_if_not(file.exists(path), "repository configuration not available")
   path
 }

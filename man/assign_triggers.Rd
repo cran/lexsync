@@ -4,10 +4,14 @@
 \alias{assign_triggers}
 \title{Assign EEG trigger codes to stimuli}
 \usage{
-assign_triggers(stimuli)
+assign_triggers(stimuli, conditions = NULL)
 }
 \arguments{
 \item{stimuli}{A stimuli data frame.}
+
+\item{conditions}{Optional character vector of condition labels, in the order
+that assigns their codes from 101 upwards. \code{NULL} (the default) numbers the
+conditions in order of first appearance.}
 }
 \value{
 \code{stimuli} with trigger columns added.
@@ -18,4 +22,26 @@ Adds \code{condition_trigger} (101, 102, ... per condition) and \code{item_trigg
 "item", or carry their own integer codes. The item range holds 200 codes (an
 8-bit-port constraint), so past 200 sets the codes wrap and repeat, and a
 runtime notice says so.
+}
+\details{
+The condition codes follow \code{conditions} when it is given: its first entry is
+101, its second 102, and so on, whether or not every entry occurs in
+\code{stimuli}, so the same condition keeps the same code in a subset such as a
+practice block. A condition present in \code{stimuli} but missing from
+\code{conditions} takes the next free codes, in code-point order of its label.
+Either way the mapping depends only on the labels, never on the row order.
+Without \code{conditions}, the codes follow the order in which the conditions first
+appear in \code{stimuli}, as in lexsync 0.1.0. On a shuffled trial list that order
+comes from the shuffle, so a different seed can swap two conditions' codes.
+\code{\link[=export_experiments]{export_experiments()}} passes the design's order, and the pipeline passes the
+order of the design's \code{conditions}, followed by any other condition in the
+order the item source lists it.
+}
+\examples{
+stim <- data.frame(condition = c("low", "high", "low", "high"), set = c(1, 1, 2, 2))
+# First appearance: low = 101, high = 102.
+unique(assign_triggers(stim)[, c("condition", "condition_trigger")])
+# The design's order: high = 101, low = 102, however the rows are shuffled.
+unique(assign_triggers(stim, conditions = c("high", "low"))[
+  , c("condition", "condition_trigger")])
 }

@@ -692,7 +692,7 @@ intervals, variance ratios and TOST verdicts. What it could have chosen
 instead is in <code>candidate_pool</code>, which records how many items
 satisfied each condition before matching.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>ds<span class="sc">$</span>materials_source<span class="sc">$</span>sha256</span></code></pre></div>
-<pre><code>[1] &quot;a3a8f14b3d922cd07b746c9809ea7191d6a5155ca9accd055d8bffe0e2b41413&quot;</code></pre>
+<pre><code>[1] &quot;939ee46015bc03cdb3fa12e2598f763b818c941118a8170bb408386277945e01&quot;</code></pre>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">str</span>(ds<span class="sc">$</span>selection<span class="sc">$</span>tolerance_k)</span></code></pre></div>
 <pre><code>List of 4
  $ length   : num 2
@@ -722,7 +722,7 @@ design, and a window is applied only to a dimension named in
  $ seed    : int 2026
  $ versions:List of 10
   ..$ engine    : chr &quot;R&quot;
-  ..$ lexsync   : chr &quot;0.1.0&quot;
+  ..$ lexsync   : chr &quot;0.1.1&quot;
   ..$ R         : chr &quot;4.6.1&quot;
   ..$ readr     : chr &quot;2.2.0&quot;
   ..$ stringdist: chr &quot;0.9.17&quot;
@@ -751,7 +751,7 @@ realised-control table. The smallest condition was selected from 71
 eligible candidates, and the selection was deterministic and blind to any
 outcome measure. Materials were counterbalanced into 1 list(s) (a factorial
 split) and generated for PsychoPy, OpenSesame and jsPsych. The selection is
-deterministic and reproducible (seed 2026; lexsync 0.1.0).</code></pre>
+deterministic and reproducible (seed 2026; lexsync 0.1.1).</code></pre>
 <p>The paragraph is generated from the record, so it cannot disagree
 with the stimuli. It states the candidate-pool size, and it adds the
 cross-engine caveat when the design’s method warrants it. On the
@@ -829,8 +829,8 @@ it did.</p>
 <pre><code># lexsync run log: vignette_repro
 
 - Engine: R 4.6.1
-- Started: 2026-09-12 11:10:29.821358
-- Finished: 2026-09-12 11:10:29.895051
+- Started: 2026-09-24 23:33:23.870913
+- Finished: 2026-09-24 23:33:23.89337
 
 ## Run metadata
 
@@ -839,11 +839,11 @@ it did.</p>
 
 ## Steps
 
-- **2026-09-12 11:10:29.860648**: lexicon loaded: 3000 words
+- **2026-09-24 23:33:23.878098**: lexicon loaded: 3000 words
     - words: 3000
-- **2026-09-12 11:10:29.869375**: pool after filters: 782 words
-- **2026-09-12 11:10:29.878956**: wrote &#39;stimuli.csv&#39;
-    - path: C:\Users\pablob\AppData\Local\Temp\Rtmpe2MJ5N/lexsync_repro/stimuli.csv
+- **2026-09-24 23:33:23.882038**: pool after filters: 782 words
+- **2026-09-24 23:33:23.886431**: wrote &#39;stimuli.csv&#39;
+    - path: C:\Users\pablob\AppData\Local\Temp\RtmpuipFTl/lexsync_repro/stimuli.csv
     - rows: 30
     - md5: 323fcd3af815f8a0ca61deddeb45409a</code></pre>
 <p>The pipeline builds this log as it goes, recording each stage with

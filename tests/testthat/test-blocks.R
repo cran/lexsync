@@ -25,8 +25,13 @@
 
 # Resolved ONCE, at load, because blk_in_repo() changes the working directory: a helper
 # that walked up from getwd() would then start from the repository root and go too far.
-BLK_REPO <- normalizePath(file.path(getwd(), "..", "..", ".."), mustWork = FALSE)
-blk_repo <- function(...) file.path(BLK_REPO, ...)
+# NULL away from the repository (see helper-repo.R), where the tests below skip.
+BLK_REPO <- repo_root()
+blk_repo <- function(...) {
+  skip_on_cran()
+  if (is.null(BLK_REPO)) skip("repository design absent")
+  file.path(BLK_REPO, ...)
+}
 blk_schema <- function() yaml::read_yaml(system.file("extdata", "schema.yaml", package = "lexsync"))
 blk_design_path <- function() blk_repo("config", "design_en_lexdec_blocks.yaml")
 

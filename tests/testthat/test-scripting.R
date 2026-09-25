@@ -13,6 +13,53 @@ test_that("assign_triggers produces valid EEG codes", {
   expect_setequal(unique(stim$condition_trigger), c(101, 102))
 })
 
+test_that("condition codes follow the given order, not the row order", {
+  # After counterbalance() shuffles the trials, first appearance depends on the
+  # seed, so it cannot be what fixes a condition's code. Pinned identically in
+  # test_scripting.py.
+  stim <- data.frame(condition = c("low", "high", "low", "high"), set = c(1, 1, 2, 2),
+                     stringsAsFactors = FALSE)
+  code_of <- function(s) {
+    u <- unique(s[, c("condition", "condition_trigger")])
+    stats::setNames(u$condition_trigger, u$condition)[c("high", "low")]
+  }
+  # The default keeps the 0.1.0 behaviour: order of first appearance.
+  expect_equal(unname(code_of(assign_triggers(stim))), c(102, 101))
+  given <- assign_triggers(stim, conditions = c("high", "low"))
+  expect_equal(unname(code_of(given)), c(101, 102))
+  expect_equal(unname(code_of(assign_triggers(stim[4:1, ], conditions = c("high", "low")))),
+               c(101, 102))
+  # A listed condition absent from the rows keeps its code; an unlisted one takes
+  # the next free code in code-point order of its label.
+  sub <- assign_triggers(stim[stim$condition == "low", ], conditions = c("high", "low"))
+  expect_equal(unique(sub$condition_trigger), 102)
+  extra <- rbind(stim, data.frame(condition = c("zeta", "Mid"), set = c(3, 3)))
+  extra <- assign_triggers(extra[nrow(extra):1, ], conditions = "high")
+  u <- unique(extra[, c("condition", "condition_trigger")])
+  expect_equal(u$condition_trigger[match(c("high", "Mid", "low", "zeta"), u$condition)],
+               c(101, 102, 103, 104))
+})
+
+test_that("export_experiments numbers conditions in the design's order", {
+  schema <- yaml::read_yaml(system.file("extdata", "schema.yaml", package = "lexsync"))
+  stim <- data.frame(word = c("cat", "dog", "car", "cap"), condition = c("a", "b", "a", "b"),
+                     set = c(1, 1, 2, 2), trial = 1:4, stringsAsFactors = FALSE)
+  design <- list(name = "t", language = "english", timing = list(),
+                 conditions = list(list(name = "b"), list(name = "a")))
+  expect_identical(.design_condition_names(design), c("b", "a"))
+  expect_null(.design_condition_names(list(name = "t")))
+  out <- tempfile("lexsync"); dir.create(out)
+  on.exit(unlink(out, recursive = TRUE), add = TRUE)
+  export_experiments(stim, design, schema, out)
+  loop <- utils::read.csv(file.path(out, "t_english_psychopy.csv"), stringsAsFactors = FALSE)
+  expect_equal(unique(loop$condition_trigger[loop$condition == "b"]), 101)
+  expect_equal(unique(loop$condition_trigger[loop$condition == "a"]), 102)
+  # An explicit order overrides the design's.
+  export_experiments(stim, design, schema, out, conditions = c("a", "b"))
+  loop <- utils::read.csv(file.path(out, "t_english_psychopy.csv"), stringsAsFactors = FALSE)
+  expect_equal(unique(loop$condition_trigger[loop$condition == "a"]), 101)
+})
+
 test_that("more than 200 item sets discloses the trigger wrap", {
   stim <- data.frame(condition = "a", set = seq_len(201), stringsAsFactors = FALSE)
   expect_message(

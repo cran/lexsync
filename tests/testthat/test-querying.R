@@ -145,10 +145,12 @@ test_that(".lower_invariant reproduces Unicode default casing whatever the local
   expect_identical(.lower_invariant(upper), lower)
   expect_identical(.lower_invariant(NA_character_), NA_character_)
 
+  # The restore is registered before the switch, so a switch that changes the
+  # locale without reporting exactly "C" (and so skips) cannot leak into later tests.
   old <- Sys.getlocale("LC_CTYPE")
+  on.exit(Sys.setlocale("LC_CTYPE", old), add = TRUE)
   skip_if(!isTRUE(suppressWarnings(Sys.setlocale("LC_CTYPE", "C")) == "C"),
           "cannot switch to the C locale on this platform")
-  on.exit(Sys.setlocale("LC_CTYPE", old), add = TRUE)
   expect_identical(.lower_invariant(upper), lower)
 })
 

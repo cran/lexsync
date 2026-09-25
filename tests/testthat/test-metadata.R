@@ -43,7 +43,7 @@ test_that("the README's R install line names every third-party Import", {
   # source of truth for what it must install. Adding an Import without amending the
   # README leaves a documented command that fails on a fresh library, which is how
   # stringi went missing; base packages ship with R and are excluded.
-  readme <- file.path("..", "..", "..", "README.md")
+  readme <- repo_path("README.md", message = "The repository README is not in this tree.")
   if (!file.exists(readme)) skip("The repository README is not in this tree.")
   line <- grep("install.packages", readLines(readme, warn = FALSE), value = TRUE)[1]
   expect_true(!is.na(line))

@@ -16,11 +16,22 @@ A list with \code{d}, \code{ci_low} and \code{ci_high}.
 }
 \description{
 The interval is the \code{(1 - 2 * alpha)} confidence interval for the standardised
-mean difference; for \code{alpha = 0.05} this is the 90\% interval that corresponds
-exactly to a TOST decision at the .05 level (Lakens, 2017). Reporting the
-interval, rather than only a binary verdict, makes the realised imbalance and
-its sampling uncertainty explicit, and keeps the dependence on the number of
-items visible. With few items the interval is wide, so a small point estimate
-cannot be over-read as evidence of a small true difference (Sassenhagen &
-Alday, 2016).
+mean difference, so \code{alpha = 0.05} gives the 90\% interval that goes with a
+TOST decision at the .05 level (Lakens, 2017). Reporting the interval, rather
+than only a binary verdict, makes the realised imbalance and its sampling
+uncertainty explicit, and keeps the dependence on the number of items visible.
+With few items the interval is wide, so a small point estimate cannot be
+over-read as evidence of a small true difference (Sassenhagen & Alday, 2016).
+}
+\details{
+The limits are \verb{d +/- t * SE(d)}, where \code{t} is the Student t quantile on
+\code{nx + ny - 2} degrees of freedom and \code{SE(d)} is the large-sample standard
+error of d, \code{sqrt(1/nx + 1/ny + d^2 / (2 * (nx + ny)))} (Hedges & Olkin, 1985;
+Borenstein et al., 2009, eq. 4.20). The \code{d^2} term carries the sampling error
+of the pooled standard deviation. It is negligible for a well-matched control,
+where d is near zero, but it dominates for a manipulated dimension and can
+more than double the width of that interval. TOST tests the raw mean
+difference, so the interval is slightly wider than the one its decision
+implies, and when a control's limit lies close to the bound, \code{tost_p} gives the
+verdict.
 }

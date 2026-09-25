@@ -26,7 +26,8 @@ bib <- paste(
   "  author = {Pablo Bernabeu},",
   "  year   = {2026},",
   sprintf("  note   = {R package version %s},", ver),
-  "  url    = {https://github.com/pablobernabeu/lexsync},",
+  "  doi    = {10.32614/CRAN.package.lexsync},",
+  "  url    = {https://CRAN.R-project.org/package=lexsync},",
   "}",
   sep = "\n"
 )

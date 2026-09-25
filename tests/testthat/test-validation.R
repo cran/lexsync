@@ -27,6 +27,24 @@ test_that("cohens_d_ci brackets the point estimate and matches cohens_d", {
   expect_equal(ci$d, cohens_d(x, y), tolerance = 1e-9)
 })
 
+test_that("cohens_d_ci uses the large-sample standard error of d", {
+  # SE(d) = sqrt(1/nx + 1/ny + d^2 / (2 * (nx + ny))) (Hedges & Olkin, 1985;
+  # Borenstein et al., 2009, eq. 4.20). The limits are the same literals asserted
+  # in test_validation.py, so the engines cannot drift apart. The interval that
+  # left out the d^2 term had a margin of 0.372 here, not 0.596.
+  x <- rep(c(5, 6, 7, 8), 10); y <- rep(c(1, 2, 3, 4), 10)
+  ci <- cohens_d_ci(x, y)
+  expect_equal(round(c(ci$d, ci$ci_low, ci$ci_high), 9),
+               c(3.532704347, 2.937150129, 4.128258564))
+  se <- sqrt(1 / 40 + 1 / 40 + ci$d^2 / 160)
+  expect_equal(ci$ci_high - ci$d, stats::qt(0.95, 78) * se, tolerance = 1e-12)
+  # The d^2 term is what widens a large effect's interval: at the same n, a
+  # difference near zero keeps close to the known-SD margin.
+  null <- cohens_d_ci(rep(c(4, 5, 6), 20), rep(c(4, 5, 6), 20))
+  expect_equal(null$ci_high, stats::qt(0.95, 118) * sqrt(2 / 60), tolerance = 1e-12)
+  expect_gt(ci$ci_high - ci$ci_low, 1.5 * (2 * stats::qt(0.95, 78) * sqrt(1 / 20)))
+})
+
 test_that("cohens_d_ci width shrinks as the number of items grows", {
   small <- cohens_d_ci(rep(c(4, 5, 6), 2),  rep(c(4, 5, 7), 2))
   large <- cohens_d_ci(rep(c(4, 5, 6), 40), rep(c(4, 5, 7), 40))

@@ -7,18 +7,28 @@
 lexsync_cache_dir()
 }
 \value{
-A writable cache directory path (created if absent).
+The cache directory path, which need not exist yet.
 }
 \description{
-The directory \code{tools::R_user_dir("lexsync", "cache")} names for this package,
-created on first use. It is where \code{\link[=fetch_corpus]{fetch_corpus()}} puts a download unless told
-otherwise, and it is the only place the package writes to without being handed
-a path.
+The directory \code{tools::R_user_dir("lexsync", "cache")} names for this package.
+It is where \code{\link[=fetch_corpus]{fetch_corpus()}} puts a download unless told otherwise, and it is
+the only place the package writes to without being handed a path. This
+function only reports the path. The directory is created by the first
+download into it, so until then it does not exist.
 }
 \details{
-The cache persists between sessions and lexsync never prunes it. A registered
-corpus is a delimited word list, and a download is refused above 200 MB, so a
-cache holding several large corpora can reach a few hundred megabytes. It holds
-nothing that cannot be fetched again, so it may be deleted at any time, whole or
-file by file, and the next call downloads afresh.
+The cache persists between sessions. A registered corpus is a delimited word
+list, and a download is refused above 200 MB, so a cache holding several
+large corpora can reach a few hundred megabytes. Each download into the cache
+first deletes any partial download that an interrupted transfer left there
+more than a day earlier, and fetching a corpus again replaces the earlier
+copy. Downloaded corpora otherwise stay until \code{\link[=lexsync_cache_clear]{lexsync_cache_clear()}} removes
+them, one corpus at a time or all together. Nothing kept there is
+irreplaceable, so the next call downloads afresh.
+}
+\examples{
+lexsync_cache_dir()
+}
+\seealso{
+\code{\link[=lexsync_cache_clear]{lexsync_cache_clear()}} to empty the cache.
 }

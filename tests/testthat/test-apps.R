@@ -1,17 +1,15 @@
 # Tests for the Shiny front-end in apps/r_shiny. The app is not part of the
 # package, so these skip wherever it or its interface dependencies are absent
-# (a package check run from a source tarball, for instance).
+# (a package check run from a source tarball, for instance). The app is sourced,
+# so it is taken only from the lexsync repository itself (see helper-repo.R).
 
 app_env <- function() {
   skip_if_not_installed("shiny")
   skip_if_not_installed("bslib")
   skip_if_not_installed("DT")
-  app <- NULL
-  for (cand in c("apps/r_shiny/app.R", "../../../apps/r_shiny/app.R",
-                 "../../../../apps/r_shiny/app.R")) {
-    if (file.exists(cand)) { app <- cand; break }
-  }
-  if (is.null(app)) skip("The Shiny app source is not in this tree.")
+  app <- repo_path("apps", "r_shiny", "app.R",
+                   message = "The Shiny app source is not in this tree.")
+  if (!file.exists(app)) skip("The Shiny app source is not in this tree.")
   e <- new.env(parent = globalenv())
   ok <- tryCatch({ source(app, local = e); TRUE },
                  error = function(err) conditionMessage(err))

@@ -18,6 +18,13 @@ A list with \code{descriptives} and \code{comparisons} data frames. Every
 comparison is against the first condition in order of appearance, so a design
 with a single condition has nothing to compare and \code{comparisons} comes back
 with its columns and no rows.
+
+Each row of \code{comparisons} names that first condition in \code{reference} and the
+condition compared with it in \code{condition}. The signed statistics run from the
+reference to the other condition: \code{cohens_d}, \code{d_ci_low} and \code{d_ci_high} are
+the reference mean minus the \code{condition} mean, in pooled standard deviations,
+so a positive d means the reference scores higher. \code{var_ratio} is the other
+way up, the \code{condition} variance over the reference variance.
 }
 \description{
 Build the full match-quality report

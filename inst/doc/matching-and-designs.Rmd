@@ -588,10 +588,15 @@ knitr::kable(
 ```
 
 `cohens_d` is the standardised mean difference against the anchor, using the
-pooled SD. On the manipulated dimension it should be large and on a controlled
-dimension it should be near zero.
+pooled SD. It is the anchor's mean minus the mean of the condition in that row,
+so a positive d means the anchor, named in the `reference` column, scores higher.
+On the manipulated dimension it should be large and on a controlled dimension it
+should be near zero.
 
-`d_ci_low` and `d_ci_high` bound it with a 90% confidence interval. The interval,
+`d_ci_low` and `d_ci_high` bound it with a 90% confidence interval, built from
+the large-sample standard error of d (Hedges & Olkin, 1985). That standard error
+grows with d itself, so the interval on a manipulated dimension is much wider
+than on a well-matched control with the same number of items. The interval,
 not the point estimate, is the primary summary of a controlled dimension. Its
 upper limit is the largest imbalance still consistent with the stimuli you have,
 and with few items that limit can be substantial even when the point estimate is
@@ -623,10 +628,13 @@ A bound of 0.5 SD is the schema default and it is a convention rather than a
 finding. It is a permissive bound for a nuisance dimension in a design where that
 dimension has a strong effect on the response, and a study that cares about a
 particular confound should set a bound it can defend. The 90% interval is the
-1 - 2 x alpha interval precisely so that it corresponds to the TOST decision at
-alpha: the test declares equivalence exactly when the interval falls entirely
-inside the bounds, which means the interval and the verdict are two readings of
-one thing.
+1 - 2 x alpha interval so that it goes with the TOST decision at alpha: the test
+declares equivalence when the interval falls inside the bounds, and the interval
+and the verdict are two readings of nearly the same thing. They are not quite
+identical, because TOST tests the raw mean difference while the interval also
+allows for the sampling error of the pooled SD. For a control near zero the two
+agree to well within the published rounding. For a limit close to the bound,
+`tost_p` is the verdict.
 
 The individual statistics are exported and can be called directly on any two
 vectors.
@@ -768,6 +776,9 @@ https://doi.org/10.1080/10618600.1993.10474623
 Hansen, B. B., & Klopfer, S. O. (2006). Optimal full matching and related designs
 via network flows. *Journal of Computational and Graphical Statistics*, *15*(3),
 609–627. https://doi.org/10.1198/106186006X137047
+
+Hedges, L. V., & Olkin, I. (1985). *Statistical methods for meta-analysis*.
+Academic Press. https://doi.org/10.1016/C2009-0-03396-0
 
 Keuleers, E., & Brysbaert, M. (2010). Wuggy: A multilingual pseudoword
 generator. *Behavior Research Methods*, *42*(3), 627–633.

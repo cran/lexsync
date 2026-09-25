@@ -18,6 +18,7 @@ Bochynska
 Boiten
 BOM
 Booleans
+Borenstein
 Bouwman
 Brysbaert
 bslib
@@ -30,11 +31,13 @@ Coltheart
 Coltheart's
 counterbalancer
 covariance
+CRAN's
 Crosas
 CSVs
 datasheet
 datasheet's
 Datasheets
+datasheets
 Davelaar
 deduplication
 DeLuca
@@ -44,6 +47,7 @@ DT
 Dumon
 Dumontier
 english
+eq
 Erlbaum
 ERP
 Evelo
@@ -71,6 +75,7 @@ Kuperman
 Lakens
 Levenshtein
 lexdec
+lexica
 lexsync's
 LF
 Liben
@@ -102,6 +107,7 @@ ORCID
 overcounts
 parameterise
 PCG
+pkgdown
 Plaut
 Poch
 precomposed
@@ -113,6 +119,7 @@ pyserial
 R's
 rapidfuzz's
 Rastle
+readr
 readr's
 Roettger
 Rosenbaum
@@ -136,6 +143,7 @@ stylesheet
 subpool
 subsyllabic
 SUBTLEX
+testthat
 th
 Theeuwes
 tibble
@@ -155,4 +163,5 @@ Wuggy
 Wuggy's
 Yarkoni
 Zenodo
+zenodo
 Zipf

@@ -504,21 +504,36 @@ computes the codes and adds them as columns.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">range</span>(trig<span class="sc">$</span>item_trigger)</span></code></pre></div>
 <pre><code>[1] 40 51</code></pre>
 <p>Condition codes start at 101 and count up in order of first
-appearance. Item codes run from 40 upwards and wrap at 200 values, so a
-design with more than 200 items reuses item codes. That ceiling comes
-from the 8-bit parallel port: a code is one byte, and the block markers
-254 and 255 are reserved. Condition codes stay unique regardless, so the
+appearance, unless <code>assign_triggers()</code> is given the order
+through its <code>conditions</code> argument. The order of first
+appearance in a shuffled trial list depends on the seed, so an analysis
+that decodes the codes should not rely on it.
+<code>export_experiments()</code> therefore passes the order of the
+design’s <code>conditions</code> entries, and the pipeline does the
+same, adding any other condition in the order the item source lists it,
+such as the words before the pseudowords of a generated lexical
+decision. The first condition the design lists is always 101, whatever
+the seed.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">unique</span>(<span class="fu">assign_triggers</span>(stim, <span class="at">conditions =</span> <span class="fu">c</span>(<span class="st">&quot;low&quot;</span>, <span class="st">&quot;high&quot;</span>))[</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>  , <span class="fu">c</span>(<span class="st">&quot;condition&quot;</span>, <span class="st">&quot;condition_trigger&quot;</span>)])</span></code></pre></div>
+<pre><code>  condition condition_trigger
+1       low               101
+2      high               102</code></pre>
+<p>Item codes run from 40 upwards and wrap at 200 values, so a design
+with more than 200 items reuses item codes. That ceiling comes from the
+8-bit parallel port: a code is one byte, and the block markers 254 and
+255 are reserved. Condition codes stay unique regardless, so the
 analysis that matters is unaffected.</p>
 </div>
 <div id="timing-that-varies-from-trial-to-trial" class="section level3">
 <h3>Timing that varies from trial to trial</h3>
 <p>A duration need not be the same on every trial. An event may instead
 declare a <code>duration:</code> block, in one of two forms:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">type</span><span class="kw">:</span><span class="at"> text</span></span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="at">  </span><span class="fu">content</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;{prime}&#39;</span></span>
-<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="at">  </span><span class="fu">duration</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="fu">from_column</span><span class="kw">:</span><span class="at"> soa_ms</span><span class="kw">}</span><span class="co">            # read per trial from the items</span></span>
-<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">type</span><span class="kw">:</span><span class="at"> blank</span></span>
-<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="at">  </span><span class="fu">duration</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="fu">jitter</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="dv">400</span><span class="kw">,</span><span class="at"> </span><span class="dv">800</span><span class="kw">],</span><span class="at"> </span><span class="fu">as</span><span class="kw">:</span><span class="at"> iti_ms</span><span class="kw">}</span><span class="co"> # drawn per trial, in milliseconds</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">type</span><span class="kw">:</span><span class="at"> text</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="at">  </span><span class="fu">content</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;{prime}&#39;</span></span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="at">  </span><span class="fu">duration</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="fu">from_column</span><span class="kw">:</span><span class="at"> soa_ms</span><span class="kw">}</span><span class="co">            # read per trial from the items</span></span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">type</span><span class="kw">:</span><span class="at"> blank</span></span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a><span class="at">  </span><span class="fu">duration</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="fu">jitter</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="dv">400</span><span class="kw">,</span><span class="at"> </span><span class="dv">800</span><span class="kw">],</span><span class="at"> </span><span class="fu">as</span><span class="kw">:</span><span class="at"> iti_ms</span><span class="kw">}</span><span class="co"> # drawn per trial, in milliseconds</span></span></code></pre></div>
 <p>The two exist for different reasons. A duration read from a column is
 a manipulated variable: the stimulus-onset asynchrony of a priming study
 is the lever that separates automatic from strategic processing, so it
@@ -544,22 +559,22 @@ carrying both.</p>
 and the recipe for counterbalancing it. <code>PARADIGMS</code> is the
 registry, and it is exported, so it can be read to see exactly what a
 design will inherit.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">names</span>(PARADIGMS)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">names</span>(PARADIGMS)</span></code></pre></div>
 <pre><code>[1] &quot;factorial&quot;          &quot;lexical_decision&quot;   &quot;priming&quot;           
 [4] &quot;categorisation&quot;     &quot;self_paced_reading&quot;</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>  <span class="at">paradigm =</span> <span class="fu">names</span>(PARADIGMS),</span>
-<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>  <span class="at">fields =</span> <span class="fu">vapply</span>(</span>
-<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>    PARADIGMS,</span>
-<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>    <span class="cf">function</span>(p) <span class="fu">paste</span>(p<span class="sc">$</span>stimulus_fields, <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>),</span>
-<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>    <span class="fu">character</span>(<span class="dv">1</span>)</span>
-<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>  ),</span>
-<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a>  <span class="at">counterbalance =</span> <span class="fu">vapply</span>(</span>
-<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a>    PARADIGMS, <span class="cf">function</span>(p) p<span class="sc">$</span>counterbalance, <span class="fu">character</span>(<span class="dv">1</span>)</span>
-<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a>  ),</span>
-<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a>  <span class="at">n_events =</span> <span class="fu">vapply</span>(PARADIGMS, <span class="cf">function</span>(p) <span class="fu">length</span>(p<span class="sc">$</span>events), <span class="fu">integer</span>(<span class="dv">1</span>)),</span>
-<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">NULL</span></span>
-<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>  <span class="at">paradigm =</span> <span class="fu">names</span>(PARADIGMS),</span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>  <span class="at">fields =</span> <span class="fu">vapply</span>(</span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>    PARADIGMS,</span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>    <span class="cf">function</span>(p) <span class="fu">paste</span>(p<span class="sc">$</span>stimulus_fields, <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>),</span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>    <span class="fu">character</span>(<span class="dv">1</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a>  ),</span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a>  <span class="at">counterbalance =</span> <span class="fu">vapply</span>(</span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a>    PARADIGMS, <span class="cf">function</span>(p) p<span class="sc">$</span>counterbalance, <span class="fu">character</span>(<span class="dv">1</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a>  ),</span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a>  <span class="at">n_events =</span> <span class="fu">vapply</span>(PARADIGMS, <span class="cf">function</span>(p) <span class="fu">length</span>(p<span class="sc">$</span>events), <span class="fu">integer</span>(<span class="dv">1</span>)),</span>
+<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">NULL</span></span>
+<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>            paradigm                   fields      counterbalance n_events
 1          factorial                     word           factorial        4
 2   lexical_decision                   target           factorial        4
@@ -597,7 +612,7 @@ the same word under both category cues would turn the second
 presentation into a repetition-priming trial. The Latin square gives
 each item exactly one condition per list and rotates it across lists, so
 no target repeats within a list and conditions stay balanced.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">table</span>(<span class="at">list =</span> stim<span class="sc">$</span>list, <span class="at">condition =</span> stim<span class="sc">$</span>condition)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">table</span>(<span class="at">list =</span> stim<span class="sc">$</span>list, <span class="at">condition =</span> stim<span class="sc">$</span>condition)</span></code></pre></div>
 <pre><code>    condition
 list high low
    1   12  12</code></pre>
@@ -613,10 +628,10 @@ group.</p>
 assignment whose lists have near-equal totals on the dimensions you
 name, by exchanging pairs of item sets between lists. List sizes are
 preserved, since a swap trades one set for another.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">counterbalance</span><span class="kw">:</span></span>
-<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a><span class="at">  </span><span class="fu">lists</span><span class="kw">:</span><span class="at"> </span><span class="dv">4</span></span>
-<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a><span class="at">  </span><span class="fu">optimise</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a><span class="at">  </span><span class="fu">balance_on</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">length</span><span class="kw">,</span><span class="at"> n_density</span><span class="kw">,</span><span class="at"> old20</span><span class="kw">,</span><span class="at"> frequency</span><span class="kw">]</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="fu">counterbalance</span><span class="kw">:</span></span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a><span class="at">  </span><span class="fu">lists</span><span class="kw">:</span><span class="at"> </span><span class="dv">4</span></span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a><span class="at">  </span><span class="fu">optimise</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a><span class="at">  </span><span class="fu">balance_on</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">length</span><span class="kw">,</span><span class="at"> n_density</span><span class="kw">,</span><span class="at"> old20</span><span class="kw">,</span><span class="at"> frequency</span><span class="kw">]</span></span></code></pre></div>
 <p><code>balance_on</code> defaults to <code>match_on</code>, and the
 example widens it deliberately. Frequency is the manipulated variable
 and so is not matched on, but it is manipulated <em>within</em> a list,
@@ -660,10 +675,10 @@ experiments are generated from every presented trial. A
 <code>block</code> column marks which is which, and it appears only when
 a design declares the blocks, so a design without them keeps exactly the
 columns it had.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="fu">practice</span><span class="kw">:</span></span>
-<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="at">  </span><span class="fu">path</span><span class="kw">:</span><span class="at"> items/practice_en_lexdec.csv</span></span>
-<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a><span class="fu">fillers</span><span class="kw">:</span></span>
-<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a><span class="at">  </span><span class="fu">path</span><span class="kw">:</span><span class="at"> items/fillers_en_lexdec.csv</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="fu">practice</span><span class="kw">:</span></span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a><span class="at">  </span><span class="fu">path</span><span class="kw">:</span><span class="at"> items/practice_en_lexdec.csv</span></span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a><span class="fu">fillers</span><span class="kw">:</span></span>
+<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a><span class="at">  </span><span class="fu">path</span><span class="kw">:</span><span class="at"> items/fillers_en_lexdec.csv</span></span></code></pre></div>
 <p>Where each block goes is a methodological choice. Practice comes
 first, as its own run, shuffled within itself so participants do not all
 meet the practice items in one order. Fillers are interleaved with the
@@ -686,13 +701,13 @@ It reads the field named by <code>answer</code>, compares it as a string
 with the key the participant pressed, and displays <code>correct</code>,
 <code>incorrect</code> or <code>no_response</code> for
 <code>duration_ms</code>.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">type</span><span class="kw">:</span><span class="at"> feedback</span></span>
-<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a><span class="at">  </span><span class="fu">answer</span><span class="kw">:</span><span class="at"> answer</span></span>
-<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a><span class="at">  </span><span class="fu">correct</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;Correct&#39;</span></span>
-<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a><span class="at">  </span><span class="fu">incorrect</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;Incorrect&#39;</span></span>
-<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="at">  </span><span class="fu">no_response</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;Too slow&#39;</span></span>
-<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a><span class="at">  </span><span class="fu">duration_ms</span><span class="kw">:</span><span class="at"> </span><span class="dv">600</span></span>
-<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a><span class="at">  </span><span class="fu">blocks</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">practice</span><span class="kw">]</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">type</span><span class="kw">:</span><span class="at"> feedback</span></span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a><span class="at">  </span><span class="fu">answer</span><span class="kw">:</span><span class="at"> answer</span></span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a><span class="at">  </span><span class="fu">correct</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;Correct&#39;</span></span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a><span class="at">  </span><span class="fu">incorrect</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;Incorrect&#39;</span></span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a><span class="at">  </span><span class="fu">no_response</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;Too slow&#39;</span></span>
+<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a><span class="at">  </span><span class="fu">duration_ms</span><span class="kw">:</span><span class="at"> </span><span class="dv">600</span></span>
+<span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a><span class="at">  </span><span class="fu">blocks</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">practice</span><span class="kw">]</span></span></code></pre></div>
 <p><code>blocks:</code> restricts an event to the named blocks, and this
 is its main use: feedback teaches the mapping during practice, and would
 contaminate reaction times in the task itself. The restriction has to be
@@ -709,10 +724,10 @@ surface as three different failures, one per target.
 <p>The same rendered event list feeds all three exporters, so the
 procedure is the same in each. What differs is what the platform can
 do.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;lexsync_experiment&quot;</span>)</span>
-<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a><span class="fu">dir.create</span>(out, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">export_experiments</span>(stim, design, schema, out)</span>
-<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a><span class="fu">basename</span>(<span class="fu">unlist</span>(files))</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;lexsync_experiment&quot;</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a><span class="fu">dir.create</span>(out, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">export_experiments</span>(stim, design, schema, out)</span>
+<span id="cb31-4"><a href="#cb31-4" tabindex="-1"></a><span class="fu">basename</span>(<span class="fu">unlist</span>(files))</span></code></pre></div>
 <pre><code>[1] &quot;vignette_experiment_english_psychopy.py&quot;
 [2] &quot;vignette_experiment_english.osexp&quot;      
 [3] &quot;vignette_experiment_english.html&quot;       </code></pre>
@@ -720,7 +735,7 @@ do.</p>
 <code>assign_triggers()</code> first, then each exporter, and returns
 the three experiment scripts. The directory holds more than that, and
 the difference is the interesting part.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="fu">list.files</span>(out)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a><span class="fu">list.files</span>(out)</span></code></pre></div>
 <pre><code>[1] &quot;vignette_experiment_english.html&quot;          
 [2] &quot;vignette_experiment_english.osexp&quot;         
 [3] &quot;vignette_experiment_english_opensesame.csv&quot;
@@ -757,8 +772,8 @@ identical in the R and Python engines. And the jsPsych exporter maps the
 event model’s key names onto browser key names, so <code>left</code>
 becomes <code>arrowleft</code>, since the same event list has to mean
 the same thing to a browser as to PsychoPy.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>psychopy_csv <span class="ot">&lt;-</span> <span class="fu">file.path</span>(out, <span class="st">&quot;vignette_experiment_english_psychopy.csv&quot;</span>)</span>
-<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a><span class="fu">names</span>(<span class="fu">read.csv</span>(psychopy_csv))</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>psychopy_csv <span class="ot">&lt;-</span> <span class="fu">file.path</span>(out, <span class="st">&quot;vignette_experiment_english_psychopy.csv&quot;</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a><span class="fu">names</span>(<span class="fu">read.csv</span>(psychopy_csv))</span></code></pre></div>
 <pre><code>[1] &quot;trial&quot;             &quot;list&quot;              &quot;set&quot;              
 [4] &quot;condition&quot;         &quot;word&quot;              &quot;condition_trigger&quot;
 [7] &quot;item_trigger&quot;     </code></pre>
@@ -791,7 +806,7 @@ asserting that the trigger is bound to the flip.</p>
 <p>The reset is handled the same way. A recorder needs the line to
 return to zero before the next code, so the script schedules a write of
 0 on a later flip.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="fu">str</span>(schema<span class="sc">$</span>triggers)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="fu">str</span>(schema<span class="sc">$</span>triggers)</span></code></pre></div>
 <pre><code>List of 3
  $ parallel_address: chr &quot;0x0378&quot;
  $ trigger_hold_ms : int 50
@@ -830,22 +845,22 @@ that needs no change to the package. The events below present a word
 twice with a mask between, which no registered paradigm does, and both
 <code>text</code> events are triggered so the recording can distinguish
 the two presentations.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>custom <span class="ot">&lt;-</span> design</span>
-<span id="cb39-2"><a href="#cb39-2" tabindex="-1"></a>custom<span class="sc">$</span>name <span class="ot">&lt;-</span> <span class="st">&quot;vignette_custom&quot;</span></span>
-<span id="cb39-3"><a href="#cb39-3" tabindex="-1"></a>custom<span class="sc">$</span>events <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb39-4"><a href="#cb39-4" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;fixation&quot;</span>, <span class="at">content =</span> <span class="st">&quot;+&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">30</span><span class="dt">L</span>),</span>
-<span id="cb39-5"><a href="#cb39-5" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;text&quot;</span>, <span class="at">content =</span> <span class="st">&quot;{word}&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">12</span><span class="dt">L</span>,</span>
-<span id="cb39-6"><a href="#cb39-6" tabindex="-1"></a>       <span class="at">trigger =</span> <span class="dv">30</span><span class="dt">L</span>, <span class="at">onset_locked =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb39-7"><a href="#cb39-7" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;mask&quot;</span>, <span class="at">content =</span> <span class="st">&quot;#####&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">6</span><span class="dt">L</span>),</span>
-<span id="cb39-8"><a href="#cb39-8" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;text&quot;</span>, <span class="at">content =</span> <span class="st">&quot;{word}&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">48</span><span class="dt">L</span>,</span>
-<span id="cb39-9"><a href="#cb39-9" tabindex="-1"></a>       <span class="at">trigger =</span> <span class="st">&quot;condition&quot;</span>, <span class="at">onset_locked =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb39-10"><a href="#cb39-10" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">keys =</span> <span class="fu">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;right&quot;</span>), <span class="at">timeout_ms =</span> <span class="dv">2000</span><span class="dt">L</span>),</span>
-<span id="cb39-11"><a href="#cb39-11" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;blank&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">15</span><span class="dt">L</span>)</span>
-<span id="cb39-12"><a href="#cb39-12" tabindex="-1"></a>)</span>
-<span id="cb39-13"><a href="#cb39-13" tabindex="-1"></a><span class="fu">required_fields</span>(custom)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>custom <span class="ot">&lt;-</span> design</span>
+<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a>custom<span class="sc">$</span>name <span class="ot">&lt;-</span> <span class="st">&quot;vignette_custom&quot;</span></span>
+<span id="cb41-3"><a href="#cb41-3" tabindex="-1"></a>custom<span class="sc">$</span>events <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb41-4"><a href="#cb41-4" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;fixation&quot;</span>, <span class="at">content =</span> <span class="st">&quot;+&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">30</span><span class="dt">L</span>),</span>
+<span id="cb41-5"><a href="#cb41-5" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;text&quot;</span>, <span class="at">content =</span> <span class="st">&quot;{word}&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">12</span><span class="dt">L</span>,</span>
+<span id="cb41-6"><a href="#cb41-6" tabindex="-1"></a>       <span class="at">trigger =</span> <span class="dv">30</span><span class="dt">L</span>, <span class="at">onset_locked =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb41-7"><a href="#cb41-7" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;mask&quot;</span>, <span class="at">content =</span> <span class="st">&quot;#####&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">6</span><span class="dt">L</span>),</span>
+<span id="cb41-8"><a href="#cb41-8" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;text&quot;</span>, <span class="at">content =</span> <span class="st">&quot;{word}&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">48</span><span class="dt">L</span>,</span>
+<span id="cb41-9"><a href="#cb41-9" tabindex="-1"></a>       <span class="at">trigger =</span> <span class="st">&quot;condition&quot;</span>, <span class="at">onset_locked =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb41-10"><a href="#cb41-10" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">keys =</span> <span class="fu">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;right&quot;</span>), <span class="at">timeout_ms =</span> <span class="dv">2000</span><span class="dt">L</span>),</span>
+<span id="cb41-11"><a href="#cb41-11" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;blank&quot;</span>, <span class="at">duration_frames =</span> <span class="dv">15</span><span class="dt">L</span>)</span>
+<span id="cb41-12"><a href="#cb41-12" tabindex="-1"></a>)</span>
+<span id="cb41-13"><a href="#cb41-13" tabindex="-1"></a><span class="fu">required_fields</span>(custom)</span></code></pre></div>
 <pre><code>[1] &quot;word&quot;</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>custom_files <span class="ot">&lt;-</span> <span class="fu">export_experiments</span>(stim, custom, schema, out)</span>
-<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a><span class="fu">basename</span>(<span class="fu">unlist</span>(custom_files))</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a>custom_files <span class="ot">&lt;-</span> <span class="fu">export_experiments</span>(stim, custom, schema, out)</span>
+<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a><span class="fu">basename</span>(<span class="fu">unlist</span>(custom_files))</span></code></pre></div>
 <pre><code>[1] &quot;vignette_custom_english_psychopy.py&quot; &quot;vignette_custom_english.osexp&quot;      
 [3] &quot;vignette_custom_english.html&quot;       </code></pre>
 <p>Nothing in the backends changed. All three targets rendered a

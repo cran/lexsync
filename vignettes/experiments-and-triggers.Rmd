@@ -160,7 +160,20 @@ unique(trig[, c("condition", "condition_trigger")])
 range(trig$item_trigger)
 ```
 
-Condition codes start at 101 and count up in order of first appearance.
+Condition codes start at 101 and count up in order of first appearance, unless
+`assign_triggers()` is given the order through its `conditions` argument. The
+order of first appearance in a shuffled trial list depends on the seed, so an
+analysis that decodes the codes should not rely on it. `export_experiments()`
+therefore passes the order of the design's `conditions` entries, and the
+pipeline does the same, adding any other condition in the order the item source
+lists it, such as the words before the pseudowords of a generated lexical
+decision. The first condition the design lists is always 101, whatever the seed.
+
+```{r assign-triggers-order}
+unique(assign_triggers(stim, conditions = c("low", "high"))[
+  , c("condition", "condition_trigger")])
+```
+
 Item codes run from 40 upwards and wrap at 200 values, so a design with more than
 200 items reuses item codes. That ceiling comes from the 8-bit parallel port: a
 code is one byte, and the block markers 254 and 255 are reserved. Condition codes

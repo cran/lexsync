@@ -28,12 +28,44 @@ find_template <- function(relpath) {
 #' 8-bit-port constraint), so past 200 sets the codes wrap and repeat, and a
 #' runtime notice says so.
 #'
+#' The condition codes follow `conditions` when it is given: its first entry is
+#' 101, its second 102, and so on, whether or not every entry occurs in
+#' `stimuli`, so the same condition keeps the same code in a subset such as a
+#' practice block. A condition present in `stimuli` but missing from
+#' `conditions` takes the next free codes, in code-point order of its label.
+#' Either way the mapping depends only on the labels, never on the row order.
+#' Without `conditions`, the codes follow the order in which the conditions first
+#' appear in `stimuli`, as in lexsync 0.1.0. On a shuffled trial list that order
+#' comes from the shuffle, so a different seed can swap two conditions' codes.
+#' [export_experiments()] passes the design's order, and the pipeline passes the
+#' order of the design's `conditions`, followed by any other condition in the
+#' order the item source lists it.
+#'
 #' @param stimuli A stimuli data frame.
+#' @param conditions Optional character vector of condition labels, in the order
+#'   that assigns their codes from 101 upwards. `NULL` (the default) numbers the
+#'   conditions in order of first appearance.
 #' @return `stimuli` with trigger columns added.
+#' @examples
+#' stim <- data.frame(condition = c("low", "high", "low", "high"), set = c(1, 1, 2, 2))
+#' # First appearance: low = 101, high = 102.
+#' unique(assign_triggers(stim)[, c("condition", "condition_trigger")])
+#' # The design's order: high = 101, low = 102, however the rows are shuffled.
+#' unique(assign_triggers(stim, conditions = c("high", "low"))[
+#'   , c("condition", "condition_trigger")])
 #' @export
-assign_triggers <- function(stimuli) {
-  conds <- unique(stimuli$condition)
-  stimuli$condition_trigger <- 100L + match(stimuli$condition, conds)
+assign_triggers <- function(stimuli, conditions = NULL) {
+  present <- unique(as.character(stimuli$condition))
+  if (is.null(conditions)) {
+    conds <- present
+  } else {
+    conds <- unique(as.character(unlist(conditions, use.names = FALSE)))
+    # Radix order is byte order, which for UTF-8 is code-point order, the same
+    # order Python's sorted() gives, and it does not depend on the locale.
+    extra <- setdiff(present, conds)
+    conds <- c(conds, extra[order(extra, method = "radix")])
+  }
+  stimuli$condition_trigger <- 100L + match(as.character(stimuli$condition), conds)
   sets <- unique(stimuli$set)
   sets <- sets[order(as.character(sets), method = "radix")]
   # A wrapped code no longer identifies its item one to one, which the analyst
@@ -46,6 +78,16 @@ assign_triggers <- function(stimuli) {
   code <- 40L + ((seq_along(sets) - 1L) %% 200L)
   stimuli$item_trigger <- code[match(stimuli$set, sets)]
   stimuli
+}
+
+# The names of a design's declared conditions, in the order the design lists
+# them, or NULL when it declares none (a generated lexical decision, an item
+# table, a continuous design). Mirrors _design_condition_names in scripting.py.
+.design_condition_names <- function(design) {
+  conds <- design$conditions
+  if (!is.list(conds) || !length(conds)) return(NULL)
+  nm <- unlist(lapply(conds, function(cnd) if (is.list(cnd)) cnd$name), use.names = FALSE)
+  if (length(nm)) as.character(nm) else NULL
 }
 
 #' @keywords internal
@@ -713,11 +755,23 @@ export_jspsych <- function(stimuli, design, schema, outdir, base = NULL) {
 
 #' Export all presentation targets (PsychoPy, OpenSesame, jsPsych)
 #'
+#' Assigns the EEG trigger codes with [assign_triggers()] and then writes each
+#' target. The condition codes follow `conditions`, which defaults to the order of
+#' the design's `conditions` entries, so in a design that declares its conditions
+#' the first is 101, the second 102, and so on, whatever order the counterbalanced
+#' trials put them in. A design with no `conditions` block (a generated lexical
+#' decision, an item table) falls back to the order of first appearance, unless
+#' `conditions` is given.
+#'
 #' @inheritParams export_psychopy
+#' @param conditions Optional character vector of condition labels in the order
+#'   that assigns their trigger codes (see [assign_triggers()]). `NULL` (the
+#'   default) takes the order of the design's `conditions`.
 #' @return A named list of generated file paths.
 #' @export
-export_experiments <- function(stimuli, design, schema, outdir, base = NULL) {
-  stimuli <- assign_triggers(stimuli)
+export_experiments <- function(stimuli, design, schema, outdir, base = NULL,
+                               conditions = NULL) {
+  stimuli <- assign_triggers(stimuli, conditions %||% .design_condition_names(design))
   list(
     psychopy = export_psychopy(stimuli, design, schema, outdir, base),
     opensesame = export_opensesame(stimuli, design, schema, outdir, base),

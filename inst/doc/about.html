@@ -241,26 +241,27 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <div id="citing-lexsync" class="section level2">
 <h2>Citing lexsync</h2>
-<p>If lexsync contributes to published work, please cite it. Nothing has
-been deposited on Zenodo yet, so the citation is a software reference
-pointing at the repository rather than at a DOI.</p>
+<p>If lexsync contributes to published work, please cite it. The
+reference below points at the DOI that <a href="https://CRAN.R-project.org/package=lexsync">CRAN</a> assigned to
+the package.</p>
 <blockquote>
 <p>Bernabeu, P. (2026). lexsync: Lexical optimisation and hardware-timed
-experiment generation. R package version 0.1.0. <a href="https://github.com/pablobernabeu/lexsync" class="uri">https://github.com/pablobernabeu/lexsync</a></p>
+experiment generation. R package version 0.1.1. <a href="https://doi.org/10.32614/CRAN.package.lexsync" class="uri">https://doi.org/10.32614/CRAN.package.lexsync</a></p>
 </blockquote>
 <div class="citation-bibtex">
 <pre id="lexsync-bibtex"><code>@Manual{lexsync,
   title  = {{lexsync}: Lexical optimisation and hardware-timed experiment generation},
   author = {Pablo Bernabeu},
   year   = {2026},
-  note   = {R package version 0.1.0},
-  url    = {https://github.com/pablobernabeu/lexsync},
+  note   = {R package version 0.1.1},
+  doi    = {10.32614/CRAN.package.lexsync},
+  url    = {https://CRAN.R-project.org/package=lexsync},
 }</code></pre>
 <p class="citation-bibtex-actions">
 <button type="button" class="btn btn-primary btn-sm" onclick="lexsyncCopyBibtex(this)">
 Copy BibTeX
 </button>
-<a class="btn btn-outline-primary btn-sm" download="lexsync.bib" href="data:application/x-bibtex;charset=utf-8,%40Manual%7Blexsync%2C%0A%20%20title%20%20%3D%20%7B%7Blexsync%7D%3A%20Lexical%20optimisation%20and%20hardware-timed%20experiment%20generation%7D%2C%0A%20%20author%20%3D%20%7BPablo%20Bernabeu%7D%2C%0A%20%20year%20%20%20%3D%20%7B2026%7D%2C%0A%20%20note%20%20%20%3D%20%7BR%20package%20version%200.1.0%7D%2C%0A%20%20url%20%20%20%20%3D%20%7Bhttps%3A%2F%2Fgithub.com%2Fpablobernabeu%2Flexsync%7D%2C%0A%7D">Download
+<a class="btn btn-outline-primary btn-sm" download="lexsync.bib" href="data:application/x-bibtex;charset=utf-8,%40Manual%7Blexsync%2C%0A%20%20title%20%20%3D%20%7B%7Blexsync%7D%3A%20Lexical%20optimisation%20and%20hardware-timed%20experiment%20generation%7D%2C%0A%20%20author%20%3D%20%7BPablo%20Bernabeu%7D%2C%0A%20%20year%20%20%20%3D%20%7B2026%7D%2C%0A%20%20note%20%20%20%3D%20%7BR%20package%20version%200.1.1%7D%2C%0A%20%20doi%20%20%20%20%3D%20%7B10.32614%2FCRAN.package.lexsync%7D%2C%0A%20%20url%20%20%20%20%3D%20%7Bhttps%3A%2F%2FCRAN.R-project.org%2Fpackage%3Dlexsync%7D%2C%0A%7D">Download
 .bib</a>
 </p>
 </div>
@@ -274,17 +275,18 @@ function lexsyncCopyBibtex(btn) {
   });
 }
 </script>
-<p>R users can also retrieve this citation directly with
-<code>citation(&quot;lexsync&quot;)</code>. The repository carries a
-machine-readable <a href="https://github.com/pablobernabeu/lexsync/blob/main/CITATION.cff"><code>CITATION.cff</code></a>
+<p>R users can also retrieve this citation with
+<code>citation(&quot;lexsync&quot;)</code>, although the 0.1.0 release on CRAN,
+built before the DOI existed, prints the GitHub address and no DOI. The
+repository carries a machine-readable <a href="https://github.com/pablobernabeu/lexsync/blob/main/CITATION.cff"><code>CITATION.cff</code></a>
 as well, which GitHub turns into a ready-made citation through its ‘Cite
 this repository’ button and which reference managers can import.</p>
 <p>A manuscript describing lexsync is in preparation, under the title
 <em>lexsync: A cross-platform pipeline for multidimensional lexical
 optimisation and hardware-timed experiment generation</em>. It is
-unpublished and has no venue as yet. <code>CITATION.cff</code> already
-names it as the preferred citation for the day it appears, and until
-then the software reference above is the one to use.</p>
+unpublished and has no venue as yet. Once it is accepted,
+<code>CITATION.cff</code> will name it as the preferred citation, and
+until then the software reference above is the one to use.</p>
 </div>
 <div id="citing-the-corpus" class="section level2">
 <h2>Citing the corpus</h2>
@@ -334,12 +336,13 @@ same terms, and the credit they require, in the
 share one version number so that a citation identifies the same state of
 both. Releases are tagged on GitHub, and the <a href="https://pablobernabeu.github.io/lexsync/r/news/index.html">changelog</a>
 records what changed in each of them.</p>
-<p>Archival is prepared but not yet done. The deposition metadata sits
-in <a href="https://github.com/pablobernabeu/lexsync/blob/main/.zenodo.json"><code>.zenodo.json</code></a>,
-waiting on the first published release, and no version has been
-archived, so there is no concept DOI to cite. The package is not on CRAN
-either. Cite the version, as the reference above does, until an archive
-exists to point at.</p>
+<p>The R package is on <a href="https://CRAN.R-project.org/package=lexsync">CRAN</a>, which keeps
+the source of every version it publishes. A single DOI, <a href="https://doi.org/10.32614/CRAN.package.lexsync">10.32614/CRAN.package.lexsync</a>,
+covers all of those versions, so the reference above names the version
+as well. Zenodo also archives every GitHub release, which carries both
+packages, under the concept DOI <a href="https://doi.org/10.5281/zenodo.22906962">10.5281/zenodo.22906962</a>.
+That is the identifier the Python package cites, since the CRAN DOI
+names the R package alone.</p>
 </div>
 <div id="contributing-and-support" class="section level2">
 <h2>Contributing and support</h2>

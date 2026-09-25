@@ -14,6 +14,9 @@ knitr::opts_chunk$set(
 # so colour is switched off here for a plain vignette render and a site build
 # alike. The fixed width keeps printed output inside the documentation column.
 
+## ----install, eval = FALSE----------------------------------------------------
+# install.packages("lexsync")
+
 ## ----setup--------------------------------------------------------------------
 library(lexsync)
 schema <- yaml::read_yaml(

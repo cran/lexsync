@@ -1,6 +1,7 @@
 # lexsync <small>(R)</small> <img src="man/figures/logo.svg" align="right" height="139" alt="" />
 
 <!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/lexsync)](https://CRAN.R-project.org/package=lexsync)
 [![R-CMD-check](https://github.com/pablobernabeu/lexsync/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pablobernabeu/lexsync/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/license/MIT)
@@ -26,8 +27,14 @@ repository and released under one version.
 
 ## Installation
 
-lexsync is not on CRAN yet. Install it from the repository, where the package
-sits in the `R_workflow/` subdirectory:
+lexsync is on [CRAN](https://CRAN.R-project.org/package=lexsync):
+
+``` r
+install.packages("lexsync")
+```
+
+The development version comes from this repository, where the package sits in
+the `R_workflow/` subdirectory:
 
 ``` r
 # install.packages("remotes")
@@ -106,6 +113,12 @@ index](https://pablobernabeu.github.io/lexsync/demos/), one per worked design.
 ``` r
 citation("lexsync")
 ```
+
+The DOI that CRAN assigned to the package is
+[10.32614/CRAN.package.lexsync](https://doi.org/10.32614/CRAN.package.lexsync),
+and it covers every version. The 0.1.0 release on CRAN was built before the DOI
+existed, so the reference it prints gives the repository's address and no DOI.
+The development version and later releases print the DOI.
 
 The repository also ships a
 [`CITATION.cff`](https://github.com/pablobernabeu/lexsync/blob/main/CITATION.cff),

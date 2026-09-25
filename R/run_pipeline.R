@@ -281,6 +281,12 @@ run_pipeline <- function(design_path, schema_path = "config/schema.yaml",
                                  "stopped before it ran out of improving swaps"))
     }
   }
+  # The trigger codes follow the design's conditions, then any other condition in
+  # the order the item source lists it (a generated lexical decision's words
+  # before its pseudowords, an item table's own order). Taken here, before the
+  # shuffle, because the order of first appearance after it depends on the seed.
+  condition_order <- unique(c(.design_condition_names(design),
+                              as.character(unique(stim$condition))))
   stim <- counterbalance(stim, design, schema, list_of_set)
   # Practice and filler trials are presented but not analysed, so the frame splits here:
   # the experiment is generated from every presented trial, the stimuli file and the
@@ -325,7 +331,8 @@ run_pipeline <- function(design_path, schema_path = "config/schema.yaml",
 
   # Generated from the PRESENTED set: the experiment runs the practice and filler
   # trials too, even though they are absent from the stimuli file above.
-  exps <- export_experiments(presented, design, schema, file.path(outdir, "experiments"), base)
+  exps <- export_experiments(presented, design, schema, file.path(outdir, "experiments"), base,
+                             conditions = condition_order)
   for (p in exps) log <- log_artefact(log, p)
 
   # A materials datasheet (machine + human readable) and a pre-registration

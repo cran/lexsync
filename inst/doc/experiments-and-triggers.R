@@ -67,6 +67,10 @@ trig <- assign_triggers(stim)
 unique(trig[, c("condition", "condition_trigger")])
 range(trig$item_trigger)
 
+## ----assign-triggers-order----------------------------------------------------
+unique(assign_triggers(stim, conditions = c("low", "high"))[
+  , c("condition", "condition_trigger")])
+
 ## ----registry-----------------------------------------------------------------
 names(PARADIGMS)
 data.frame(
